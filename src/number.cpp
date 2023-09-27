@@ -1,5 +1,9 @@
 #include "number.hpp"
 
+Number::Number(){
+    this->value = 0;
+}
+
 Number::Number(int x){
     this->value = x;
 }

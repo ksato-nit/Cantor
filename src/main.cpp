@@ -12,7 +12,7 @@ int main(){
     Polynomial f(deg, c0, c1);
     Polynomial g(deg, b0, b1);
 
-    Polynomial h = f + g;
+    Polynomial h = f * g;
 
     h.print();
 

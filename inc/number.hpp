@@ -4,7 +4,8 @@
 class Number {
 public:
     int value;
-    
+
+    Number();
     Number(int);
     Number operator + (Number y);
     Number operator - (Number y);
