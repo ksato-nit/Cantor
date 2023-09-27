@@ -14,7 +14,7 @@ Number Number::operator + (Number y){
 }
 
 Number Number::operator - (Number y){
-    Number z(y.value - this->value);
+    Number z(this->value - y.value);
     return z;
 }
 
@@ -24,6 +24,6 @@ Number Number::operator * (Number y){
 }
 
 Number Number::operator / (Number y){
-    Number z(y.value / this->value);
+    Number z(this->value / y.value);
     return z;
 }

@@ -54,9 +54,52 @@ Polynomial Polynomial::operator * (Polynomial q){
     return r;
 }
 
-void Polynomial::print(){
+Polynomial Polynomial::operator * (Number k){
+    int deg = this->deg;
+    Polynomial r(deg);
     for(int i = 0; i <= this->deg; ++i){
-        std::cout << this->coeff[i].value << "x^" << i << ((i == this->deg) ? "" : " + ");
+        r.coeff[i] = this->coeff[i] * k;
+    }
+    return r;
+}
+
+// f = qg + r を満たす q, r を求める．
+// deg g <= deg f を仮定．
+std::tuple<Polynomial, Polynomial> Polynomial::divide(Polynomial f, Polynomial g){
+    int deg_f = f.deg;
+    int deg_g = g.deg;
+    Polynomial q(deg_f - deg_g);
+    Polynomial r(deg_f);
+
+    // TODO : インデックスをシフトしてもう少しきれいに書けそう．
+    for(int j = deg_f - deg_g; j >= 0; --j){
+        //f.print();
+        q.coeff[j] = f.coeff[j + deg_g] / g.coeff[deg_g];
+        //std::cout << f.coeff[j + deg_g].value << " " << g.coeff[deg_g].value << " " << q.coeff[j].value << std::endl;
+        Polynomial mono(j);
+        mono.coeff[j] = q.coeff[j];
+        r = f - g * mono;
+        f = r;
+    }
+
+    r.deg = std::max(deg_g - 1, 0);
+
+    return std::forward_as_tuple(q, r);
+}
+
+
+// r = gcd(f, g), fx + gy = r を満たす r, x, y を求める．
+std::tuple<Polynomial, Polynomial, Polynomial> Polynomial::extended_gcd(Polynomial f, Polynomial g){
+    Polynomial r(0);
+    Polynomial x(0);
+    Polynomial y(0);
+
+    return std::forward_as_tuple(r, x, y);
+}
+
+void Polynomial::print(){
+    for(int i = this->deg; i >= 0; --i){
+        std::cout << this->coeff[i].value << "x^" << i << ((i == 0) ? "" : " + ");
     }
     std::cout << std::endl;
 }
