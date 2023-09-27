@@ -4,10 +4,10 @@
 #include "iostream"
 
 class Polynomial {
-private:
+public:
     int deg;
     std::vector<Number> coeff;
-public:
+    
     Polynomial(int deg);
     Polynomial(int deg, Number c0);
     Polynomial(int deg, Number c0, Number c1);
