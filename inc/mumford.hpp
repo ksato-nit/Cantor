@@ -3,6 +3,7 @@
 #include "polynomial.hpp"
 
 class Mumford {
+    static const int GENUS = 2;
 public:
     Polynomial u;
     Polynomial v;
