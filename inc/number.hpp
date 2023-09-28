@@ -3,9 +3,10 @@
 // 抽象的な体の要素を実現する．
 class Number {
 public:
-    int value;
-    
-    Number(int);
+    double value;
+
+    Number();
+    Number(double);
     Number operator + (Number y);
     Number operator - (Number y);
     Number operator * (Number y);

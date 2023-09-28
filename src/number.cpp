@@ -1,6 +1,10 @@
 #include "number.hpp"
 
-Number::Number(int x){
+Number::Number(){
+    this->value = 0;
+}
+
+Number::Number(double x){
     this->value = x;
 }
 
@@ -10,7 +14,7 @@ Number Number::operator + (Number y){
 }
 
 Number Number::operator - (Number y){
-    Number z(y.value - this->value);
+    Number z(this->value - y.value);
     return z;
 }
 
@@ -20,6 +24,6 @@ Number Number::operator * (Number y){
 }
 
 Number Number::operator / (Number y){
-    Number z(y.value / this->value);
+    Number z(this->value / y.value);
     return z;
 }
