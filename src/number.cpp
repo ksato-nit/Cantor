@@ -27,7 +27,9 @@ Number Number::operator * (Number y){
 }
 
 Number Number::operator / (Number y){
-    Number z(this->value / y.value);
+    Number yinv = y.inv();
+    int value = (this->value * yinv.value) % CHARA;
+    Number z(value);
     return z;
 }
 

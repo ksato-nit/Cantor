@@ -21,6 +21,8 @@ public:
     Polynomial operator - (Polynomial q);
     Polynomial operator * (Polynomial q);
     Polynomial operator * (Number k);
+    Polynomial operator / (Polynomial g);
+    Polynomial operator % (Polynomial g);
     static std::tuple<Polynomial, Polynomial> divide(Polynomial f, Polynomial g);
     static std::tuple<Polynomial, Polynomial, Polynomial> extended_gcd(Polynomial f, Polynomial g);
     void print();

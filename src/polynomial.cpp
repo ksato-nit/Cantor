@@ -79,6 +79,24 @@ Polynomial Polynomial::operator * (Number k){
     return r;
 }
 
+Polynomial Polynomial::operator / (Polynomial g){
+    auto tup = Polynomial::divide(*this, g);
+
+    Polynomial q = std::get<0>(tup);
+    Polynomial r = std::get<1>(tup);
+
+    return q;
+}
+
+Polynomial Polynomial::operator % (Polynomial g){
+    auto tup = Polynomial::divide(*this, g);
+
+    Polynomial q = std::get<0>(tup);
+    Polynomial r = std::get<1>(tup);
+
+    return r;
+}
+
 // f = qg + r を満たす q, r を求める．
 // deg g <= deg f を仮定．
 std::tuple<Polynomial, Polynomial> Polynomial::divide(Polynomial f, Polynomial g){
@@ -106,6 +124,10 @@ std::tuple<Polynomial, Polynomial> Polynomial::divide(Polynomial f, Polynomial g
 
 // r = gcd(f, g), fx + gy = r を満たす r, x, y を求める．
 std::tuple<Polynomial, Polynomial, Polynomial> Polynomial::extended_gcd(Polynomial f, Polynomial g){
+    if(f.deg < g.deg){
+        return Polynomial::extended_gcd(g, f);
+    }
+
     Polynomial s = f;
     Polynomial r = g;
     Polynomial u(0, 1);
