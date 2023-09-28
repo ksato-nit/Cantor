@@ -1,5 +1,11 @@
 #include "polynomial.hpp"
 
+Polynomial::Polynomial(){
+    this->deg = 0;
+    this->coeff.resize(1);
+    this->coeff[0] = 0;
+}
+
 Polynomial::Polynomial(int deg){
     this->deg = deg;
     this->coeff.resize(deg + 1);
@@ -16,6 +22,16 @@ Polynomial::Polynomial(int deg, Number c0, Number c1){
     this->coeff.resize(deg + 1);
     this->coeff[0] = c0;
     this->coeff[1] = c1;
+}
+
+void Polynomial::resize(int deg){
+    this->deg = deg;
+    this->coeff.resize(deg + 1);
+}
+
+void Polynomial::resize(std::vector<Number> coeff){
+    this->deg = deg;
+    this->coeff = coeff;
 }
 
 Polynomial Polynomial::operator + (Polynomial q){
@@ -82,7 +98,7 @@ std::tuple<Polynomial, Polynomial> Polynomial::divide(Polynomial f, Polynomial g
         f = r;
     }
 
-    r.deg = std::max(deg_g - 1, 0);
+    r.resize(std::max(deg_g - 1, 0));
 
     return std::forward_as_tuple(q, r);
 }

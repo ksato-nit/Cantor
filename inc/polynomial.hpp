@@ -9,10 +9,13 @@ public:
     int deg;
     std::vector<Number> coeff;
 
+    Polynomial();
     Polynomial(int deg);
     Polynomial(int deg, Number c0);
     Polynomial(int deg, Number c0, Number c1);
-    // TODO : std::vector を渡して初期化できるようにする．
+
+    void resize(int deg);
+    void resize(std::vector<Number> coeff);
 
     Polynomial operator + (Polynomial q);
     Polynomial operator - (Polynomial q);
