@@ -4,7 +4,7 @@ Number::Number(){
     this->value = 0;
 }
 
-Number::Number(int x){
+Number::Number(double x){
     this->value = x;
 }
 

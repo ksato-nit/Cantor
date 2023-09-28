@@ -90,11 +90,27 @@ std::tuple<Polynomial, Polynomial> Polynomial::divide(Polynomial f, Polynomial g
 
 // r = gcd(f, g), fx + gy = r を満たす r, x, y を求める．
 std::tuple<Polynomial, Polynomial, Polynomial> Polynomial::extended_gcd(Polynomial f, Polynomial g){
-    Polynomial r(0);
-    Polynomial x(0);
-    Polynomial y(0);
+    Polynomial s = f;
+    Polynomial r = g;
+    Polynomial u(0, 1);
+    Polynomial x(0, 0);
+    Polynomial v(0, 0);
+    Polynomial y(0, 1);
 
-    return std::forward_as_tuple(r, x, y);
+    while(r.deg > 0 || r.coeff[0].value != 0){
+        auto tup = Polynomial::divide(s, r);
+        Polynomial q = std::get<0>(tup);
+        Polynomial s1 = r;
+        Polynomial r1 = std::get<1>(tup);
+        Polynomial u1 = x;
+        Polynomial x1 = u - q * x;
+        Polynomial v1 = y;
+        Polynomial y1 = v - q * y;
+
+        s = s1; r = r1; u = u1; x = x1; v = v1; y = y1;
+    }
+    
+    return std::forward_as_tuple(s, u, v);
 }
 
 void Polynomial::print(){
