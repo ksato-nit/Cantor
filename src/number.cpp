@@ -15,7 +15,7 @@ Number Number::operator + (Number y){
 }
 
 Number Number::operator - (Number y){
-    int value = (y.value - this->value) % CHARA;
+    int value = (this->value - y.value) % CHARA;
     Number z(value);
     return z;
 }

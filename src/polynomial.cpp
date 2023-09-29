@@ -112,7 +112,7 @@ std::tuple<Polynomial, Polynomial> Polynomial::divide(Polynomial f, Polynomial g
         //std::cout << f.coeff[j + deg_g].value << " " << g.coeff[deg_g].value << " " << q.coeff[j].value << std::endl;
         Polynomial mono(j);
         mono.coeff[j] = q.coeff[j];
-        r = f - g * mono;
+        r = f - (g * mono);
         f = r;
     }
 
@@ -125,7 +125,9 @@ std::tuple<Polynomial, Polynomial> Polynomial::divide(Polynomial f, Polynomial g
 // r = gcd(f, g), fx + gy = r を満たす r, x, y を求める．
 std::tuple<Polynomial, Polynomial, Polynomial> Polynomial::extended_gcd(Polynomial f, Polynomial g){
     if(f.deg < g.deg){
-        return Polynomial::extended_gcd(g, f);
+        auto tup = Polynomial::extended_gcd(g, f);
+
+        return std::forward_as_tuple(std::get<0>(tup), std::get<2>(tup), std::get<1>(tup));
     }
 
     Polynomial s = f;
@@ -141,12 +143,17 @@ std::tuple<Polynomial, Polynomial, Polynomial> Polynomial::extended_gcd(Polynomi
         Polynomial s1 = r;
         Polynomial r1 = std::get<1>(tup);
         Polynomial u1 = x;
-        Polynomial x1 = u - q * x;
+        Polynomial x1 = u - (q * x);
         Polynomial v1 = y;
-        Polynomial y1 = v - q * y;
+        Polynomial y1 = v - (q * y);
 
         s = s1; r = r1; u = u1; x = x1; v = v1; y = y1;
     }
+
+    Number lc = s.coeff[s.deg];
+    s = s * lc.inv();
+    u = u * lc.inv();
+    v = v * lc.inv();
     
     return std::forward_as_tuple(s, u, v);
 }

@@ -43,7 +43,24 @@ int main(){
     u2.coeff[0] = u20; u2.coeff[1] = u21; u2.coeff[2] = u22;
     v2.coeff[0] = v20; v2.coeff[1] = v21;
 
-    u1.print(); v1.print(); u2.print(); v2.print();
+    // u1.print(); v1.print(); u2.print(); v2.print();
+
+    //u1.print(); u2.print();
+
+    /*
+    auto tup = Polynomial::extended_gcd(u1, u2);
+    Polynomial r = std::get<0>(tup);
+    Polynomial e1 = std::get<1>(tup);
+    Polynomial e2 = std::get<2>(tup);
+    r.print();
+    e1.print();
+    e2.print();
+
+    Polynomial dd = (e1 * u1) + (e2 * u2);
+    dd.print();
+
+    return 0;
+    */
 
     Mumford D1(f, h, u1, v1);
     Mumford D2(f, h, u2, v2);
