@@ -19,6 +19,8 @@ public:
 
     void resize(int deg);
     void resize(std::vector<Number> coeff);
+    
+    bool isZero();
 
     Polynomial operator + (Polynomial q);
     Polynomial operator - (Polynomial q);

@@ -16,5 +16,6 @@ public:
     Mumford(Polynomial f, Polynomial h, Polynomial u, Polynomial v);
 
     Mumford operator + (Mumford q);
+    Mumford inv();
     void print();
 };

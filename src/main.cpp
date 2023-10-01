@@ -8,8 +8,8 @@ int main(){
     int hc[3] = {0, 1, 1};
     int u1c[3] = {5, 25, 1};
     int v1c[2] = {-30, -27};
-    int u2c[3] = {13, 18, 1};
-    int v2c[2] = {-14, -3};
+    int u2c[3] = {1, 0, 0};
+    int v2c[2] = {0, 0};
 
     Polynomial f(5, fc);
     Polynomial h(2, hc);
@@ -21,8 +21,13 @@ int main(){
     Mumford D1(f, h, u1, v1);
     Mumford D2(f, h, u2, v2);
 
+    Mumford D1_inv = D1.inv();
+
     Mumford D = D1 + D2;
     D.print();
+
+    Mumford zero = D1 + D1_inv;
+    zero.print();
 
     return 0;
 }

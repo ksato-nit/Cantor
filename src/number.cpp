@@ -33,6 +33,11 @@ Number Number::operator / (Number y){
     return z;
 }
 
+Number Number::MINUS_ONE(){
+    Number minus_one(-1);
+    return minus_one;
+}
+
 Number Number::inv(){
     if(this->value < 0){
         Number mx(this->value * -1);

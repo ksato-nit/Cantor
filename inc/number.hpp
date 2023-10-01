@@ -16,4 +16,6 @@ public:
     Number operator * (Number y);
     Number operator / (Number y);
     Number inv();
+
+    static Number MINUS_ONE();
 };

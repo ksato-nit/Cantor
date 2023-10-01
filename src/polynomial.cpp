@@ -50,6 +50,15 @@ void Polynomial::resize(std::vector<Number> coeff){
     this->coeff = coeff;
 }
 
+bool Polynomial::isZero(){
+    for(auto n : this->coeff){
+        if(n.value != 0){
+            return false;
+        }
+    }
+    return true;
+}
+
 Polynomial Polynomial::operator + (Polynomial q){
     // TODO : もう少しスマートな実装を考える．
     int deg = std::max(this->deg, q.deg);
@@ -151,7 +160,7 @@ std::tuple<Polynomial, Polynomial, Polynomial> Polynomial::extended_gcd(Polynomi
     Polynomial v(0, 0);
     Polynomial y(0, 1);
 
-    while(r.deg > 0 || r.coeff[0].value != 0){
+    while(!r.isZero()){
         auto tup = Polynomial::divide(s, r);
         Polynomial q = std::get<0>(tup);
         Polynomial s1 = r;
@@ -168,7 +177,7 @@ std::tuple<Polynomial, Polynomial, Polynomial> Polynomial::extended_gcd(Polynomi
     s = s * lc.inv();
     u = u * lc.inv();
     v = v * lc.inv();
-    
+
     return std::forward_as_tuple(s, u, v);
 }
 
