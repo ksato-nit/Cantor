@@ -45,11 +45,9 @@ Mumford Mumford::operator + (Mumford m){
     Polynomial u = u1 * u2 / (d * d);
     Polynomial v = ((s1 * u1 * v2 + s2 * u2 * v1 + c2 * (v1 * v2 + f)) / d) % u;
 
-    Number MINUS_ONE(-1);
-
     while(u.deg > GENUS){
         Polynomial ud = (f - (v * h) - (v * v)) / u;
-        Polynomial vr = ((h + v)) % ud;
+        Polynomial vr = ((h + v)*(Number::MINUS_ONE())) % ud;
 
         u = ud;
         v = vr;

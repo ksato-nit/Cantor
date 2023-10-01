@@ -56,6 +56,8 @@ void Polynomial::normalize(){
     for(auto i = this->coeff.rbegin(), e = this->coeff.rend(); i != e; ++i){
         if(i->value == 0){
             --deg;
+        }else{
+            break;
         }
     }
 
