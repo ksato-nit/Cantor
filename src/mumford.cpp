@@ -34,17 +34,6 @@ Mumford Mumford::operator + (Mumford m){
     Polynomial e1 = std::get<1>(tup1);
     Polynomial e2 = std::get<2>(tup1);
 
-    /*
-    d1.print();
-    e1.print();
-    e2.print();
-
-    puts("Step 2");
-
-    Polynomial vv = v1 + v2 + h;
-    vv.print();
-    */
-
     auto tup2 = Polynomial::extended_gcd(d1, v1 + v2 + h);
     Polynomial d = std::get<0>(tup2);
     Polynomial c1 = std::get<1>(tup2);

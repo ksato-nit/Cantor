@@ -4,75 +4,25 @@
 #include "mumford.hpp"
 
 int main(){
-    Number f0(-1);
-    Number f1(3);
-    Number f2(6);
-    Number f3(-2);
-    Number f4(-3);
-    Number f5(1);
+    int fc[6] = {-1, 3, 6, -2, -3, 1};
+    int hc[3] = {0, 1, 1};
+    int u1c[3] = {5, 25, 1};
+    int v1c[2] = {-30, -27};
+    int u2c[3] = {13, 18, 1};
+    int v2c[2] = {-14, -3};
 
-    Number h0(0);
-    Number h1(1);
-    Number h2(1);
-
-    Number u10(5);
-    Number u11(25);
-    Number u12(1);
-
-    Number v10(-30);
-    Number v11(-27);
-
-    Number u20(13);
-    Number u21(18);
-    Number u22(1);
-
-    Number v20(-14);
-    Number v21(-3);
-
-    Polynomial f(5);
-    Polynomial h(2);
-    Polynomial u1(2);
-    Polynomial v1(1);
-    Polynomial u2(2);
-    Polynomial v2(1);
-
-    f.coeff[0] = f0; f.coeff[1] = f1; f.coeff[2] = f2; f.coeff[3] = f3; f.coeff[4] = f4; f.coeff[5] = f5;
-    h.coeff[0] = h0; h.coeff[1] = h1; h.coeff[2] = h2;
-    u1.coeff[0] = u10; u1.coeff[1] = u11; u1.coeff[2] = u12;
-    v1.coeff[0] = v10; v1.coeff[1] = v11;
-    u2.coeff[0] = u20; u2.coeff[1] = u21; u2.coeff[2] = u22;
-    v2.coeff[0] = v20; v2.coeff[1] = v21;
-
-    // u1.print(); v1.print(); u2.print(); v2.print();
-
-    //u1.print(); u2.print();
-
-    /*
-    auto tup = Polynomial::extended_gcd(u1, u2);
-    Polynomial r = std::get<0>(tup);
-    Polynomial e1 = std::get<1>(tup);
-    Polynomial e2 = std::get<2>(tup);
-    r.print();
-    e1.print();
-    e2.print();
-
-    Polynomial dd = (e1 * u1) + (e2 * u2);
-    dd.print();
-
-    return 0;
-    */
+    Polynomial f(5, fc);
+    Polynomial h(2, hc);
+    Polynomial u1(2, u1c);
+    Polynomial v1(1, v1c);
+    Polynomial u2(2, u2c);
+    Polynomial v2(1, v2c);
 
     Mumford D1(f, h, u1, v1);
     Mumford D2(f, h, u2, v2);
 
     Mumford D = D1 + D2;
     D.print();
-
-    /*
-    auto tup = Polynomial::extended_gcd(u1, u2);
-    Polynomial r = std::get<0>(tup);
-    r.print();
-    */
 
     return 0;
 }

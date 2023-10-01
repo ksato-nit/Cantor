@@ -11,6 +11,22 @@ Polynomial::Polynomial(int deg){
     this->coeff.resize(deg + 1);
 }
 
+Polynomial::Polynomial(int deg, int* coeff){
+    this->deg = deg;
+    this->coeff.resize(deg + 1);
+    for(int i = 0; i <= deg; ++i){
+        Number c(coeff[i]);
+        this->coeff[i] = c;
+    }
+}
+
+Polynomial::Polynomial(int deg, int c0){
+    this->deg = deg;
+    this->coeff.resize(deg + 1);
+    Number c(c0);
+    this->coeff[0] = c;
+}
+
 Polynomial::Polynomial(int deg, Number c0){
     this->deg = deg;
     this->coeff.resize(deg + 1);

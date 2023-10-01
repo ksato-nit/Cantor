@@ -11,6 +11,9 @@ public:
 
     Polynomial();
     Polynomial(int deg);
+    Polynomial(int deg, int c0);
+    // TODO : テンプレートにしたい……．
+    Polynomial(int deg, int* coeff);
     Polynomial(int deg, Number c0);
     Polynomial(int deg, Number c0, Number c1);
 
