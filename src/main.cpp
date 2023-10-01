@@ -1,25 +1,32 @@
 #include "iostream"
 #include "number.hpp"
 #include "polynomial.hpp"
+#include "mumford.hpp"
 
 int main(){
-    Number c0(2);
-    Number c1(-13);
-    Number c2(15);
-    Number c3(1);
+    int fc[6] = {-1, 3, 6, -2, -3, 1};
+    int hc[3] = {0, 1, 1};
+    int u1c[3] = {5, 25, 1};
+    int v1c[2] = {-30, -27};
+    int u2c[3] = {28, 25, 1};
+    int v2c[2] = {-26, -18};
 
-    Number b0(2);
-    Number b1(5);
-    Number b2(-12);
+    Polynomial f(5, fc);
+    Polynomial h(2, hc);
+    Polynomial u1(2, u1c);
+    Polynomial v1(1, v1c);
+    Polynomial u2(2, u2c);
+    Polynomial v2(1, v2c);
 
-    Polynomial f(2);
-    Polynomial g(2);
-    f.coeff[0] = c0; f.coeff[1] = c1; f.coeff[2] = c2; // f.coeff[3] = c3;
-    g.coeff[0] = b0; g.coeff[1] = b1; g.coeff[2] = b2;
+    Mumford D1(f, h, u1, v1);
+    Mumford D2(f, h, u2, v2);
 
-    auto tup = Polynomial::extended_gcd(f, g);
-    Polynomial r = std::get<0>(tup);
-    r.print();
+    Mumford now = D1;
+    for(int i = 0; i < 1012; ++i){
+        Mumford D1_new = now + D1;
+        D1_new.print();
+        now = D1_new;
+    }
 
     return 0;
 }
