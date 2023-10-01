@@ -87,7 +87,7 @@ Polynomial Polynomial::operator + (Polynomial q){
         Number b = (q.deg >= i) ? q.coeff[i] : 0;
         r.coeff[i] = a + b;
     }
-    r.normalize();
+    //r.normalize();
     return r;
 }
 
@@ -99,7 +99,7 @@ Polynomial Polynomial::operator - (Polynomial q){
         Number b = (q.deg >= i) ? q.coeff[i] : 0;
         r.coeff[i] = a - b;
     }
-    r.normalize();
+    //r.normalize();
     return r;
 }
 
@@ -113,7 +113,7 @@ Polynomial Polynomial::operator * (Polynomial q){
             r.coeff[i + j] = r.coeff[i + j] + a * b;
         }
     }
-    r.normalize();
+    //r.normalize();
     return r;
 }
 
@@ -165,7 +165,7 @@ std::tuple<Polynomial, Polynomial> Polynomial::divide(Polynomial f, Polynomial g
         f = r;
     }
 
-    r.resize(std::max(deg_g - 1, 0));
+    r.normalize();
 
     return std::forward_as_tuple(q, r);
 }
