@@ -19,15 +19,15 @@ int main(){
     Number u11(25);
     Number u12(1);
 
-    Number v10(30);
-    Number v11(27);
+    Number v10(-30);
+    Number v11(-27);
 
     Number u20(13);
     Number u21(18);
     Number u22(1);
 
-    Number v20(14);
-    Number v21(3);
+    Number v20(-14);
+    Number v21(-3);
 
     Polynomial f(5);
     Polynomial h(2);

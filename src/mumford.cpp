@@ -65,22 +65,23 @@ Mumford Mumford::operator + (Mumford m){
     Polynomial u = u1 * u2 / (d * d);
     Polynomial v = ((s1 * u1 * v2 + s2 * u2 * v1 + c2 * (v1 * v2 + f)) / d) % u;
 
+    /*
     u.print();
     v.print();
+    */
 
     Number MINUS_ONE(-1);
 
     do{
         Polynomial ud = (f - (v * h) - (v * v)) / u;
-        // ((f - (v * h) - (v * v)) / u).print();
-        Polynomial vr = ((h + v) * MINUS_ONE) % ud;
+        //((f - (v * h) - (v * v)) % u).print();
+        Polynomial vr = ((h + v)) % ud;
 
         u = ud;
         v = vr;
     }while(u.deg > GENUS);
 
     Number lc = u.coeff[u.deg];
-
     u = u * lc.inv();
 
     Mumford ret(f, h, u, v);

@@ -36,7 +36,9 @@ Number Number::operator / (Number y){
 Number Number::inv(){
     if(this->value < 0){
         Number mx(this->value * -1);
-        return mx.inv();
+        mx = mx.inv();
+        mx.value *= -1;
+        return mx;
     }
 
     int s = this->value, t = CHARA;
