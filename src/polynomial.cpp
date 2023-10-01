@@ -50,6 +50,23 @@ void Polynomial::resize(std::vector<Number> coeff){
     this->coeff = coeff;
 }
 
+// 次数が整合的であるようにする (高次の係数で 0 のものがあれば切り落としていく)．
+void Polynomial::normalize(){
+    int deg = this->deg;
+    for(auto i = this->coeff.rbegin(), e = this->coeff.rend(); i != e; ++i){
+        if(i->value == 0){
+            --deg;
+        }
+    }
+
+    if(deg <= 0){
+        deg = 0;
+    }
+
+    this->deg = deg;
+    this->coeff.resize(deg + 1);
+}
+
 bool Polynomial::isZero(){
     for(auto n : this->coeff){
         if(n.value != 0){
@@ -68,6 +85,7 @@ Polynomial Polynomial::operator + (Polynomial q){
         Number b = (q.deg >= i) ? q.coeff[i] : 0;
         r.coeff[i] = a + b;
     }
+    r.normalize();
     return r;
 }
 
@@ -79,6 +97,7 @@ Polynomial Polynomial::operator - (Polynomial q){
         Number b = (q.deg >= i) ? q.coeff[i] : 0;
         r.coeff[i] = a - b;
     }
+    r.normalize();
     return r;
 }
 
@@ -92,6 +111,7 @@ Polynomial Polynomial::operator * (Polynomial q){
             r.coeff[i + j] = r.coeff[i + j] + a * b;
         }
     }
+    r.normalize();
     return r;
 }
 
@@ -114,6 +134,10 @@ Polynomial Polynomial::operator / (Polynomial g){
 }
 
 Polynomial Polynomial::operator % (Polynomial g){
+    if(this->deg < g.deg){
+        return *this;
+    }
+
     auto tup = Polynomial::divide(*this, g);
 
     Polynomial q = std::get<0>(tup);

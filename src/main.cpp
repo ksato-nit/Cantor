@@ -21,13 +21,8 @@ int main(){
     Mumford D1(f, h, u1, v1);
     Mumford D2(f, h, u2, v2);
 
-    Mumford D1_inv = D1.inv();
-
     Mumford D = D1 + D2;
     D.print();
-
-    Mumford zero = D1 + D1_inv;
-    zero.print();
 
     return 0;
 }
