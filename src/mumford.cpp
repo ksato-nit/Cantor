@@ -39,31 +39,16 @@ Mumford Mumford::operator + (Mumford m){
     Polynomial c1 = std::get<1>(tup2);
     Polynomial c2 = std::get<2>(tup2);
 
-    /*
-    d.print();
-    c1.print();
-    c2.print();
-
-    Polynomial dd = (c1 * d1) + (c2 * (v1 + v2 + h));
-    dd.print();
-    */
-
     Polynomial s1 = c1 * e1;
     Polynomial s2 = c1 * e2;
 
     Polynomial u = u1 * u2 / (d * d);
     Polynomial v = ((s1 * u1 * v2 + s2 * u2 * v1 + c2 * (v1 * v2 + f)) / d) % u;
 
-    /*
-    u.print();
-    v.print();
-    */
-
     Number MINUS_ONE(-1);
 
     do{
         Polynomial ud = (f - (v * h) - (v * v)) / u;
-        //((f - (v * h) - (v * v)) % u).print();
         Polynomial vr = ((h + v)) % ud;
 
         u = ud;

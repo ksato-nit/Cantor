@@ -123,9 +123,7 @@ std::tuple<Polynomial, Polynomial> Polynomial::divide(Polynomial f, Polynomial g
 
     // TODO : インデックスをシフトしてもう少しきれいに書けそう．
     for(int j = deg_f - deg_g; j >= 0; --j){
-        //f.print();
         q.coeff[j] = f.coeff[j + deg_g] / g.coeff[deg_g];
-        //std::cout << f.coeff[j + deg_g].value << " " << g.coeff[deg_g].value << " " << q.coeff[j].value << std::endl;
         Polynomial mono(j);
         mono.coeff[j] = q.coeff[j];
         r = f - (g * mono);
@@ -138,7 +136,7 @@ std::tuple<Polynomial, Polynomial> Polynomial::divide(Polynomial f, Polynomial g
 }
 
 
-// r = gcd(f, g), fx + gy = r を満たす r, x, y を求める．
+// s = gcd(f, g), fu + gv = s を満たす s, u, v を求める．
 std::tuple<Polynomial, Polynomial, Polynomial> Polynomial::extended_gcd(Polynomial f, Polynomial g){
     if(f.deg < g.deg){
         auto tup = Polynomial::extended_gcd(g, f);
