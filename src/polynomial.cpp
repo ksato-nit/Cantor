@@ -209,7 +209,10 @@ std::tuple<Polynomial, Polynomial, Polynomial> Polynomial::extended_gcd(Polynomi
 
 void Polynomial::print(){
     for(int i = this->deg; i >= 0; --i){
-        std::cout << this->coeff[i].value << "x^" << i << ((i == 0) ? "" : " + ");
+        std::cout << this->coeff[i].value;
+        if(i != 0){
+            std::cout << "x^" << i << " + ";
+        }
     }
     std::cout << std::endl;
 }
