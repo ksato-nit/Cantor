@@ -214,5 +214,6 @@ void Polynomial::print(){
             std::cout << "x^" << i << " + ";
         }
     }
-    std::cout << std::endl;
+    //std::cout << std::endl;
+    return;
 }
