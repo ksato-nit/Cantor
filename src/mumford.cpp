@@ -61,8 +61,22 @@ Mumford::Mumford(Polynomial f, Polynomial h, Divisor d){
 }
 
 Mumford Mumford::operator + (Mumford m){
-    Mumford ret = this->HarleyAdd(m);
-    return ret;
+    Polynomial u1 = this->u;
+    Polynomial u2 = m.u;
+
+    if(u1.deg > u2.deg){
+        std::cout << "Flip." << std::endl;
+        return m + *this;
+    }
+
+    if(u1.deg == 1 && u2.deg == 2){
+        std::cout << "Degenerated." << std::endl;
+        Mumford ret = this->HarleyAddDegenerated(m);
+        return ret;
+    }else{
+        Mumford ret = this->HarleyAdd(m);
+        return ret;
+    }
 }
 
 Mumford Mumford::HarleyAdd(Mumford m){
@@ -170,6 +184,68 @@ Mumford Mumford::HarleyAdd(Mumford m){
         Mumford ret(f, h, u, v);
         return ret;
     }
+}
+
+Mumford Mumford::HarleyAddDegenerated(Mumford m){
+    Polynomial u1 = this->u;
+    Polynomial v1 = this->v;
+    Polynomial u2 = m.u;
+    Polynomial v2 = m.v;
+
+    Number u11 = u1.coeff[1];
+    Number u10 = u1.coeff[0];
+    Number u21 = u2.coeff[1];
+    Number u20 = u2.coeff[0];
+
+    Number v11 = v1.coeff[1];
+    Number v10 = v1.coeff[0];
+    Number v21 = v2.coeff[1];
+    Number v20 = v2.coeff[0];
+
+    Number h0 = this->h.coeff[0];
+    Number h1 = this->h.coeff[1];
+    Number h2 = this->h.coeff[2];
+
+    Number f3 = this->f.coeff[3];
+    Number f4 = this->f.coeff[4];
+
+    // 1. r を計算．
+    Number r = u20 - (u21 - u10) * u10;
+
+    // 2. u2 の almost inverse (mod u1) を計算．
+    Number inv = r.inv();
+
+    // 3. s を計算．
+    Number s0 = inv * (v10 - v20 + v21 * u10);
+
+    // 4. l を計算．
+    Number l1 = s0 * u21;
+    Number l0 = s0 * u20;
+
+    // 5. k を計算．
+    Number k2 = f4 - u21;
+    Number k1 = f3 - (f4 - u21) * u21 - v21 * h2 - u20;
+
+    // 6. u' を計算．
+    Number u1d = k2 - s0 * s0 - s0 * h2 - u10;
+    Number u0d = k1 - s0 * (l1 + h1 + v21 * 2) - u10 * u1d;
+
+    // 7. v' を計算．
+    Number v1d = (h2 + s0) * u1d - (h1 + l1 + v21);
+    Number v0d = (h2 + s0) * u0d - (h0 + l0 + v20);
+
+    Polynomial u(2);
+    Polynomial v(1);
+
+    u.coeff[2] = Number::ONE();
+    u.coeff[1] = u1d;
+    u.coeff[0] = u0d;
+
+    v.coeff[1] = v1d;
+    v.coeff[0] = v0d;
+
+    Mumford ret(f, h, u, v);
+    return ret;
 }
 
 Mumford Mumford::CantorAdd(Mumford m){
