@@ -60,8 +60,19 @@ Mumford::Mumford(Polynomial f, Polynomial h, Divisor d){
     }
 }
 
-
 Mumford Mumford::operator + (Mumford m){
+    Mumford ret = this->CantorAdd(m);
+    return ret;
+}
+
+Mumford Mumford::HarleyAdd(Mumford m){
+    
+
+    Mumford ret(f, h, u, v);
+    return ret;
+}
+
+Mumford Mumford::CantorAdd(Mumford m){
     Polynomial h = this->h;
 
     Polynomial u1 = this->u;

@@ -18,6 +18,8 @@ public:
     Mumford(Polynomial f, Polynomial h, Divisor d);
 
     Mumford operator + (Mumford q);
+    Mumford CantorAdd(Mumford q);
+    Mumford HarleyAdd(Mumford q);
     Mumford inv();
     Mumford zero();
     void print();
