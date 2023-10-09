@@ -34,13 +34,21 @@ int main(){
     std::cout << "D3:" << std::endl;
     D3.print();        
 
-    Mumford sum1 = D1 + D2;
     std::cout << "D1 + D2:" << std::endl;
+    Mumford sum1 = D1 + D2;
     sum1.print();
 
-    Mumford sum2 = D3 + D2;
     std::cout << "D2 + D3:" << std::endl;
-    sum2.print();    
+    Mumford sum2 = D2 + D3;
+    sum2.print();
+
+    std::cout << "D1 + (D2 + D3):" << std::endl;
+    Mumford sum3 = D1 + sum2;
+    sum3.print();
+
+    std::cout << "(D1 + D2) + D3:" << std::endl;
+    Mumford sum4 = sum1 + D3;
+    sum4.print();
 
     return 0;
 }

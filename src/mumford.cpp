@@ -65,12 +65,12 @@ Mumford Mumford::operator + (Mumford m){
     Polynomial u2 = m.u;
 
     if(u1.deg > u2.deg){
-        std::cout << "Flip." << std::endl;
+        //std::cerr << "Flip." << std::endl;
         return m + *this;
     }
 
     if(u1.deg == 1 && u2.deg == 2){
-        std::cout << "Degenerated." << std::endl;
+        //std::cerr << "Degenerated." << std::endl;
         Mumford ret = this->HarleyAddDegenerated(m);
         return ret;
     }else{
