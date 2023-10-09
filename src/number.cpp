@@ -26,6 +26,12 @@ Number Number::operator * (Number y){
     return z;
 }
 
+Number Number::operator * (int y){
+    int value = (y * this->value) % CHARA;
+    Number z(value);
+    return z;
+}
+
 Number Number::operator / (Number y){
     Number yinv = y.inv();
     int value = (this->value * yinv.value) % CHARA;
@@ -71,4 +77,8 @@ Number Number::inv(){
         x = x + CHARA;
     }
     return x;
+}
+
+bool Number::isZero(){
+    return this->value == 0;
 }

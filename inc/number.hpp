@@ -14,8 +14,10 @@ public:
     Number operator + (Number y);
     Number operator - (Number y);
     Number operator * (Number y);
+    Number operator * (int y);
     Number operator / (Number y);
     Number inv();
+    bool isZero();
 
     static Number ZERO();
     static Number ONE();
