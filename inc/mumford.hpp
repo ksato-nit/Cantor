@@ -21,6 +21,7 @@ public:
     Mumford CantorAdd(Mumford q);
     Mumford HarleyAdd(Mumford q);
     Mumford HarleyAddDegenerated(Mumford q);
+    Mumford doubling();
     Mumford inv();
     Mumford zero();
     void print();

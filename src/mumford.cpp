@@ -64,6 +64,9 @@ Mumford Mumford::operator + (Mumford m){
     Polynomial u1 = this->u;
     Polynomial u2 = m.u;
 
+    Polynomial v1 = this->v;
+    Polynomial v2 = m.v;
+
     if(u1.deg > u2.deg){
         //std::cerr << "Flip." << std::endl;
         return m + *this;
@@ -72,6 +75,9 @@ Mumford Mumford::operator + (Mumford m){
     if(u1.deg == 1 && u2.deg == 2){
         //std::cerr << "Degenerated." << std::endl;
         Mumford ret = this->HarleyAddDegenerated(m);
+        return ret;
+    }else if(u1 == u2 && v1 == v2){
+        Mumford ret = this->doubling();
         return ret;
     }else{
         Mumford ret = this->HarleyAdd(m);
@@ -285,6 +291,11 @@ Mumford Mumford::CantorAdd(Mumford m){
 
     Mumford ret(f, h, u, v);
 
+    return ret;
+}
+
+Mumford Mumford::doubling(){
+    Mumford ret;
     return ret;
 }
 
