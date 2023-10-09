@@ -61,7 +61,7 @@ Mumford::Mumford(Polynomial f, Polynomial h, Divisor d){
 }
 
 Mumford Mumford::operator + (Mumford m){
-    Mumford ret = this->CantorAdd(m);
+    Mumford ret = this->HarleyAdd(m);
     return ret;
 }
 
@@ -104,6 +104,7 @@ Mumford Mumford::HarleyAdd(Mumford m){
     Number w3 = inv1 * w1;
     Number s1d = (inv0 + inv1) * (w0 + w1) - w2 - w3 * (Number::ONE() + u11);
     Number s0d = w2 - u10 * w3;
+
     if(!s1d.isZero()){
         // 4. s'' を計算．
         Number w1 = (r * s1d).inv();
@@ -113,13 +114,14 @@ Mumford Mumford::HarleyAdd(Mumford m){
         Number w5 = w4 * w4;
         Number s0dd = s0d * w2;
 
-        // 5. u' を計算．
+        // 5. l' を計算．
         Number l2d = u21 + s0dd;
         Number l1d = u21 * s0dd + u20;
         Number l0d = u20 * s0dd;
 
+
         // 6. u' を計算．
-        Number u0d = (s0dd - u11) * (s0dd - z1 * h2 * w4) - u10 + l1d + (h1 + v21 * 2) * w4 + (u21 * 2 + z1 - f4) * w5;
+        Number u0d = (s0dd - u11) * (s0dd - z1 + h2 * w4) - u10 + l1d + (h1 + v21 * 2) * w4 + (u21 * 2 + z1 - f4) * w5;
         Number u1d = s0dd * 2 - z1 + h2 * w4 - w5;
 
         // 7. v' を計算．
@@ -142,6 +144,7 @@ Mumford Mumford::HarleyAdd(Mumford m){
         Mumford ret(f, h, u, v);
         return ret;
     }else{
+        std::cout << "Special case." << std::endl;
         // サブルーチン
 
         // 4'. s を計算．
