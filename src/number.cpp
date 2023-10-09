@@ -33,6 +33,16 @@ Number Number::operator / (Number y){
     return z;
 }
 
+Number Number::ZERO(){
+    Number zero(0);
+    return zero;
+}
+
+Number Number::ONE(){
+    Number one(1);
+    return one;
+}
+
 Number Number::MINUS_ONE(){
     Number minus_one(-1);
     return minus_one;

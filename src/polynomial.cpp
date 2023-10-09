@@ -20,6 +20,15 @@ Polynomial::Polynomial(int deg, int* coeff){
     }
 }
 
+Polynomial::Polynomial(std::vector<Number> coeff){
+    int deg = coeff.size() + 1;
+    this->deg = deg;
+    this->coeff.resize(deg + 1);
+    for(int i = 0; i <= deg; ++i){
+        this->coeff[i] = coeff[i];
+    }
+}
+
 Polynomial::Polynomial(int deg, int c0){
     this->deg = deg;
     this->coeff.resize(deg + 1);
