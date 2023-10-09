@@ -29,6 +29,7 @@ int main(){
 
     std::cout << "D1:" << std::endl;
     D1.print();
+
     std::cout << "D2:" << std::endl;
     D2.print();
     std::cout << "D3:" << std::endl;
@@ -49,6 +50,10 @@ int main(){
     std::cout << "(D1 + D2) + D3:" << std::endl;
     Mumford sum4 = sum1 + D3;
     sum4.print();
+
+    std::cout << "2 * D1" << std::endl;
+    Mumford sum5 = D1.doubling();
+    sum5.print();
 
     return 0;
 }
