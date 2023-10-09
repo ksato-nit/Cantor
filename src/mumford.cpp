@@ -67,16 +67,61 @@ Mumford Mumford::operator + (Mumford m){
     Polynomial v1 = this->v;
     Polynomial v2 = m.v;
 
+    Number u10 = u1.coeff[0];
+    Number u20 = u2.coeff[0];
+    Number v10 = v1.coeff[0];
+    Number v20 = v2.coeff[0];
+
     if(u1.deg > u2.deg){
         //std::cerr << "Flip." << std::endl;
         return m + *this;
     }
 
-    if(u1.deg == 1 && u2.deg == 2){
-        //std::cerr << "Degenerated." << std::endl;
-        Mumford ret = this->HarleyAddDegenerated(m);
-        return ret;
-    }else if(u1 == u2 && v1 == v2){
+    if(u1.deg == 0){
+        return m;
+    }
+
+    if(u1.deg == 1){
+        if(u2.deg == 1){
+            if(u1 == u2){
+                Number h_eval = h.eval(u10 * Number::MINUS_ONE());
+                Polynomial h_eval_as_poly(0, h_eval);
+                if(v1 * Number::MINUS_ONE() == v2 + h_eval_as_poly){
+                    return Mumford::zero();
+                }else{
+                    Polynomial u = u1 * u1;
+                    Polynomial v; // TODO : Lange p. 6 をもとに書く．
+                    Mumford ret(f, h, u, v);
+                }
+            }else{
+                Polynomial u = u1 * u2;
+
+                Number c1 = (v20 - v10) / (u10 - u20);
+                Number c0 = (v20 * u10 - v10 * u20) / (u10 - u20);
+                Polynomial v(1, c0, c1);
+            }
+        }else{
+            Number u10 = u1.coeff[0];
+            Number h_eval = h.eval(u10 * Number::MINUS_ONE());
+            Number v2_eval = v2.eval(u10 * Number::MINUS_ONE());
+
+            if(v2_eval == v10 + h_eval){
+                Polynomial u(1, Number::ONE, u21 - u10);
+                Polynomial v(0, v20 * (u10 - u21));
+                Mumford ret(f, h, u, v);
+                return ret;
+            }else{
+                // 2. (b) ii 後半
+            }
+            //std::cerr << "Degenerated." << std::endl;
+            Mumford ret = this->HarleyAddDegenerated(m);
+            return ret;
+        }
+    }
+
+    // deg u1 = deg u2 = 2
+
+    if(u1 == u2 && v1 == v2){
         Mumford ret = this->doubling();
         return ret;
     }else{

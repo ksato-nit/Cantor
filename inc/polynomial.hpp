@@ -25,6 +25,8 @@ public:
 
     void normalize();
 
+    Number eval(Number x);
+
     Polynomial operator + (Polynomial q);
     Polynomial operator - (Polynomial q);
     Polynomial operator * (Polynomial q);

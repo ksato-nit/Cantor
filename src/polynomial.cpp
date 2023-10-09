@@ -244,3 +244,15 @@ void Polynomial::print(){
     //std::cout << std::endl;
     return;
 }
+
+Number Polynomial::eval(Number x){
+    Number ret(0);
+    for(int i = this->deg; i >= 0; --i){
+        Number c = this->coeff[i].value;
+        for(int j = 1; j < i; ++j){
+            c = c * x;
+        }
+        ret = ret + c;
+    }
+    return ret;
+}
