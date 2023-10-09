@@ -17,5 +17,7 @@ public:
     Number operator / (Number y);
     Number inv();
 
+    static Number ZERO();
+    static Number ONE();
     static Number MINUS_ONE();
 };

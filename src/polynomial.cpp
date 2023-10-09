@@ -20,6 +20,15 @@ Polynomial::Polynomial(int deg, int* coeff){
     }
 }
 
+Polynomial::Polynomial(std::vector<Number> coeff){
+    int deg = coeff.size() + 1;
+    this->deg = deg;
+    this->coeff.resize(deg + 1);
+    for(int i = 0; i <= deg; ++i){
+        this->coeff[i] = coeff[i];
+    }
+}
+
 Polynomial::Polynomial(int deg, int c0){
     this->deg = deg;
     this->coeff.resize(deg + 1);
@@ -209,7 +218,11 @@ std::tuple<Polynomial, Polynomial, Polynomial> Polynomial::extended_gcd(Polynomi
 
 void Polynomial::print(){
     for(int i = this->deg; i >= 0; --i){
-        std::cout << this->coeff[i].value << "x^" << i << ((i == 0) ? "" : " + ");
+        std::cout << this->coeff[i].value;
+        if(i != 0){
+            std::cout << "x^" << i << " + ";
+        }
     }
-    std::cout << std::endl;
+    //std::cout << std::endl;
+    return;
 }

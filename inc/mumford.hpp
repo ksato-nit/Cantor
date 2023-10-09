@@ -1,6 +1,7 @@
 #pragma once
 #include "number.hpp"
 #include "polynomial.hpp"
+#include "divisor.hpp"
 
 class Mumford {
     static const int GENUS = 2;
@@ -14,8 +15,10 @@ public:
     Mumford();
     Mumford(Polynomial f, Polynomial h);
     Mumford(Polynomial f, Polynomial h, Polynomial u, Polynomial v);
+    Mumford(Polynomial f, Polynomial h, Divisor d);
 
     Mumford operator + (Mumford q);
     Mumford inv();
+    Mumford zero();
     void print();
 };

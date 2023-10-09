@@ -22,7 +22,7 @@ int main(){
     Mumford D2(f, h, u2, v2);
 
     Mumford now = D1;
-    for(int i = 0; i < 1012; ++i){
+    for(int i = 1; i < 1012; ++i){
         Mumford D1_new = now + D1;
         D1_new.print();
         now = D1_new;

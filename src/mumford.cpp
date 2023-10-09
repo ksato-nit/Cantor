@@ -21,6 +21,46 @@ Mumford::Mumford(Polynomial f, Polynomial h, Polynomial u, Polynomial v){
     this->v = v;
 }
 
+// 被約因子 D を受け取り，対応する Mumford 表現を返す．
+Mumford::Mumford(Polynomial f, Polynomial h, Divisor d){
+    this->f = f;
+    this->h = h;
+
+    int count = d.points.size();
+    if(count == 0){
+        Polynomial ONE(0, 1);
+        Polynomial ZERO(0, 0);
+        this->u = ONE;
+        this->v = ZERO;
+    }else if(count == 1){
+        auto p = d.points[0];
+        int multiplicity = p.second;
+        if(multiplicity == 1){
+            Polynomial u(1, Number::ONE(), p.first.x * Number::MINUS_ONE());
+            Polynomial v(0, p.first.y);
+            this->u = u;
+            this->v = v;
+        }else{
+            // TODO : 重複度が 2 の場合．
+        }
+    }else if(count == 2){
+        // 2 つの異なる点が含まれる場合．
+        Point p1 = d.points[0].first;
+        Point p2 = d.points[1].first;
+
+        std::vector<Number> uc = {(p1.x * p2.x), (p1.x + p2.x) * Number::MINUS_ONE(), Number::ONE()};
+        Polynomial u(uc);
+        this->u = u;
+
+        Number c1 = (p1.y - p2.y) / (p1.x - p2.x);
+        Number c0 = (p1.x * p2.y - p2.x * p1.y) / (p1.x - p2.x);
+        Polynomial v(1, c0, c1);
+        this->v = v;
+
+    }
+}
+
+
 Mumford Mumford::operator + (Mumford m){
     Polynomial h = this->h;
 
@@ -71,8 +111,21 @@ Mumford Mumford::inv(){
     return inv;
 }
 
+Mumford Mumford::zero(){
+    Polynomial f = this->f;
+    Polynomial h = this->h;
+    Polynomial ONE(0, 1);
+    Polynomial ZERO(0, 0);
+
+    Mumford zero(f, h, ONE, ZERO);
+    return zero;
+}
+
 void Mumford::print(){
+    std::cout << "[";
     this->u.print();
+    std::cout << ", ";
     this->v.print();
+    std::cout << "]" << std::endl;
     return;
 }
