@@ -39,6 +39,14 @@ Number Number::operator / (Number y){
     return z;
 }
 
+bool Number::operator == (Number y){
+    return this->value == y.value;
+}
+
+bool Number::operator != (Number y){
+    return !(*this == y);
+}
+
 Number Number::ZERO(){
     Number zero(0);
     return zero;

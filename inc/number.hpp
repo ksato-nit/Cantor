@@ -16,6 +16,8 @@ public:
     Number operator * (Number y);
     Number operator * (int y);
     Number operator / (Number y);
+    bool operator == (Number y);
+    bool operator != (Number y);
     Number inv();
     bool isZero();
 

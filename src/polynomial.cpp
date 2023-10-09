@@ -157,6 +157,24 @@ Polynomial Polynomial::operator % (Polynomial g){
     return r;
 }
 
+bool Polynomial::operator == (Polynomial g){
+    if(this->deg != g.deg){
+        return false;
+    }
+
+    for(int i = 0; i <= this->deg; ++i){
+        if(this->coeff[i] != g.coeff[i]){
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool Polynomial::operator != (Polynomial g){
+    return !(*this == g);
+}
+
 // f = qg + r を満たす q, r を求める．
 // deg g <= deg f を仮定．
 std::tuple<Polynomial, Polynomial> Polynomial::divide(Polynomial f, Polynomial g){
