@@ -106,7 +106,8 @@ Mumford Mumford::operator + (Mumford m){
             Number v2_eval = v2.eval(u10 * Number::MINUS_ONE());
 
             if(v2_eval == v10 + h_eval){
-                Polynomial u(1, Number::ONE, u21 - u10);
+                Number u21 = u2.coeff[1];
+                Polynomial u(1, Number::ONE(), u21 - u10);
                 Polynomial v(0, v20 * (u10 - u21));
                 Mumford ret(f, h, u, v);
                 return ret;
