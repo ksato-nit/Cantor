@@ -155,7 +155,12 @@ Mumford Mumford::CostelloAdd(Mumford m){
     Number v21 = v2.coeff[1];
     Number v20 = v2.coeff[0];
 
-    Number f6 = this->f.coeff[6];
+    Number f6;
+    if(this->f.deg == 6){
+        f6 = this->f.coeff[6];
+    }else{
+        f6 = Number::ZERO();
+    }
     Number f5 = this->f.coeff[5];
     Number f4 = this->f.coeff[4];
 
