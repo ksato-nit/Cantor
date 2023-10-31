@@ -176,14 +176,14 @@ Mumford Mumford::CostelloAdd(Mumford m){
     Number M3 = u11 - u21;
     Number M4 = u20 - u10;
 
-    std::cout << M1.value << " " << M2.value << " " << M3.value << " " << M4.value << std::endl;
+    //std::cout << M1.value << " " << M2.value << " " << M3.value << " " << M4.value << std::endl;
 
     Number t1 = (M2 - v0D) * (v1D - M1);
     Number t2 = (v0D + M2) * (v1D + M1) * Number::MINUS_ONE();
     Number t3 = (M4 - v0D) * (v1D - M3);
     Number t4 = (v0D + M4) * (v1D + M3) * Number::MINUS_ONE();
 
-    std::cout << t1.value << " " << t2.value << " " << t3.value << " " << t4.value << std::endl;
+    //std::cout << t1.value << " " << t2.value << " " << t3.value << " " << t4.value << std::endl;
 
     Number l2_num = t1 - t2;
     Number l3_num = t3 - t4;
@@ -198,7 +198,7 @@ Mumford Mumford::CostelloAdd(Mumford m){
     Number d_inv = B * C;
     Number d_shifted_inv = d * A * C;
 
-    std::cout << l3_num.value << " " << l2_num.value << " " << d_inv.value << std::endl;
+    //std::cout << l3_num.value << " " << l2_num.value << " " << d_inv.value << std::endl;
 
     Number l2 = l2_num * d_inv;
     Number l3 = l3_num * d_inv;
@@ -206,7 +206,7 @@ Mumford Mumford::CostelloAdd(Mumford m){
     Number l0 = v10 + l2 * u10 - l3 * U10;
     Number l1 = v11 + l2 * u11 - l3 * (U11 - u10);
 
-    std::cout << l3.value << " " << l2.value << " " << l1.value << " " << l0.value << " " << d.value << std::endl;
+    //std::cout << l3.value << " " << l2.value << " " << l1.value << " " << l0.value << " " << d.value << std::endl;
 
     Number u1dd = (u1S + (f5 - l2 * l3 - l2 * l3) * d_shifted_inv) * Number::MINUS_ONE();
 
