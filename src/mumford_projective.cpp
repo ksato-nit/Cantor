@@ -30,9 +30,18 @@ ProjectiveMumford::ProjectiveMumford(Polynomial f, Polynomial h, Number U1, Numb
     this->Z = Z;
 }
 
+ProjectiveMumford::ProjectiveMumford(Polynomial f, Polynomial h, Number U1, Number U0, Number V1, Number V0){
+    this->f = f;
+    this->h = h;
+    this->U1 = U1;
+    this->U0 = U0;
+    this->V1 = V1;
+    this->V0 = V0;
+    this->Z = Number::ONE();
+}
+
 ProjectiveMumford ProjectiveMumford::operator + (ProjectiveMumford m){
     // deg u1 = deg u2 = 2
-
     ProjectiveMumford ret = this->HarleyAdd(m);
     return ret;
 }
@@ -159,8 +168,8 @@ ProjectiveMumford ProjectiveMumford::inv(){
     Number h1 = this->h.coeff[1];
     Number h0 = this->h.coeff[0];
     // - (h + v) % u を計算．
-    Number V1d = (V1 + h1) * Z - U1 * h2;
-    Number V0d = (V0 + h0) * Z - U0 * h2;
+    Number V1d = U1 * h2 - (V1 + h1) * Z;
+    Number V0d = U0 * h2 - (V0 + h0) * Z;
     ProjectiveMumford inv(f, h, U1, U0, V1d, V0d, Z);
     return inv;
 }

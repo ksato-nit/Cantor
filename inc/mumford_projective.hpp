@@ -18,6 +18,7 @@ public:
     ProjectiveMumford();
     ProjectiveMumford(Polynomial f, Polynomial h);
     ProjectiveMumford(Polynomial f, Polynomial h, Number, Number, Number, Number, Number);
+    ProjectiveMumford(Polynomial f, Polynomial h, Number, Number, Number, Number);
 
     ProjectiveMumford operator + (ProjectiveMumford q);
     ProjectiveMumford HarleyAdd(ProjectiveMumford q);

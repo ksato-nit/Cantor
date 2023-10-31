@@ -2,6 +2,7 @@
 #include "number.hpp"
 #include "polynomial.hpp"
 #include "mumford.hpp"
+#include "mumford_projective.hpp"
 
 int main(){
     int fc[6] = {-1, 3, 6, -2, -3, 1};
@@ -29,7 +30,8 @@ int main(){
 
     std::cout << "D1:" << std::endl;
     D1.print();
-
+    std::cout << "-D1:" << std::endl;
+    D1.inv().print();
     std::cout << "D2:" << std::endl;
     D2.print();
     std::cout << "D3:" << std::endl;
@@ -39,21 +41,18 @@ int main(){
     Mumford sum1 = D1 + D2;
     sum1.print();
 
-    std::cout << "D2 + D3:" << std::endl;
-    Mumford sum2 = D2 + D3;
-    sum2.print();
+    ProjectiveMumford D1P(f, h, u1.coeff[1], u1.coeff[0], v1.coeff[1], v1.coeff[0]);
+    ProjectiveMumford D2P(f, h, u2.coeff[1], u2.coeff[0], v2.coeff[1], v2.coeff[0]);
+    ProjectiveMumford D3P(f, h, u3.coeff[1], u3.coeff[0], v3.coeff[1], v3.coeff[0]);
+    std::cout << "D1P:" << std::endl;
+    D1P.print();
+    std::cout << "D2P:" << std::endl;
+    D2P.print();
+    std::cout << "D3P:" << std::endl;
+    D3P.print();
 
-    std::cout << "D1 + (D2 + D3):" << std::endl;
-    Mumford sum3 = D1 + sum2;
-    sum3.print();
-
-    std::cout << "(D1 + D2) + D3:" << std::endl;
-    Mumford sum4 = sum1 + D3;
-    sum4.print();
-
-    std::cout << "2 * D1" << std::endl;
-    Mumford sum5 = D1.doubling();
-    sum5.print();
+    std::cout << "-D1P:" << std::endl;
+    D1P.inv().print();
 
     return 0;
 }
