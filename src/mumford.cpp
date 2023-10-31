@@ -61,8 +61,6 @@ Mumford::Mumford(Polynomial f, Polynomial h, Divisor d){
 }
 
 Mumford Mumford::operator + (Mumford m){
-    return this->CantorAdd(m);
-
     Polynomial u1 = this->u;
     Polynomial u2 = m.u;
 
@@ -122,13 +120,7 @@ Mumford Mumford::operator + (Mumford m){
             return ret;
         }
     }
-    */
 
-    // deg u1 = deg u2 = 2
-    Mumford ret = this->CostelloAdd(m);
-    return ret;
-
-    /*
     if(u1 == u2 && v1 == v2){
         Mumford ret = this->doubling();
         return ret;
@@ -137,9 +129,14 @@ Mumford Mumford::operator + (Mumford m){
         return ret;
     }
     */
+
+    // deg u1 = deg u2 = 2
+    Mumford ret = this->CostelloAdd(m);
+    return ret;
 }
 
 Mumford Mumford::CostelloAdd(Mumford m){
+    std::cout << "Costello Addition." << std::endl;
     Polynomial u1 = this->u;
     Polynomial v1 = this->v;
     Polynomial u2 = m.u;
@@ -179,10 +176,14 @@ Mumford Mumford::CostelloAdd(Mumford m){
     Number M3 = u11 - u21;
     Number M4 = u20 - u10;
 
-    Number t1 = (M2 - v10) * (v1D - M1);
-    Number t2 = (v1D + M2) * (v1D + M1) * Number::MINUS_ONE();
-    Number t3 = (M4 - v20) * (v1D - M3);
-    Number t4 = (v1D + M4) * (v1D + M3) * Number::MINUS_ONE();
+    std::cout << M1.value << " " << M2.value << " " << M3.value << " " << M4.value << std::endl;
+
+    Number t1 = (M2 - v0D) * (v1D - M1);
+    Number t2 = (v0D + M2) * (v1D + M1) * Number::MINUS_ONE();
+    Number t3 = (M4 - v0D) * (v1D - M3);
+    Number t4 = (v0D + M4) * (v1D + M3) * Number::MINUS_ONE();
+
+    std::cout << t1.value << " " << t2.value << " " << t3.value << " " << t4.value << std::endl;
 
     Number l2_num = t1 - t2;
     Number l3_num = t3 - t4;
@@ -197,8 +198,15 @@ Mumford Mumford::CostelloAdd(Mumford m){
     Number d_inv = B * C;
     Number d_shifted_inv = d * A * C;
 
+    std::cout << l3_num.value << " " << l2_num.value << " " << d_inv.value << std::endl;
+
     Number l2 = l2_num * d_inv;
     Number l3 = l3_num * d_inv;
+
+    Number l0 = v10 + l2 * u10 - l3 * U10;
+    Number l1 = v11 + l2 * u11 - l3 * (U11 - u10);
+
+    std::cout << l3.value << " " << l2.value << " " << l1.value << " " << l0.value << " " << d.value << std::endl;
 
     Number u1dd = (u1S + (f5 - l2 * l3 - l2 * l3) * d_shifted_inv) * Number::MINUS_ONE();
 
