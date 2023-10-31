@@ -61,6 +61,8 @@ Mumford::Mumford(Polynomial f, Polynomial h, Divisor d){
 }
 
 Mumford Mumford::operator + (Mumford m){
+    return this->CantorAdd(m);
+
     Polynomial u1 = this->u;
     Polynomial u2 = m.u;
 
@@ -102,11 +104,12 @@ Mumford Mumford::operator + (Mumford m){
             }
         }else{
             Number u10 = u1.coeff[0];
+            Number u21 = u2.coeff[1];
             Number h_eval = h.eval(u10 * Number::MINUS_ONE());
             Number v2_eval = v2.eval(u10 * Number::MINUS_ONE());
 
             if(v2_eval == v10 + h_eval){
-                Polynomial u(1, Number::ONE, u21 - u10);
+                Polynomial u(1, Number::ONE(), u21 - u10);
                 Polynomial v(0, v20 * (u10 - u21));
                 Mumford ret(f, h, u, v);
                 return ret;
@@ -131,6 +134,7 @@ Mumford Mumford::operator + (Mumford m){
 }
 
 Mumford Mumford::HarleyAdd(Mumford m){
+    std::cout << "Harley Addition." << std::endl;
     Polynomial u1 = this->u;
     Polynomial v1 = this->v;
     Polynomial u2 = m.u;
