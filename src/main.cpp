@@ -30,8 +30,6 @@ int main(){
 
     std::cout << "D1:" << std::endl;
     D1.print();
-    std::cout << "-D1:" << std::endl;
-    D1.inv().print();
     std::cout << "D2:" << std::endl;
     D2.print();
     std::cout << "D3:" << std::endl;

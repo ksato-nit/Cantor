@@ -20,6 +20,7 @@ public:
     Mumford operator + (Mumford q);
     Mumford CantorAdd(Mumford q);
     Mumford HarleyAdd(Mumford q);
+    Mumford CostelloAdd(Mumford q);
     Mumford HarleyAddDegenerated(Mumford q);
     Mumford doubling();
     Mumford inv();

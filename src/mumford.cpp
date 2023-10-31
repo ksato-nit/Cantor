@@ -83,6 +83,7 @@ Mumford Mumford::operator + (Mumford m){
         return m;
     }
 
+    /*
     if(u1.deg == 1){
         if(u2.deg == 1){
             if(u1 == u2){
@@ -121,9 +122,13 @@ Mumford Mumford::operator + (Mumford m){
             return ret;
         }
     }
+    */
 
     // deg u1 = deg u2 = 2
+    Mumford ret = this->CostelloAdd(m);
+    return ret;
 
+    /*
     if(u1 == u2 && v1 == v2){
         Mumford ret = this->doubling();
         return ret;
@@ -131,6 +136,87 @@ Mumford Mumford::operator + (Mumford m){
         Mumford ret = this->HarleyAdd(m);
         return ret;
     }
+    */
+}
+
+Mumford Mumford::CostelloAdd(Mumford m){
+    Polynomial u1 = this->u;
+    Polynomial v1 = this->v;
+    Polynomial u2 = m.u;
+    Polynomial v2 = m.v;
+
+    Number u11 = u1.coeff[1];
+    Number u10 = u1.coeff[0];
+    Number u21 = u2.coeff[1];
+    Number u20 = u2.coeff[0];
+
+    Number v11 = v1.coeff[1];
+    Number v10 = v1.coeff[0];
+    Number v21 = v2.coeff[1];
+    Number v20 = v2.coeff[0];
+
+    Number f6 = this->f.coeff[6];
+    Number f5 = this->f.coeff[5];
+    Number f4 = this->f.coeff[4];
+
+    // TODO: U1, U0 を座標に含めて保持するようにする．
+    Number U11 = u11 * u11;
+    Number U21 = u21 * u21;
+    Number U10 = u11 * u10;
+    Number U20 = u21 * u20;
+
+    Number u1S = u11 + u21;
+    Number v0D = v10 - v20;
+    Number v1D = v11 - v21;
+
+    Number M1 = U11 - U21 - u10 + u20;
+    Number M2 = U20 - U10;
+    Number M3 = u11 - u21;
+    Number M4 = u20 - u10;
+
+    Number t1 = (M2 - v10) * (v1D - M1);
+    Number t2 = (v1D + M2) * (v1D + M1) * Number::MINUS_ONE();
+    Number t3 = (M4 - v20) * (v1D - M3);
+    Number t4 = (v1D + M4) * (v1D + M3) * Number::MINUS_ONE();
+
+    Number l2_num = t1 - t2;
+    Number l3_num = t3 - t4;
+
+    Number d = (M4 - M2) * (M1 + M3);
+    d = d + d;
+    d = d + t3 + t4 - t1 - t2;
+
+    Number A = d * d;
+    Number B = l3_num * l3_num - f6 * A;
+    Number C = (d * B).inv();
+    Number d_inv = B * C;
+    Number d_shifted_inv = d * A * C;
+
+    Number l2 = l2_num * d_inv;
+    Number l3 = l3_num * d_inv;
+
+    Number u1dd = (u1S + (f5 - l2 * l3 - l2 * l3) * d_shifted_inv) * Number::MINUS_ONE();
+
+    Number u0dd = l3 * (l3 * (u10 - U11) + l2 * u11 + v11);
+    u0dd = u0dd + u0dd;
+    u0dd = u0dd + l2 * l2 - f4;
+    u0dd = u0dd * d_shifted_inv;
+    u0dd = u0dd - u11 * u21 - u10 - u20 - u1S * u1dd;
+
+    Number U1dd = u1dd * u1dd;
+    Number U0dd = u1dd * u0dd;
+
+    Number v1dd = l3 * (u0dd - U1dd + U11 - u10) + l2 * (u1dd - u11) - v11;
+    Number v0dd = l3 * (U10 - U0dd) + l2 * (u0dd - u10) - v10;
+
+    Polynomial u(2);
+    u.coeff[2] = Number::ONE();
+    u.coeff[1] = u1dd;
+    u.coeff[0] = u0dd;
+
+    Polynomial v(1, v0dd, v1dd);
+
+    return Mumford(f, h, u, v);
 }
 
 Mumford Mumford::HarleyAdd(Mumford m){
