@@ -20,8 +20,8 @@ public:
     ProjectiveMumford(Polynomial f, Polynomial h, Number, Number, Number, Number, Number);
     ProjectiveMumford(Polynomial f, Polynomial h, Number, Number, Number, Number);
 
-    ProjectiveMumford operator + (ProjectiveMumford q);
-    ProjectiveMumford HarleyAdd(ProjectiveMumford q);
+    ProjectiveMumford operator + (const ProjectiveMumford& q) const;
+    ProjectiveMumford CostelloAdd(const ProjectiveMumford& q) const;
     ProjectiveMumford inv();
     ProjectiveMumford zero();
     void print();
