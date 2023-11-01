@@ -36,7 +36,7 @@ Mumford::Mumford(Polynomial f, Polynomial h, Divisor d){
         auto p = d.points[0];
         int multiplicity = p.second;
         if(multiplicity == 1){
-            Polynomial u(1, Number::ONE(), p.first.x * Number::MINUS_ONE());
+            Polynomial u(1, Number::ONE(), -p.first.x);
             Polynomial v(0, p.first.y);
             this->u = u;
             this->v = v;
@@ -48,7 +48,7 @@ Mumford::Mumford(Polynomial f, Polynomial h, Divisor d){
         Point p1 = d.points[0].first;
         Point p2 = d.points[1].first;
 
-        std::vector<Number> uc = {(p1.x * p2.x), (p1.x + p2.x) * Number::MINUS_ONE(), Number::ONE()};
+        std::vector<Number> uc = {(p1.x * p2.x), -(p1.x + p2.x), Number::ONE()};
         Polynomial u(uc);
         this->u = u;
 
@@ -60,7 +60,7 @@ Mumford::Mumford(Polynomial f, Polynomial h, Divisor d){
     }
 }
 
-Mumford Mumford::operator + (Mumford m){
+Mumford Mumford::operator + (const Mumford& m) const{
     Polynomial u1 = this->u;
     Polynomial u2 = m.u;
 
@@ -85,9 +85,9 @@ Mumford Mumford::operator + (Mumford m){
     if(u1.deg == 1){
         if(u2.deg == 1){
             if(u1 == u2){
-                Number h_eval = h.eval(u10 * Number::MINUS_ONE());
+                Number h_eval = h.eval(-u10);
                 Polynomial h_eval_as_poly(0, h_eval);
-                if(v1 * Number::MINUS_ONE() == v2 + h_eval_as_poly){
+                if(-v1\ == v2 + h_eval_as_poly){
                     return Mumford::zero();
                 }else{
                     Polynomial u = u1 * u1;
@@ -104,8 +104,8 @@ Mumford Mumford::operator + (Mumford m){
         }else{
             Number u10 = u1.coeff[0];
             Number u21 = u2.coeff[1];
-            Number h_eval = h.eval(u10 * Number::MINUS_ONE());
-            Number v2_eval = v2.eval(u10 * Number::MINUS_ONE());
+            Number h_eval = h.eval(-u10);
+            Number v2_eval = v2.eval(-u10);
 
             if(v2_eval == v10 + h_eval){
                 Polynomial u(1, Number::ONE(), u21 - u10);
@@ -135,7 +135,7 @@ Mumford Mumford::operator + (Mumford m){
     return ret;
 }
 
-Mumford Mumford::CostelloAdd(Mumford m){
+Mumford Mumford::CostelloAdd(const Mumford& m) const{
     std::cout << "Costello Addition." << std::endl;
     Polynomial u1 = this->u;
     Polynomial v1 = this->v;
@@ -176,14 +176,14 @@ Mumford Mumford::CostelloAdd(Mumford m){
     Number M3 = u11 - u21;
     Number M4 = u20 - u10;
 
-    //std::cout << M1.value << " " << M2.value << " " << M3.value << " " << M4.value << std::endl;
+    //std::cout << M1 << " " << M2 << " " << M3 << " " << M4 << std::endl;
 
     Number t1 = (M2 - v0D) * (v1D - M1);
-    Number t2 = (v0D + M2) * (v1D + M1) * Number::MINUS_ONE();
+    Number t2 = -(v0D + M2) * (v1D + M1);
     Number t3 = (M4 - v0D) * (v1D - M3);
-    Number t4 = (v0D + M4) * (v1D + M3) * Number::MINUS_ONE();
+    Number t4 = -(v0D + M4) * (v1D + M3);
 
-    //std::cout << t1.value << " " << t2.value << " " << t3.value << " " << t4.value << std::endl;
+    //std::cout << t1 << " " << t2 << " " << t3 << " " << t4 << std::endl;
 
     Number l2_num = t1 - t2;
     Number l3_num = t3 - t4;
@@ -198,7 +198,7 @@ Mumford Mumford::CostelloAdd(Mumford m){
     Number d_inv = B * C;
     Number d_shifted_inv = d * A * C;
 
-    //std::cout << l3_num.value << " " << l2_num.value << " " << d_inv.value << std::endl;
+    //std::cout << l3_num << " " << l2_num << " " << d_inv << std::endl;
 
     Number l2 = l2_num * d_inv;
     Number l3 = l3_num * d_inv;
@@ -206,9 +206,7 @@ Mumford Mumford::CostelloAdd(Mumford m){
     Number l0 = v10 + l2 * u10 - l3 * U10;
     Number l1 = v11 + l2 * u11 - l3 * (U11 - u10);
 
-    //std::cout << l3.value << " " << l2.value << " " << l1.value << " " << l0.value << " " << d.value << std::endl;
-
-    Number u1dd = (u1S + (f5 - l2 * l3 - l2 * l3) * d_shifted_inv) * Number::MINUS_ONE();
+    Number u1dd = -(u1S + (f5 - l2 * l3 - l2 * l3) * d_shifted_inv);
 
     Number u0dd = l3 * (l3 * (u10 - U11) + l2 * u11 + v11);
     u0dd = u0dd + u0dd;
@@ -232,7 +230,7 @@ Mumford Mumford::CostelloAdd(Mumford m){
     return Mumford(f, h, u, v);
 }
 
-Mumford Mumford::HarleyAdd(Mumford m){
+Mumford Mumford::HarleyAdd(const Mumford& m) const{
     std::cout << "Harley Addition." << std::endl;
     Polynomial u1 = this->u;
     Polynomial v1 = this->v;
@@ -340,7 +338,7 @@ Mumford Mumford::HarleyAdd(Mumford m){
     }
 }
 
-Mumford Mumford::HarleyAddDegenerated(Mumford m){
+Mumford Mumford::HarleyAddDegenerated(const Mumford& m) const{
     Polynomial u1 = this->u;
     Polynomial v1 = this->v;
     Polynomial u2 = m.u;
@@ -516,7 +514,7 @@ Mumford Mumford::doubling(){
     return ret;
 }
 
-Mumford Mumford::CantorAdd(Mumford m){
+Mumford Mumford::CantorAdd(const Mumford& m) const{
     Polynomial h = this->h;
 
     Polynomial u1 = this->u;
@@ -542,7 +540,7 @@ Mumford Mumford::CantorAdd(Mumford m){
 
     while(u.deg > GENUS){
         Polynomial ud = (f - (v * h) - (v * v)) / u;
-        Polynomial vr = ((h + v)*(Number::MINUS_ONE())) % ud;
+        Polynomial vr = (-(h + v)) % ud;
 
         u = ud;
         v = vr;
@@ -562,7 +560,7 @@ Mumford Mumford::inv(){
     Polynomial u = this->u;
     Polynomial v = this->v;
 
-    Mumford inv(f, h, u, ((h + v) * Number::MINUS_ONE()) % u);
+    Mumford inv(f, h, u, (-(h + v)) % u);
     return inv;
 }
 

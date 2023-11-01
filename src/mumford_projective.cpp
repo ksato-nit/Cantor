@@ -49,6 +49,23 @@ ProjectiveMumford ProjectiveMumford::operator + (ProjectiveMumford m){
 ProjectiveMumford ProjectiveMumford::HarleyAdd(ProjectiveMumford m){
     std::cout << "Harley Addition." << std::endl;
 
+    Number U11 = this->U1;
+    Number U10 = this->U0;
+    Number U21 = m.U1;
+    Number U20 = m.U0;
+
+    Number V11 = this->V1;
+    Number V10 = this->V0;
+    Number V21 = m.V1;
+    Number V20 = m.V0;
+
+    Number Z1 = this->Z;
+    Number Z2 = m.Z;
+
+    Number f6 = this->f.coeff[6];
+    Number f5 = this->f.coeff[5];
+    Number f4 = this->f.coeff[4];
+
     /*
     Number u11 = u1.coeff[1];
     Number u10 = u1.coeff[0];

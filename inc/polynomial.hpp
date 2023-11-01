@@ -27,12 +27,14 @@ public:
 
     Number eval(Number x);
 
-    Polynomial operator + (Polynomial q);
-    Polynomial operator - (Polynomial q);
-    Polynomial operator * (Polynomial q);
-    Polynomial operator * (Number k);
-    Polynomial operator / (Polynomial g);
-    Polynomial operator % (Polynomial g);
+    Polynomial operator + (const Polynomial&) const;
+    Polynomial operator - (const Polynomial&) const;
+    Polynomial operator * (const Polynomial&) const;
+    Polynomial operator * (const Number&) const;
+    Polynomial operator / (const Polynomial& g) const;
+    Polynomial operator % (const Polynomial&) const;
+    Polynomial operator + () const;
+    Polynomial operator - () const;
     bool operator == (Polynomial g);
     bool operator != (Polynomial g);
     static std::tuple<Polynomial, Polynomial> divide(Polynomial f, Polynomial g);

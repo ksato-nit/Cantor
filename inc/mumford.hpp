@@ -17,11 +17,11 @@ public:
     Mumford(Polynomial f, Polynomial h, Polynomial u, Polynomial v);
     Mumford(Polynomial f, Polynomial h, Divisor d);
 
-    Mumford operator + (Mumford q);
-    Mumford CantorAdd(Mumford q);
-    Mumford HarleyAdd(Mumford q);
-    Mumford CostelloAdd(Mumford q);
-    Mumford HarleyAddDegenerated(Mumford q);
+    Mumford operator + (const Mumford& q) const;
+    Mumford CantorAdd(const Mumford& q) const;
+    Mumford HarleyAdd(const Mumford& q) const;
+    Mumford CostelloAdd(const Mumford& q) const;
+    Mumford HarleyAddDegenerated(const Mumford& q) const;
     Mumford doubling();
     Mumford inv();
     Mumford zero();
