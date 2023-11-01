@@ -5,14 +5,14 @@
 #include "mumford_projective.hpp"
 
 int main(){
-    int fc[6] = {-1, 3, 6, -2, -3, 1};
+    int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
-    int u1c[3] = {2, 28, 1};
-    int v1c[2] = {-7, -22};
-    int u2c[3] = {12, 24, 1};
-    int v2c[2] = {-23, -8};
+    int u1c[3] = {5, 25, 1};
+    int v1c[2] = {-2, -23};
+    int u2c[3] = {17, 17, 1};
+    int v2c[2] = {-27, -16};
 
-    Polynomial f(5, fc);
+    Polynomial f(6, fc);
     Polynomial h(0, hc);
 
     Polynomial u1(2, u1c);
