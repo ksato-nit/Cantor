@@ -32,5 +32,21 @@ int main(){
     Mumford sum1 = D1 + D2;
     sum1.print();
 
+    Polynomial u1_half = u1 * Number(2);
+    Polynomial v1_half = v1 * Number(2);
+    Polynomial u2_half = u2 * Number(3);
+    Polynomial v2_half = v2 * Number(3);
+
+    ProjectiveMumford D1P(f, h, u1_half.coeff[1], u1_half.coeff[0], v1_half.coeff[1], v1_half.coeff[0], Number(2));
+    ProjectiveMumford D2P(f, h, u2_half.coeff[1], u2_half.coeff[0], v2_half.coeff[1], v2_half.coeff[0], Number(3));
+    std::cout << "D1P:" << std::endl;
+    D1P.print();
+    std::cout << "D2P:" << std::endl;
+    D2P.print();
+
+    std::cout << "D1P + D2P:" << std::endl;
+    ProjectiveMumford sum1P = D1P + D2P;
+    sum1P.print();
+
     return 0;
 }
