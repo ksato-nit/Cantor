@@ -7,6 +7,12 @@ TEST(NumberTest, ModValueEquals) {
     EXPECT_EQ(x, y);
 }
 
+TEST(NumberTest, ModValueNotEquals) {
+    Number x(1);
+    Number y(2 - Number::CHARA);
+    EXPECT_NE(x, y);
+}
+
 TEST(NumberTest, SumEquals) {
     Number x(1);
     Number y(2);
