@@ -176,14 +176,14 @@ Mumford Mumford::CostelloAdd(const Mumford& m) const{
     Number M3 = u11 - u21;
     Number M4 = u20 - u10;
 
-    std::cout << M1 << " " << M2 << " " << M3 << " " << M4 << std::endl;
+    //std::cout << M1 << " " << M2 << " " << M3 << " " << M4 << std::endl;
 
     Number t1 = (M2 - v0D) * (v1D - M1);
     Number t2 = -(v0D + M2) * (v1D + M1);
     Number t3 = (M4 - v0D) * (v1D - M3);
     Number t4 = -(v0D + M4) * (v1D + M3);
 
-    std::cout << t1 << " " << t2 << " " << t3 << " " << t4 << std::endl;
+    //std::cout << t1 << " " << t2 << " " << t3 << " " << t4 << std::endl;
 
     Number l2_num = t1 - t2;
     Number l3_num = t3 - t4;
@@ -201,11 +201,13 @@ Mumford Mumford::CostelloAdd(const Mumford& m) const{
     Number l2 = l2_num * d_inv;
     Number l3 = l3_num * d_inv;
 
+    /*
     std::cout << "d : " << d << std::endl;
     std::cout << "B : " << B << std::endl;
     std::cout << "d_shifted_inv : " << d_shifted_inv << std::endl;
     std::cout << l3_num << " " << l2_num << " " << d << std::endl;
     std::cout << l3 << " " << l2 << " " << d_inv << std::endl;
+    */
 
     Number l0 = v10 + l2 * u10 - l3 * U10;
     Number l1 = v11 + l2 * u11 - l3 * (U11 - u10);

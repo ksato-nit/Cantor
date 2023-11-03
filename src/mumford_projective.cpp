@@ -89,8 +89,10 @@ ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) con
     Number M3 = U11Z2 - U21Z1;
     Number M4 = U20Z1 - U10Z2;
 
+    /*
     std::cout << "M1, M2, M3, M4 :" << std::endl;
     std::cout << M1 << " " << M2 << " " << M3 << " " << M4 << std::endl;
+    */
 
     Number z1 = V10Z2 - V20Z1;
     Number z2 = V11Z2 - V21Z1;
@@ -109,12 +111,14 @@ ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) con
     // (Z1Z2)^4 がかかっている．
     Number d = -(M2 - ZZ * M4) * (M1 + ZZ * M3) * 2 + (ZZ * ZZ) * (t3 + t4) - t1 - t2;
 
+    /*
     std::cout << "t1, t2, t3, t4 :" << std::endl;
     std::cout << t1 << " " << t2 << " " << t3 << " " << t4 << " " << ZZ << " " << ZZ * ZZ << std::endl;
     std::cout << "l3_num, l2_num, d :" << std::endl;
     std::cout << l3_num << " " << l2_num << " " << d << std::endl;
 
     std::cout << "U1, U0 の計算を開始．" << std::endl;
+    */
 
     Number A = d * d;
     Number ZZ2 = ZZ * ZZ;
@@ -122,20 +126,8 @@ ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) con
     Number ZZ6 = ZZ4 * ZZ2;
     Number ZZ8 = ZZ6 * ZZ2;
     Number B = ZZ4 * l3_num * l3_num - f6 * A;
-    
-    /*
-    d = d / ZZ4;
-    A = d * d;
-    Number l3 = l3_num / (ZZ2 * d);
-    Number l2 = l2_num / (ZZ4 * d);
-    B = l3 * l3 - f6;
-    std::cout << l3 << " " << l2 << " " << B << std::endl;
-    Number U1d_test = -(B * (U11Z2 + U21Z1) + ZZ * (f5 - l2 * l3 * 2)) / (B * ZZ);
-    std::cout << U1d_test << std::endl;
-    */
 
     // (l3_num^2 - f6 d^2 ZZ^4) ZZ^2 がかかっている．
-    //std::cout << B << " " << f5 * A * ZZ6 - l2_num * l3_num * 2 << std::endl;
     Number U1d = -B * (U11Z2 + U21Z1) - (f5 * A - l2_num * l3_num * ZZ2 * 2) * ZZ;
     Number Zd = B * ZZ;
     Number Z1S = Z1 * Z1;
@@ -147,10 +139,20 @@ ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) con
     Number ZdM = Z2 * Z1S * B;
     Zd = Zd * ZdM;
     U1d = U1d * ZdM;
-    std::cout << U1d << " " << U0d << " " << Zd << std::endl;
-    // ここまで正しい！
+    Number ZdS = Zd * Zd;
 
-    ProjectiveMumford ret(f, h);
+    Number dZ1ZdS = d * Z1 * ZdS;
+    Number ZZ2L3 = ZZ2 * l3_num;
+    Number Z1ZdL2 = Z1 * Zd * l2_num;
+    Number V1d = -Z1ZdL2 * (U11 * Zd - U1d * Z1) - ZZ2L3 * ( (U1d * U1d - U0d * Zd) * Z1S - (T11 - U10 * Z1) * ZdS) - V11 * dZ1ZdS;
+    Number V0d = Z1ZdL2 * (U0d * Z1 - U10 * Zd) + ZZ2L3 * (U11 * U10 - U1d * U0d) - V10 * dZ1ZdS;
+    ZdM = Zd * Z1S * d;
+    Zd = Zd * ZdM;
+
+    U1d = U1d * ZdM;
+    U0d = U0d * ZdM;
+
+    ProjectiveMumford ret(f, h, U1d, U0d, V1d, V0d, Zd);
     return ret;
 }
 
