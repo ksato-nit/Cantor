@@ -39,23 +39,29 @@ add_executable(
     ${SRC}
 )
 
+add_library(
+    CantorAll
+    SHARED
+    ${SRC}
+)
+
 # テストの設定
 enable_testing()
 
 add_executable(
-    number_test
-    ${SRC_DIR}/number.cpp
-    ${TEST_DIR}/number_test.cpp
+    CantorTest
+    ${SRC_DIR}/number.cpp ${SRC_DIR}/polynomial.cpp
+    ${TEST}
 )
 target_link_libraries(
-    number_test
+    CantorTest
     GTest::gtest_main
 )
 target_include_directories(
-    number_test
+    CantorTest
     PUBLIC
     ${INC_DIR}
 )
 
 include(GoogleTest)
-gtest_discover_tests(number_test)
+gtest_discover_tests(CantorTest)
