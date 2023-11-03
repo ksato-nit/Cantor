@@ -87,7 +87,7 @@ bool Polynomial::isZero(){
     return true;
 }
 
-Polynomial Polynomial::operator + (Polynomial q){
+Polynomial Polynomial::operator + (const Polynomial& q) const{
     // TODO : もう少しスマートな実装を考える．
     int deg = std::max(this->deg, q.deg);
     Polynomial r(deg);
@@ -100,7 +100,7 @@ Polynomial Polynomial::operator + (Polynomial q){
     return r;
 }
 
-Polynomial Polynomial::operator - (Polynomial q){
+Polynomial Polynomial::operator - (const Polynomial& q) const{
     int deg = std::max(this->deg, q.deg);
     Polynomial r(deg);
     for(int i = 0; i <= deg; ++i){
@@ -112,7 +112,7 @@ Polynomial Polynomial::operator - (Polynomial q){
     return r;
 }
 
-Polynomial Polynomial::operator * (Polynomial q){
+Polynomial Polynomial::operator * (const Polynomial& q) const{
     int deg = this->deg + q.deg;
     Polynomial r(deg);
     for(int i = 0; i <= this->deg; ++i){
@@ -126,7 +126,7 @@ Polynomial Polynomial::operator * (Polynomial q){
     return r;
 }
 
-Polynomial Polynomial::operator * (Number k){
+Polynomial Polynomial::operator * (const Number& k) const{
     int deg = this->deg;
     Polynomial r(deg);
     for(int i = 0; i <= this->deg; ++i){
@@ -135,7 +135,7 @@ Polynomial Polynomial::operator * (Number k){
     return r;
 }
 
-Polynomial Polynomial::operator / (Polynomial g){
+Polynomial Polynomial::operator / (const Polynomial& g) const{
     auto tup = Polynomial::divide(*this, g);
 
     Polynomial q = std::get<0>(tup);
@@ -144,7 +144,7 @@ Polynomial Polynomial::operator / (Polynomial g){
     return q;
 }
 
-Polynomial Polynomial::operator % (Polynomial g){
+Polynomial Polynomial::operator % (const Polynomial& g) const{
     if(this->deg < g.deg){
         return *this;
     }
@@ -155,6 +155,33 @@ Polynomial Polynomial::operator % (Polynomial g){
     Polynomial r = std::get<1>(tup);
 
     return r;
+}
+
+Polynomial Polynomial::operator + () const{
+    return *this;
+}
+
+Polynomial Polynomial::operator - () const{
+    Polynomial r = (*this) * Number::MINUS_ONE();
+    return r;
+}
+
+bool Polynomial::operator == (Polynomial g){
+    if(this->deg != g.deg){
+        return false;
+    }
+
+    for(int i = 0; i <= this->deg; ++i){
+        if(this->coeff[i] != g.coeff[i]){
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool Polynomial::operator != (Polynomial g){
+    return !(*this == g);
 }
 
 // f = qg + r を満たす q, r を求める．
@@ -218,11 +245,23 @@ std::tuple<Polynomial, Polynomial, Polynomial> Polynomial::extended_gcd(Polynomi
 
 void Polynomial::print(){
     for(int i = this->deg; i >= 0; --i){
-        std::cout << this->coeff[i].value;
+        std::cout << this->coeff[i];
         if(i != 0){
             std::cout << "x^" << i << " + ";
         }
     }
     //std::cout << std::endl;
     return;
+}
+
+Number Polynomial::eval(Number x){
+    Number ret(0);
+    for(int i = this->deg; i >= 0; --i){
+        Number c = this->coeff[i].value;
+        for(int j = 1; j < i; ++j){
+            c = c * x;
+        }
+        ret = ret + c;
+    }
+    return ret;
 }

@@ -8,27 +8,51 @@ Number::Number(int x){
     this->value = x % CHARA;
 }
 
-Number Number::operator + (Number y){
+Number Number::operator + (const Number& y) const{
     int value = (y.value + this->value) % CHARA;
     Number z(value);
     return z;
 }
 
-Number Number::operator - (Number y){
+Number Number::operator - (const Number& y) const{
     int value = (this->value - y.value) % CHARA;
     Number z(value);
     return z;
 }
 
-Number Number::operator * (Number y){
+Number Number::operator * (const Number& y) const{
     int value = (y.value * this->value) % CHARA;
     Number z(value);
     return z;
 }
 
-Number Number::operator / (Number y){
+Number Number::operator * (const int y) const{
+    int value = (y * this->value) % CHARA;
+    Number z(value);
+    return z;
+}
+
+Number Number::operator / (const Number& y) const{
     Number yinv = y.inv();
     int value = (this->value * yinv.value) % CHARA;
+    Number z(value);
+    return z;
+}
+
+bool Number::operator == (const Number& y) const{
+    return this->value == y.value;
+}
+
+bool Number::operator != (const Number& y) const{
+    return !(*this == y);
+}
+
+Number Number::operator + () const{
+    return *this;
+}
+
+Number Number::operator - () const{
+    int value = -this->value % CHARA;
     Number z(value);
     return z;
 }
@@ -48,7 +72,7 @@ Number Number::MINUS_ONE(){
     return minus_one;
 }
 
-Number Number::inv(){
+Number Number::inv() const{
     if(this->value < 0){
         Number mx(this->value * -1);
         mx = mx.inv();
@@ -71,4 +95,8 @@ Number Number::inv(){
         x = x + CHARA;
     }
     return x;
+}
+
+bool Number::isZero(){
+    return this->value == 0;
 }
