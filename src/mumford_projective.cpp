@@ -99,7 +99,7 @@ ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) con
     Number z1 = V10Z2 - V20Z1;
     Number z2 = V11Z2 - V21Z1;
 
-    // 10M
+    // 6M
     Number ZZz1 = ZZ * z1;
     Number ZZz2 = ZZ * z2;
     // (Z1Z2)^4 がかかっている．
@@ -109,6 +109,7 @@ ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) con
     Number t3 = (-z1 + M4) * (z2 - M3);
     Number t4 = (-z1 - M4) * (z2 + M3);
 
+    // 4M
     // (Z1Z2)^4 がかかっている．
     Number l2_num = t1 - t2;
     // (Z1Z2)^2 がかかっている．
