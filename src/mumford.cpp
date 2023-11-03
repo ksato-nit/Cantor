@@ -581,10 +581,6 @@ Mumford Mumford::zero(){
 }
 
 void Mumford::print(){
-    std::cout << "[";
-    this->u.print();
-    std::cout << ", ";
-    this->v.print();
-    std::cout << "]" << std::endl;
+    std::cout << "[" << this->u << ", " << this->v << "]" << std::endl;
     return;
 }
