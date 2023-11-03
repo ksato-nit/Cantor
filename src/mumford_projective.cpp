@@ -139,12 +139,14 @@ ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) con
     U1d = U1d * ZdM;
     Number ZdS = Zd * Zd;
 
-    // 24M, 1S
+    // 19M, 1S
     Number dZ1ZdS = d * Z1 * ZdS;
     Number ZZ2L3 = ZZ2 * l3_num;
     Number Z1ZdL2 = Z1 * Zd * l2_num;
     Number V1d = -Z1ZdL2 * (U11 * Zd - U1d * Z1) - ZZ2L3 * ( (U1d * U1d - U0d * Zd) * Z1S - (T11 - U10 * Z1) * ZdS) - V11 * dZ1ZdS;
     Number V0d = Z1ZdL2 * (U0d * Z1 - U10 * Zd) + ZZ2L3 * (U11 * U10 - U1d * U0d) - V10 * dZ1ZdS;
+
+    // 5M
     ZdM = Zd * Z1S * d;
     Zd = Zd * ZdM;
 
