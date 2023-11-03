@@ -49,6 +49,8 @@ ProjectiveMumford ProjectiveMumford::operator + (const ProjectiveMumford& m) con
 ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) const{
     std::cout << "Projective Costello Addition." << std::endl;
 
+    // Total: 75M, 9S
+
     Number U11 = this->U1;
     Number U10 = this->U0;
     Number U21 = m.U1;
@@ -66,6 +68,7 @@ ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) con
     Number f5 = this->f.coeff[5];
     Number f4 = this->f.coeff[4];
 
+    // 10M, 3S
     Number ZZ = Z1 * Z2;
     Number U11Z2 = U11 * Z2;
     Number U21Z1 = U21 * Z1;
@@ -84,6 +87,8 @@ ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) con
     Number ZZ2 = ZZ * ZZ;
     Number ZZ4 = ZZ2 * ZZ2;
 
+    // 3M
+
     // (Z1Z2)^2 がかかっている．
     Number M1 = U11Z2S - U21Z1S + ZZ * (U20Z1 - U10Z2);
     Number M2 = U21Z1 * U20Z1 - U11Z2 * U10Z2;
@@ -99,9 +104,12 @@ ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) con
     Number z1 = V10Z2 - V20Z1;
     Number z2 = V11Z2 - V21Z1;
 
+    // 10M
+    Number ZZz1 = ZZ * z1;
+    Number ZZz2 = ZZ * z2;
     // (Z1Z2)^4 がかかっている．
-    Number t1 = (M2 - ZZ * z1) * (ZZ * z2 - M1);
-    Number t2 = (-ZZ * z1 - M2) * (ZZ * z2 + M1);
+    Number t1 = (M2 - ZZz1) * (ZZz2 - M1);
+    Number t2 = (-ZZz1 - M2) * (ZZz2 + M1);
     // (Z1Z2)^2 がかかっている．
     Number t3 = (-z1 + M4) * (z2 - M3);
     Number t4 = (-z1 - M4) * (z2 + M3);
@@ -123,9 +131,11 @@ ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) con
     std::cout << "U1, U0 の計算を開始．" << std::endl;
     */
 
+    // 2M, 2S
     Number A = d * d;
     Number B = ZZ4 * l3_num * l3_num - f6 * A;
 
+    // 5M, 1S
     // (l3_num^2 - f6 d^2 ZZ^4) ZZ^2 がかかっている．
     Number l2l3ZZ2 = l2_num * l3_num * ZZ2;
     Number BZZ = B * ZZ;
@@ -133,6 +143,7 @@ ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) con
     Number Zd = BZZ;
     Number Z1S = Z1 * Z1;
     
+    // 21M, 2S
     Number U0d = l3_num * ZZ4 * (U10 * Z1 - T11) + ZZ2 * Z1 * (l2_num * U11 + d * V11);
     U0d = (U0d + U0d) * l3_num + Z1S * (l2_num * l2_num - A * f4);
     U0d = Zd * Z2 * U0d;
@@ -142,6 +153,7 @@ ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) con
     U1d = U1d * ZdM;
     Number ZdS = Zd * Zd;
 
+    // 24M, 1S
     Number dZ1ZdS = d * Z1 * ZdS;
     Number ZZ2L3 = ZZ2 * l3_num;
     Number Z1ZdL2 = Z1 * Zd * l2_num;
