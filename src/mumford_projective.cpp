@@ -96,11 +96,6 @@ ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) con
     Number M3 = U11Z2 - U21Z1;
     Number M4 = U20Z1 - U10Z2;
 
-    /*
-    std::cout << "M1, M2, M3, M4 :" << std::endl;
-    std::cout << M1 << " " << M2 << " " << M3 << " " << M4 << std::endl;
-    */
-
     Number z1 = V10Z2 - V20Z1;
     Number z2 = V11Z2 - V21Z1;
 
@@ -121,15 +116,6 @@ ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) con
     // (Z1Z2)^4 がかかっている．
     Number d = -(M2 - ZZ * M4) * (M1 + ZZ * M3);
     d = d + d + ZZ2 * (t3 + t4) - t1 - t2;
-
-    /*
-    std::cout << "t1, t2, t3, t4 :" << std::endl;
-    std::cout << t1 << " " << t2 << " " << t3 << " " << t4 << " " << ZZ << " " << ZZ * ZZ << std::endl;
-    std::cout << "l3_num, l2_num, d :" << std::endl;
-    std::cout << l3_num << " " << l2_num << " " << d << std::endl;
-
-    std::cout << "U1, U0 の計算を開始．" << std::endl;
-    */
 
     // 2M, 2S
     Number A = d * d;
