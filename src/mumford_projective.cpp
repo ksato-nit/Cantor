@@ -49,7 +49,7 @@ ProjectiveMumford ProjectiveMumford::operator + (const ProjectiveMumford& m) con
 ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) const{
     std::cout << "Projective Costello Addition." << std::endl;
 
-    // Total: 75M, 9S
+    // Total: 76M, 9S
 
     Number U11 = this->U1;
     Number U10 = this->U0;
@@ -135,12 +135,11 @@ ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) con
     Number A = d * d;
     Number B = ZZ4 * l3_num * l3_num - f6 * A;
 
-    // 5M, 1S
+    // 6M, 1S
     // (l3_num^2 - f6 d^2 ZZ^4) ZZ^2 がかかっている．
     Number l2l3ZZ2 = l2_num * l3_num * ZZ2;
-    Number BZZ = B * ZZ;
-    Number U1d = - (U11Z2 + U21Z1) - (f5 * A - l2l3ZZ2 - l2l3ZZ2) * BZZ;
-    Number Zd = BZZ;
+    Number U1d = - B * (U11Z2 + U21Z1) - (f5 * A - l2l3ZZ2 - l2l3ZZ2) * ZZ;
+    Number Zd = B * ZZ;
     Number Z1S = Z1 * Z1;
     
     // 21M, 2S
