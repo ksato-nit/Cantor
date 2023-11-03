@@ -166,7 +166,7 @@ Polynomial Polynomial::operator - () const{
     return r;
 }
 
-bool Polynomial::operator == (Polynomial g){
+bool Polynomial::operator == (const Polynomial& g) const{
     if(this->deg != g.deg){
         return false;
     }
@@ -180,7 +180,7 @@ bool Polynomial::operator == (Polynomial g){
     return true;
 }
 
-bool Polynomial::operator != (Polynomial g){
+bool Polynomial::operator != (const Polynomial& g) const{
     return !(*this == g);
 }
 
@@ -250,7 +250,7 @@ void Polynomial::print(){
             std::cout << "x^" << i << " + ";
         }
     }
-    //std::cout << std::endl;
+    std::cout << std::endl;
     return;
 }
 

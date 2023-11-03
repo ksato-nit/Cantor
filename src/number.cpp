@@ -40,7 +40,7 @@ Number Number::operator / (const Number& y) const{
 }
 
 bool Number::operator == (const Number& y) const{
-    return this->value == y.value;
+    return ((this->value - y.value) % CHARA) == 0;
 }
 
 bool Number::operator != (const Number& y) const{

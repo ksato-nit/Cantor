@@ -35,9 +35,19 @@ public:
     Polynomial operator % (const Polynomial&) const;
     Polynomial operator + () const;
     Polynomial operator - () const;
-    bool operator == (Polynomial g);
-    bool operator != (Polynomial g);
+    bool operator == (const Polynomial& g) const;
+    bool operator != (const Polynomial& g) const;
     static std::tuple<Polynomial, Polynomial> divide(Polynomial f, Polynomial g);
     static std::tuple<Polynomial, Polynomial, Polynomial> extended_gcd(Polynomial f, Polynomial g);
     void print();
 };
+
+inline std::ostream& operator << (std::ostream& os, const Polynomial& f){
+    for(int i = f.deg; i >= 0; --i){
+        os << f.coeff[i];
+        if(i != 0){
+            os << "x^" << i << " + ";
+        }
+    }
+    return os;
+}
