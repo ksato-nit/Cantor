@@ -131,7 +131,7 @@ Mumford Mumford::operator + (const Mumford& m) const{
     */
 
     // deg u1 = deg u2 = 2
-    Mumford ret = this->CostelloAdd(m);
+    Mumford ret = this->CantorAdd(m);
     return ret;
 }
 

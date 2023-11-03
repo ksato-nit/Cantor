@@ -39,18 +39,12 @@ add_executable(
     ${SRC}
 )
 
-add_library(
-    CantorAll
-    SHARED
-    ${SRC}
-)
-
 # テストの設定
 enable_testing()
 
 add_executable(
     CantorTest
-    ${SRC_DIR}/number.cpp ${SRC_DIR}/polynomial.cpp
+    ${SRC_DIR}/number.cpp ${SRC_DIR}/polynomial.cpp ${SRC_DIR}/mumford.cpp
     ${TEST}
 )
 target_link_libraries(

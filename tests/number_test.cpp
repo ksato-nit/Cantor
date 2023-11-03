@@ -1,6 +1,12 @@
 #include <gtest/gtest.h>
 #include "number.hpp"
 
+TEST(NumberTest, ModValueEquals) {
+    Number x(1);
+    Number y(1 - Number::CHARA);
+    EXPECT_EQ(x, y);
+}
+
 TEST(NumberTest, SumEquals) {
     Number x(1);
     Number y(2);

@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 #include "number.hpp"
 #include "polynomial.hpp"
-#include "iostream"
 
 TEST(PolynomialTest, InitDegreeEquals) {
     Number f0(3);

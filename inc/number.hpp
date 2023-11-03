@@ -4,9 +4,9 @@
 
 // 抽象的な体の要素を実現する．
 class Number {
-    static const int CHARA = 31;
-
 public:
+    static const int CHARA = 31;
+        
     int value;
 
     Number();
