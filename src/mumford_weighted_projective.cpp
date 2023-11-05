@@ -114,14 +114,14 @@ WeightedProjectiveMumford WeightedProjectiveMumford::CostelloAdd(const WeightedP
     Number d = -(M2 - M4) * (M1 + M3);
     d = d + d + (t3 + t4) - t1 - t2;
 
-    std::cout << l2_num << " " << l3_num << " " << d << " " << std::endl;
-
     Number A = d * d;
-    Number B = ZZAS * l3_num * l3_num - f6 * A;
+    Number B = ZZAS * l3_num * l3_num - f6 * A * ZZBS;
 
     // (l3_num^2 ZZ^2 - f6 d^2) ZZ^2 がかかっている．
-    Number Ud1 = - B ;
-    Number Zd1 = B;
+    Number Ud1 = -B * (U11 * Z21S + U21 * Z11S) - (f5 * A * ZZBS - l2_num * l3_num - l2_num * l3_num) * ZZAS;
+    Number Zd1 = B * ZZAS;
+
+    std::cout << Ud1 << " " << Zd1 << std::endl;
     
     Number Ud0 = l3_num;
 
