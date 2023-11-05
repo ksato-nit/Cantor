@@ -70,92 +70,66 @@ WeightedProjectiveMumford WeightedProjectiveMumford::CostelloAdd(const WeightedP
     Number f5 = this->f.coeff[5];
     Number f4 = this->f.coeff[4];
 
-    // 10M, 3S
-    Number ZZ = Z1 * Z2;
-    Number U11Z2 = U11 * Z2;
-    Number U21Z1 = U21 * Z1;
-    Number U10Z2 = U10 * Z2;
-    Number U20Z1 = U20 * Z1;
-    Number V11Z2 = V11 * Z2;
-    Number V21Z1 = V21 * Z1;
-    Number V10Z2 = V10 * Z2;
-    Number V20Z1 = V20 * Z1;
+    Number Z11S = Z11 * Z11;
+    Number Z21S = Z21 * Z21;
+    Number Z11Q = Z11S * Z11S;
+    Number Z21Q = Z21S * Z21S;    
+    Number Z12S = Z12 * Z12;
+    Number Z22S = Z22 * Z22;
+    Number Z11Z21 = Z11 * Z21;
+    Number U11Z21S = U21 * Z21S;
+    Number U21Z11S = U21 * Z11S;
+    Number U10Z21S = U10 * Z21S;
+    Number U20Z11S = U20 * Z11S;
+    Number V11Z21TZ22 = V11 * Z21S * Z21 * Z22;
+    Number V21Z11TZ12 = V21 * Z11S * Z11 * Z12;
+    Number V10Z21TZ22 = V10 * Z21S * Z21 * Z22;
+    Number V20Z11TZ12 = V20 * Z11S * Z11 * Z12;
 
-    Number U11Z2S = U11Z2 * U11Z2;
-    Number U21Z1S = U21Z1 * U21Z1;
+    Number ZZAS = Z11S * Z21S;
+    Number ZZBS = Z12S * Z22S;
 
-    Number T11 = U11 * U11;
+    // (Z11Z21)^4 がかかっている．
+    Number M1 = (U11 * U11 - U10 * Z11S) * Z21Q - (U21 * U21 - U20 * Z21S) * Z11Q;
+    Number M2 = U21Z11S * U20Z11S - U11Z21S * U10Z21S;
+    // (Z11Z21)^3 Z12 Z22 がかかっている．
+    Number M3 = U11Z21S - U21Z11S;
+    Number M4 = U20Z11S - U10Z21S;
 
-    Number Z1S = Z1 * Z1;
-    Number ZZ2 = ZZ * ZZ;
+    Number z1 = V10Z21TZ22 - V20Z11TZ12;
+    Number z2 = V11Z21TZ22 - V21Z11TZ12;
 
-    // 3M
-
-    // (Z1Z2)^2 がかかっている．
-    Number M1 = U11Z2S - U21Z1S + ZZ * (U20Z1 - U10Z2);
-    Number M2 = U21Z1 * U20Z1 - U11Z2 * U10Z2;
-    // Z1Z2 がかかっている．
-    Number M3 = U11Z2 - U21Z1;
-    Number M4 = U20Z1 - U10Z2;
-
-    Number z1 = V10Z2 - V20Z1;
-    Number z2 = V11Z2 - V21Z1;
-
-    // 4M
-
-    // (Z1Z2)^3 がかかっている．
+    // (Z11Z21)^7 Z12 Z22 がかかっている．
     Number t1 = (M2 - z1) * (z2 - M1);
     Number t2 = (-z1 - M2) * (z2 + M1);
-    // (Z1Z2)^2 がかかっている．
+    // (Z11Z21)^5 Z12 Z22 がかかっている．
     Number t3 = (-z1 + M4) * (z2 - M3);
     Number t4 = (-z1 - M4) * (z2 + M3);
 
-    // 1M
-    // (Z1Z2)^3 がかかっている．
+    // (Z11Z21)^7 Z12 Z22 がかかっている．
     Number l2_num = t1 - t2;
-    // (Z1Z2)^2 がかかっている．
+    // (Z11Z21)^5 Z12 Z22 がかかっている．
     Number l3_num = t3 - t4;
-    // (Z1Z2)^3 がかかっている．
+    // (Z11Z21)^6 がかかっている．
     Number d = -(M2 - M4) * (M1 + M3);
     d = d + d + (t3 + t4) - t1 - t2;
 
-    // std::cout << l2_num << " " << l3_num << " " << d << " " << ZZ << std::endl;
+    std::cout << l2_num << " " << l3_num << " " << d << " " << std::endl;
 
-    // 2M, 2S
     Number A = d * d;
-    Number B = ZZ2 * l3_num * l3_num - f6 * A;
+    Number B = ZZAS * l3_num * l3_num - f6 * A;
 
-    // 6M
     // (l3_num^2 ZZ^2 - f6 d^2) ZZ^2 がかかっている．
-    Number l2l3ZZ = l2_num * l3_num * ZZ;
-    Number U1d = - B * (U11Z2 + U21Z1) - (f5 * A - l2l3ZZ - l2l3ZZ) * ZZ;
-    Number Zd = B * ZZ;
+    Number Ud1 = - B ;
+    Number Zd1 = B;
     
-    // 21M, 1S
-    Number U0d = l3_num * ZZ2 * (U10 * Z1 - T11) + ZZ * Z1 * (l2_num * U11 + d * V11);
-    U0d = (U0d + U0d) * l3_num + Z1S * (l2_num * l2_num - A * f4);
-    U0d = Zd * Z2 * U0d;
-    U0d = U0d - B * Z1 * ((U10Z2 + U20Z1 + U11 * U21) * Zd + (U11Z2 + U21Z1) * U1d);
-    Number ZdM = Z2 * Z1S * B;
-    Zd = Zd * ZdM;
-    U1d = U1d * ZdM;
-    Number ZdS = Zd * Zd;
+    Number Ud0 = l3_num;
 
-    // 23M, 1S
-    Number dZ1ZdS = d * Z1 * ZdS;
-    Number ZZL3 = ZZ * l3_num;
-    Number Z1ZdL2 = Z1 * Zd * l2_num;
-    Number V1d = -Z1ZdL2 * (U11 * Zd - U1d * Z1) - ZZL3 * ( (U1d * U1d - U0d * Zd) * Z1S - (T11 - U10 * Z1) * ZdS) - V11 * dZ1ZdS;
-    Number V0d = Z1ZdL2 * (U0d * Z1 - U10 * Zd) + ZZL3 * (U11 * U10 * ZdS - U1d * U0d * Z1S) - V10 * dZ1ZdS;
+    Number Zd2;
+    Number Vd1;
+    Number Vd0;
 
-    // 5M
-    ZdM = Zd * Z1S * d;
-    Zd = Zd * ZdM;
-
-    U1d = U1d * ZdM;
-    U0d = U0d * ZdM;
-
-    WeightedProjectiveMumford ret(f, h, U1d, U0d, V1d, V0d, Zd1, Zd2);
+    WeightedProjectiveMumford ret(f, h, Ud1, Ud0, Vd1, Vd0, Zd1, Zd2);
     return ret;
 }
 
