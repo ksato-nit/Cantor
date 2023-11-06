@@ -55,7 +55,7 @@ void Polynomial::resize(int deg){
 }
 
 void Polynomial::resize(std::vector<Number> coeff){
-    this->deg = deg;
+    this->deg = coeff.size() + 1;
     this->coeff = coeff;
 }
 
