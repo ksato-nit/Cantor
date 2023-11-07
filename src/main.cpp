@@ -1,4 +1,5 @@
-#include "iostream"
+#include <iostream>
+#include <chrono>
 #include "number.hpp"
 #include "polynomial.hpp"
 #include "mumford.hpp"
@@ -29,9 +30,13 @@ int main(){
     std::cout << "D2:" << std::endl;
     D2.print();
 
+    std::chrono::system_clock::time_point start, end;
+    start = std::chrono::system_clock::now();
     std::cout << "D1 + D2:" << std::endl;
     Mumford sum1 = D1 + D2;
+    end = std::chrono::system_clock::now();
     sum1.print();
+    std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count() << std::endl;
 
     Number Z11 = Number(2);
     Number Z12 = Number(3);
@@ -49,9 +54,12 @@ int main(){
     std::cout << "D2WP:" << std::endl;
     D2WP.print();
 
+    start = std::chrono::system_clock::now();
     std::cout << "D1WP + D2WP:" << std::endl;
     WeightedProjectiveMumford sum1P = D1WP + D2WP;
+    end = std::chrono::system_clock::now();
     sum1P.print();
+    std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count() << std::endl;
 
     return 0;
 }
