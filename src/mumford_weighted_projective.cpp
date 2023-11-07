@@ -122,11 +122,36 @@ WeightedProjectiveMumford WeightedProjectiveMumford::CostelloAdd(const WeightedP
     Number Zd1 = B * ZZAS;
 
     std::cout << Ud1 << " " << Zd1 << std::endl;
-    
-    Number Ud0 = l3_num * (l3_num * Z11S * Z21S * (U10 * Z11S - U11 * U11) * Z12 + (U11 * Z11 * Z12 + V11 * Z11 * Z21 * Z12 * Z22) * Z11) * ZZAS * 2;
+
+
+    Number l2 = l2_num / (Z11Q * Z11S * Z11 * Z21Q * Z21S * Z21 * Z12 * Z22);
+    Number l3 = l3_num / (Z11Q * Z11 * Z21Q * Z21 * Z12 * Z22);
+    Number D = d / (Z11Q * Z11S * Z21Q * Z21S);
+
+    /*
+    std::cout << l2 << " " << l3 << " " << D << std::endl;
+
+    Number Ud0 = l3 * (l3 * (U10 * Z11S - U11 * U11) * Z12 + (l2 * U11 * Z11 * Z12 + V11 * D) * Z11) * 2;
+    Ud0 = Ud0 + (l2 * l2 - f4 * D * D) * Z11Q * Z12;
+    Ud0 = Ud0 * Z21S * Zd1;
+    Ud0 = Ud0 - ((U11 * U21 + (U10 * Z21 * Z21 + U20 * Z11 * Z11)) * Zd1 + (U11 * Z21S + U21 * Z11S) * Ud1) * Z11S * Z12 * (l3 * l3 - f6 * D * D);
+    Zd1 = Zd1 * Z11Q * Z12 * Z21S * (l3 * l3 - f6 * D * D);
+    std::cout << Ud0 << " " << Zd1 << std::endl;
+    */
+
+    Number Ud0 = l3_num * ZZAS * (l3_num * ZZAS * (U10 * Z11S - U11 * U11) * Z12 + (l2_num * U11 * Z11 * Z12 + V11 * Z11 * Z21 * Z12 * Z22 * d) * Z11) * 2;
     Ud0 = Ud0 + (l2_num * l2_num - f4 * ZZAS * ZZBS * A) * Z11Q * Z12;
-    Ud0 = Ud0 * Z21 * Zd1;
-    Ud0 = Ud0 - (U11 * U21 + (U10 * Z21 * Z21 - U20 * Z11 * Z11) + (U11 * Z21S + U21 * Z11S)) * Z11S * Z12 * Zd1 * (l3_num * Z11Q * Z21Q - f6 * A * ZZAS * Z12 * Z22);
+    Ud0 = Ud0 * Z21S * Zd1;
+    Ud0 = Ud0 - ((U11 * U21 + (U10 * Z21 * Z21 + U20 * Z11 * Z11)) * Zd1 + (U11 * Z21S + U21 * Z11S) * Ud1) * Z11S * Z12 * B * ZZAS;
+
+    //Zd1 = Zd1 * Z11Q * Z12 * Z21S * (l3 * l3 - f6 * D * D) * (Z11Q * Z11Q * Z11Q * Z11S) * (Z21Q * Z21Q * Z21Q * Z21S) * Z12S * Z22S;
+
+    Ud0 = Ud0 * Z12;
+    Ud1 = Ud1 * B * Z11Q * Z11S * Z21Q * Z12S;
+    Zd1 = Z11Q * Z21S * Z21 * B * Z12;
+    //Zd1 = Z11Q * Z11S * Z21Q * Z12 * Zd1 * B;
+
+    std::cout << Ud1 << " " << Ud0 << " " << Zd1 * Zd1 << std::endl;
 
     Number Zd2;
     Number Vd1;
