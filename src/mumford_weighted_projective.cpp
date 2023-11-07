@@ -117,7 +117,6 @@ WeightedProjectiveMumford WeightedProjectiveMumford::CostelloAdd(const WeightedP
     Number A = d * d;
     Number B = ZZAS * l3_num * l3_num - f6 * A * ZZBS;
 
-    // (l3_num^2 ZZ^2 - f6 d^2) ZZ^2 がかかっている．
     Number Ud1 = -B * (U11 * Z21S + U21 * Z11S) - (f5 * A * ZZBS - l2_num * l3_num - l2_num * l3_num) * ZZAS;
     Number Zd1 = B * ZZAS;
 
@@ -128,33 +127,30 @@ WeightedProjectiveMumford WeightedProjectiveMumford::CostelloAdd(const WeightedP
     Number l3 = l3_num / (Z11Q * Z11 * Z21Q * Z21 * Z12 * Z22);
     Number D = d / (Z11Q * Z11S * Z21Q * Z21S);
 
-    /*
-    std::cout << l2 << " " << l3 << " " << D << std::endl;
-
-    Number Ud0 = l3 * (l3 * (U10 * Z11S - U11 * U11) * Z12 + (l2 * U11 * Z11 * Z12 + V11 * D) * Z11) * 2;
-    Ud0 = Ud0 + (l2 * l2 - f4 * D * D) * Z11Q * Z12;
-    Ud0 = Ud0 * Z21S * Zd1;
-    Ud0 = Ud0 - ((U11 * U21 + (U10 * Z21 * Z21 + U20 * Z11 * Z11)) * Zd1 + (U11 * Z21S + U21 * Z11S) * Ud1) * Z11S * Z12 * (l3 * l3 - f6 * D * D);
-    Zd1 = Zd1 * Z11Q * Z12 * Z21S * (l3 * l3 - f6 * D * D);
-    std::cout << Ud0 << " " << Zd1 << std::endl;
-    */
-
     Number Ud0 = l3_num * ZZAS * (l3_num * ZZAS * (U10 * Z11S - U11 * U11) * Z12 + (l2_num * U11 * Z11 * Z12 + V11 * Z11 * Z21 * Z12 * Z22 * d) * Z11) * 2;
     Ud0 = Ud0 + (l2_num * l2_num - f4 * ZZAS * ZZBS * A) * Z11Q * Z12;
     Ud0 = Ud0 * Z21S * Zd1;
     Ud0 = Ud0 - ((U11 * U21 + (U10 * Z21 * Z21 + U20 * Z11 * Z11)) * Zd1 + (U11 * Z21S + U21 * Z11S) * Ud1) * Z11S * Z12 * B * ZZAS;
 
-    //Zd1 = Zd1 * Z11Q * Z12 * Z21S * (l3 * l3 - f6 * D * D) * (Z11Q * Z11Q * Z11Q * Z11S) * (Z21Q * Z21Q * Z21Q * Z21S) * Z12S * Z22S;
-
     Ud0 = Ud0 * Z12;
     Ud1 = Ud1 * B * Z11Q * Z11S * Z21Q * Z12S;
     Zd1 = Z11Q * Z21S * Z21 * B * Z12;
-    //Zd1 = Z11Q * Z11S * Z21Q * Z12 * Zd1 * B;
 
-    std::cout << Ud1 << " " << Ud0 << " " << Zd1 * Zd1 << std::endl;
+    Number Zd1S = Zd1 * Zd1;
+    Number Zd1Q = Zd1S * Zd1S;
 
-    Number Zd2;
-    Number Vd1;
+    std::cout << Ud1 << " " << Ud0 << " " << Zd1 << " " << Zd1S << std::endl;
+
+    Number c3 = (Ud0 * Zd1S - Ud1 * Ud1) * Z11Q - (U10 * Z11S - U11 * U11) * Zd1Q;
+    Number c2 = (Ud1 * Z11S - U11 * Zd1S) * (Z11S * Zd1S);
+    Number c1 = Z11 * Zd1Q;
+
+    //std::cout << ( (l3/D) * c3 + (l2/D) * c2) * Z12 - V11 * c1 << " " << Z11Q * Zd1Q * Z12 << std::endl;
+
+    Number Zd2 = Zd1 * Z11Q * Z11 * Z21 * Z12S * Z22 * D;
+    Number Vd1 = l3_num * Z12 * ZZAS * c3 + l2_num * Z12 * c2 - V11 * c1 * D * Z11 * Z21 * Z12 * Z22;
+    
+    std::cout << Vd1 << " " << Zd2 << std::endl;
     Number Vd0;
 
     WeightedProjectiveMumford ret(f, h, Ud1, Ud0, Vd1, Vd0, Zd1, Zd2);
