@@ -96,7 +96,7 @@ WeightedProjectiveMumford WeightedProjectiveMumford::CostelloAdd(const WeightedP
     Number T11 = U11 * U11;
     Number T21 = U21 * U21;
 
-    // 11M
+    // 10M
 
     // (Z11Z21)^4 がかかっている．
     Number M1 = (T11 - U10 * Z11S) * Z21Q - (T21 - U20 * Z21S) * Z11Q;
@@ -115,6 +115,8 @@ WeightedProjectiveMumford WeightedProjectiveMumford::CostelloAdd(const WeightedP
     Number t3 = (-z1 + M4) * (z2 - M3);
     Number t4 = (-z1 - M4) * (z2 + M3);
 
+
+    // 1M
     // (Z11Z21)^7 Z12 Z22 がかかっている．
     Number l2_num = t1 - t2;
     // (Z11Z21)^5 Z12 Z22 がかかっている．
