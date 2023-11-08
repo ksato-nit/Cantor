@@ -82,10 +82,12 @@ WeightedProjectiveMumford WeightedProjectiveMumford::CostelloAdd(const WeightedP
     Number U21Z11S = U21 * Z11S;
     Number U10Z21S = U10 * Z21S;
     Number U20Z11S = U20 * Z11S;
-    Number V11Z21TZ22 = V11 * Z21S * Z21 * Z22;
-    Number V21Z11TZ12 = V21 * Z11S * Z11 * Z12;
-    Number V10Z21TZ22 = V10 * Z21S * Z21 * Z22;
-    Number V20Z11TZ12 = V20 * Z11S * Z11 * Z12;
+    Number Z21TZ22 = Z21S * Z21 * Z22;
+    Number Z11TZ12 = Z11S * Z11 * Z12;
+    Number V11Z21TZ22 = V11 * Z21TZ22;
+    Number V21Z11TZ12 = V21 * Z11TZ12;
+    Number V10Z21TZ22 = V10 * Z21TZ22;
+    Number V20Z11TZ12 = V20 * Z11TZ12;
 
     Number ZZAS = Z11S * Z21S;
     Number ZZBS = Z12S * Z22S;
