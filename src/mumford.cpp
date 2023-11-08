@@ -205,9 +205,10 @@ Mumford Mumford::CostelloAdd(const Mumford& m) const{
     std::cout << "d : " << d << std::endl;
     std::cout << "B : " << B << std::endl;
     std::cout << "d_shifted_inv : " << d_shifted_inv << std::endl;
-    std::cout << l3_num << " " << l2_num << " " << d << std::endl;
-    std::cout << l3 << " " << l2 << " " << d_inv << std::endl;
+    
     */
+    std::cout << l2_num << " " << l3_num << " " << d << std::endl;
+    //std::cout << l3 << " " << l2 << " " << std::endl;
 
     Number l0 = v10 + l2 * u10 - l3 * U10;
     Number l1 = v11 + l2 * u11 - l3 * (U11 - u10);
