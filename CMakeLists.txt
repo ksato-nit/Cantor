@@ -44,7 +44,7 @@ enable_testing()
 
 add_executable(
     CantorTest
-    ${SRC_DIR}/number.cpp ${SRC_DIR}/polynomial.cpp ${SRC_DIR}/mumford.cpp
+    ${SRC_DIR}/number.cpp ${SRC_DIR}/polynomial.cpp ${SRC_DIR}/mumford.cpp ${SRC_DIR}/mumford_projective.cpp ${SRC_DIR}/mumford_weighted_projective.cpp
     ${TEST}
 )
 target_link_libraries(
