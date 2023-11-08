@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <iostream>
 #include "number.hpp"
 #include "polynomial.hpp"
 #include "mumford_projective.hpp"
