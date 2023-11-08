@@ -144,14 +144,16 @@ WeightedProjectiveMumford WeightedProjectiveMumford::CostelloAdd(const WeightedP
     Number c3 = (Ud0 * Zd1S - Ud1 * Ud1) * Z11Q - (U10 * Z11S - U11 * U11) * Zd1Q;
     Number c2 = (Ud1 * Z11S - U11 * Zd1S) * (Z11S * Zd1S);
     Number c1 = Z11 * Zd1Q;
+    Number c3d = U11 * U10 * Zd1Q - Ud1 * Ud0 * Z11Q;
+    Number c2d = Ud0 * Z11S - U10 * Zd1S;
 
     //std::cout << ( (l3/D) * c3 + (l2/D) * c2) * Z12 - V11 * c1 << " " << Z11Q * Zd1Q * Z12 << std::endl;
 
     Number Zd2 = Zd1 * Z11Q * Z11 * Z21 * Z12S * Z22 * D;
-    Number Vd1 = l3_num * Z12 * ZZAS * c3 + l2_num * Z12 * c2 - V11 * c1 * D * Z11 * Z21 * Z12 * Z22;
+    Number Vd1 = (l3_num * ZZAS * c3 + l2_num * c2) * Z12 - V11 * c1 * D * Z11 * Z21 * Z12 * Z22;
+    Number Vd0 = (l3_num * ZZAS * c3d + l2_num * c2d) * Z12 - V10 * c1 * D * Z11 * Z21 * Z12 * Z22;
     
-    std::cout << Vd1 << " " << Zd2 << std::endl;
-    Number Vd0;
+    std::cout << Vd1 << " " << Vd0 << " " << Zd2 << std::endl;
 
     WeightedProjectiveMumford ret(f, h, Ud1, Ud0, Vd1, Vd0, Zd1, Zd2);
     return ret;
