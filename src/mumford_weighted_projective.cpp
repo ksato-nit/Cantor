@@ -165,10 +165,9 @@ WeightedProjectiveMumford WeightedProjectiveMumford::inv(){
     Number h2 = this->h.coeff[2];
     Number h1 = this->h.coeff[1];
     Number h0 = this->h.coeff[0];
-    // TODO : ここを書く
-    // - (h + v) % u を計算．
-    Number V1d;
-    Number V0d;
+    
+    Number V1d = h2 * U1 * Z1 * Z2 - V1 - h1 * Z1 * Z1 * Z1 * Z2;
+    Number V0d = h2 * U0 * Z1 * Z2 - V0 - h0 * Z1 * Z1 * Z1 * Z2;
     WeightedProjectiveMumford inv(f, h, U1, U0, V1d, V0d, Z1, Z2);
     return inv;
 }
