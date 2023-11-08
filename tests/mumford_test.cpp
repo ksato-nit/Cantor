@@ -3,7 +3,7 @@
 #include "polynomial.hpp"
 #include "mumford.hpp"
 
-TEST(PolynomialTest, SumOfDeg5MonicEquals) {
+TEST(MumfordTest, SumOfDeg5MonicEquals) {
     int fc[6] = {-1, 3, 6, -2, -3, 1};
     int hc[3] = {0, 1, 1};
     int u1c[3] = {5, 25, 1};
@@ -32,7 +32,7 @@ TEST(PolynomialTest, SumOfDeg5MonicEquals) {
     EXPECT_EQ(D12.v, Sum.v);
 }
 
-TEST(PolynomialTest, SumOfDeg5MonicDegeneratedEquals) {
+TEST(MumfordTest, SumOfDeg5MonicDegeneratedEquals) {
     int fc[6] = {-1, 3, 6, -2, -3, 1};
     int hc[3] = {0, 1, 1};
     int u1c[3] = {5, 25, 1};
@@ -61,7 +61,7 @@ TEST(PolynomialTest, SumOfDeg5MonicDegeneratedEquals) {
     EXPECT_EQ(D12.v, Sum.v);
 }
 
-TEST(PolynomialTest, SumOfDeg6NonMonicEquals) {
+TEST(MumfordTest, SumOfDeg6NonMonicEquals) {
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
     int u1c[3] = {5, 25, 1};
