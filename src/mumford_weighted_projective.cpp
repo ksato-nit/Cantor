@@ -76,8 +76,8 @@ WeightedProjectiveMumford WeightedProjectiveMumford::CostelloAdd(const WeightedP
     Number Z21Q = Z21S * Z21S;    
     Number Z12S = Z12 * Z12;
     Number Z22S = Z22 * Z22;
-    Number Z11Z21 = Z11 * Z21;
-    Number ZALL = Z11 * Z12 * Z21 * Z22;
+    Number Z11Z12 = Z11 * Z12;
+    Number ZALL = Z11Z12 * Z21 * Z22;
     Number U11Z21S = U11 * Z21S;
     Number U21Z11S = U21 * Z11S;
     Number U10Z21S = U10 * Z21S;
@@ -121,7 +121,7 @@ WeightedProjectiveMumford WeightedProjectiveMumford::CostelloAdd(const WeightedP
     Number Ud1 = -B * (U11 * Z21S + U21 * Z11S) - (f5 * A * ZZBS - l2_num * l3_num - l2_num * l3_num) * ZZAS;
     Number Zd1 = B * ZZAS;
 
-    Number Ud0 = l3_num * ZZAS * (l3_num * ZZAS * (U10 * Z11S - U11 * U11) * Z12 + (l2_num * U11 * Z11 * Z12 + V11 * ZALL * d) * Z11) * 2;
+    Number Ud0 = l3_num * ZZAS * (l3_num * ZZAS * (U10 * Z11S - U11 * U11) * Z12 + (l2_num * U11 * Z11Z12 + V11 * ZALL * d) * Z11) * 2;
     Ud0 = Ud0 + (l2_num * l2_num - f4 * ZZAS * ZZBS * A) * Z11Q * Z12;
     Ud0 = Ud0 * Z21S * Zd1;
     Ud0 = Ud0 - ((U11 * U21 + (U10 * Z21S + U20 * Z11S)) * Zd1 + (U11 * Z21S + U21 * Z11S) * Ud1) * Z11S * Z12 * B * ZZAS;
