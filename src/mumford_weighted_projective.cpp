@@ -70,6 +70,7 @@ WeightedProjectiveMumford WeightedProjectiveMumford::CostelloAdd(const WeightedP
     Number f5 = this->f.coeff[5];
     Number f4 = this->f.coeff[4];
 
+    // 17M, 8S
     Number Z11S = Z11 * Z11;
     Number Z21S = Z21 * Z21;
     Number Z11Q = Z11S * Z11S;
@@ -92,8 +93,13 @@ WeightedProjectiveMumford WeightedProjectiveMumford::CostelloAdd(const WeightedP
     Number ZZAS = Z11S * Z21S;
     Number ZZBS = Z12S * Z22S;
 
+    Number T11 = U11 * U11;
+    Number T21 = U21 * U21;
+
+    // 11M
+
     // (Z11Z21)^4 がかかっている．
-    Number M1 = (U11 * U11 - U10 * Z11S) * Z21Q - (U21 * U21 - U20 * Z21S) * Z11Q;
+    Number M1 = (T11 - U10 * Z11S) * Z21Q - (T21 - U20 * Z21S) * Z11Q;
     Number M2 = U21Z11S * U20Z11S - U11Z21S * U10Z21S;
     // (Z11Z21)^3 Z12 Z22 がかかっている．
     Number M3 = U11Z21S - U21Z11S;
@@ -117,13 +123,15 @@ WeightedProjectiveMumford WeightedProjectiveMumford::CostelloAdd(const WeightedP
     Number d = -(M2 - M4) * (M1 + M3);
     d = d + d + (t3 + t4) - t1 - t2;
 
+    // 3M, 2S
     Number A = d * d;
     Number B = ZZAS * l3_num * l3_num - f6 * A * ZZBS;
 
+    // 47M
     Number Ud1 = -B * (U11 * Z21S + U21 * Z11S) - (f5 * A * ZZBS - l2_num * l3_num - l2_num * l3_num) * ZZAS;
     Number Zd1 = B * ZZAS;
 
-    Number Ud0 = l3_num * ZZAS * (l3_num * ZZAS * (U10 * Z11S - U11 * U11) * Z12 + (l2_num * U11 * Z11Z12 + V11 * ZALL * d) * Z11) * 2;
+    Number Ud0 = l3_num * ZZAS * (l3_num * ZZAS * (U10 * Z11S - T11) * Z12 + (l2_num * U11 * Z11Z12 + V11 * ZALL * d) * Z11) * 2;
     Ud0 = Ud0 + (l2_num * l2_num - f4 * ZZAS * ZZBS * A) * Z11Q * Z12;
     Ud0 = Ud0 * Z21S * Zd1;
     Ud0 = Ud0 - ((U11 * U21 + (U10 * Z21S + U20 * Z11S)) * Zd1 + (U11 * Z21S + U21 * Z11S) * Ud1) * Z11S * Z12 * B * ZZAS;
@@ -132,10 +140,12 @@ WeightedProjectiveMumford WeightedProjectiveMumford::CostelloAdd(const WeightedP
     Ud1 = Ud1 * B * Z11Q * Z11S * Z21Q * Z12S;
     Zd1 = Z11Q * Z21S * Z21 * B * Z12;
 
+    // 2S
     Number Zd1S = Zd1 * Zd1;
     Number Zd1Q = Zd1S * Zd1S;
 
-    Number c3 = (Ud0 * Zd1S - Ud1 * Ud1) * Z11Q - (U10 * Z11S - U11 * U11) * Zd1Q;
+    // 30M
+    Number c3 = (Ud0 * Zd1S - Ud1 * Ud1) * Z11Q - (U10 * Z11S - T11) * Zd1Q;
     Number c2 = (Ud1 * Z11S - U11 * Zd1S) * (Z11S * Zd1S);
     Number c1 = Z11 * Zd1Q * d * ZALL;
     Number c3d = U11 * U10 * Zd1Q - Ud1 * Ud0 * Z11Q;
@@ -165,7 +175,7 @@ WeightedProjectiveMumford WeightedProjectiveMumford::inv(){
     Number h2 = this->h.coeff[2];
     Number h1 = this->h.coeff[1];
     Number h0 = this->h.coeff[0];
-    
+
     Number V1d = h2 * U1 * Z1 * Z2 - V1 - h1 * Z1 * Z1 * Z1 * Z2;
     Number V0d = h2 * U0 * Z1 * Z2 - V0 - h0 * Z1 * Z1 * Z1 * Z2;
     WeightedProjectiveMumford inv(f, h, U1, U0, V1d, V0d, Z1, Z2);
