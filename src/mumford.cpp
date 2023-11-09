@@ -131,8 +131,11 @@ Mumford Mumford::operator + (const Mumford& m) const{
     */
 
     // deg u1 = deg u2 = 2
-    Mumford ret = this->CantorAdd(m);
-    return ret;
+    if(this->f.deg == 6){
+        return this->CostelloAdd(m);
+    }else{
+        return this->CantorAdd(m);
+    }
 }
 
 Mumford Mumford::CostelloAdd(const Mumford& m) const{

@@ -36,19 +36,40 @@ int main(){
     Mumford sum1 = D1 + D2;
     end = std::chrono::system_clock::now();
     sum1.print();
-    std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count() << std::endl;
+    std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl << std::endl;
+
+    Number Z1 = Number(2);
+    Number Z2 = Number(3);
+    Polynomial u1_p = u1 * Z1;
+    Polynomial v1_p = v1 * Z1;
+    Polynomial u2_p = u2 * Z2;
+    Polynomial v2_p = v2 * Z2;
+
+    ProjectiveMumford D1P(f, h, u1_p.coeff[1], u1_p.coeff[0], v1_p.coeff[1], v1_p.coeff[0], Z1);
+    ProjectiveMumford D2P(f, h, u2_p.coeff[1], u2_p.coeff[0], v2_p.coeff[1], v2_p.coeff[0], Z2);
+    std::cout << "D1P:" << std::endl;
+    D1P.print();
+    std::cout << "D2P:" << std::endl;
+    D2P.print();
+
+    start = std::chrono::system_clock::now();
+    std::cout << "D1WP + D2WP:" << std::endl;
+    ProjectiveMumford sumP = D1P + D2P;
+    end = std::chrono::system_clock::now();
+    sumP.print();
+    std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl << std::endl;
 
     Number Z11 = Number(2);
     Number Z12 = Number(3);
     Number Z21 = Number(3);
     Number Z22 = Number(5);
-    Polynomial u1_half = u1 * Z11 * Z11;
-    Polynomial v1_half = v1 * Z11 * Z11 * Z11 * Z12;
-    Polynomial u2_half = u2 * Z21 * Z21;
-    Polynomial v2_half = v2 * Z21 * Z21 * Z21 * Z22;
+    Polynomial u1_wp = u1 * Z11 * Z11;
+    Polynomial v1_wp = v1 * Z11 * Z11 * Z11 * Z12;
+    Polynomial u2_wp = u2 * Z21 * Z21;
+    Polynomial v2_wp = v2 * Z21 * Z21 * Z21 * Z22;
 
-    WeightedProjectiveMumford D1WP(f, h, u1_half.coeff[1], u1_half.coeff[0], v1_half.coeff[1], v1_half.coeff[0], Z11, Z12);
-    WeightedProjectiveMumford D2WP(f, h, u2_half.coeff[1], u2_half.coeff[0], v2_half.coeff[1], v2_half.coeff[0], Z21, Z22);
+    WeightedProjectiveMumford D1WP(f, h, u1_wp.coeff[1], u1_wp.coeff[0], v1_wp.coeff[1], v1_wp.coeff[0], Z11, Z12);
+    WeightedProjectiveMumford D2WP(f, h, u2_wp.coeff[1], u2_wp.coeff[0], v2_wp.coeff[1], v2_wp.coeff[0], Z21, Z22);
     std::cout << "D1WP:" << std::endl;
     D1WP.print();
     std::cout << "D2WP:" << std::endl;
@@ -56,10 +77,10 @@ int main(){
 
     start = std::chrono::system_clock::now();
     std::cout << "D1WP + D2WP:" << std::endl;
-    WeightedProjectiveMumford sum1P = D1WP + D2WP;
+    WeightedProjectiveMumford sumWP = D1WP + D2WP;
     end = std::chrono::system_clock::now();
-    sum1P.print();
-    std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count() << std::endl;
+    sumWP.print();
+    std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl << std::endl;
 
     return 0;
 }
