@@ -31,6 +31,14 @@ int main(){
     D2.print();
 
     std::chrono::system_clock::time_point start, end;
+    
+    start = std::chrono::system_clock::now();
+    std::cout << "D1 + D2:" << std::endl;
+    Mumford sum0 = D1.CantorAdd(D2);
+    end = std::chrono::system_clock::now();
+    sum0.print();
+    std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl << std::endl;
+
     start = std::chrono::system_clock::now();
     std::cout << "D1 + D2:" << std::endl;
     Mumford sum1 = D1 + D2;
