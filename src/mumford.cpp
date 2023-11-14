@@ -132,7 +132,7 @@ Mumford Mumford::operator + (const Mumford& m) const{
 
     // deg u1 = deg u2 = 2
     if(this->f.deg == 6){
-        return this->CostelloAdd(m);
+        return this->LangeAdd(m);
     }else{
         return this->CantorAdd(m);
     }
@@ -405,6 +405,36 @@ Mumford Mumford::HarleyAddDegenerated(const Mumford& m) const{
 
     v.coeff[1] = v1d;
     v.coeff[0] = v0d;
+
+    Mumford ret(f, h, u, v);
+    return ret;
+}
+
+Mumford Mumford::LangeAdd(const Mumford& m) const{
+    std::cout << "Harley Addition." << std::endl;
+    Polynomial u1 = this->u;
+    Polynomial v1 = this->v;
+    Polynomial u2 = m.u;
+    Polynomial v2 = m.v;
+
+    Number u11 = u1.coeff[1];
+    Number u10 = u1.coeff[0];
+    Number u21 = u2.coeff[1];
+    Number u20 = u2.coeff[0];
+
+    Number v11 = v1.coeff[1];
+    Number v10 = v1.coeff[0];
+    Number v21 = v2.coeff[1];
+    Number v20 = v2.coeff[0];
+
+    Number h0 = this->h.coeff[0];
+    Number h1 = this->h.coeff[1];
+    Number h2 = this->h.coeff[2];
+
+    Number f4 = this->f.coeff[4];
+
+    Polynomial u(2);
+    Polynomial v(1);    
 
     Mumford ret(f, h, u, v);
     return ret;
