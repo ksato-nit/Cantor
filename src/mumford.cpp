@@ -452,20 +452,6 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
     Number s1d = (inv0 + inv1) * (w0 + w1) - w2 - w3 * (Number::ONE() + u11);
     Number s0d = w2 - u10 * w3;
 
-    /*
-    Polynomial inv(1, inv0, inv1);
-    std::cout << r << std::endl;
-    Polynomial r_poly(0, r);
-    auto quo_pair = Polynomial::divide(inv * u2 - r_poly, u1);
-    std::cout << std::get<0>(quo_pair) << std::endl;
-    std::cout << std::get<1>(quo_pair) << std::endl;
-    std::cout << (v1 - v2) * inv << std::endl;
-    
-    */
-
-    //std::cout << r << std::endl;
-    //std::cout << s1d << " " << s0d << std::endl;
-
     if(s1d.isZero()){
         std::cout << "Special case." << std::endl;
         Mumford ret(f, h, u, v);
@@ -478,42 +464,34 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
     Number l1d = u21 * s0d + u20 * s1d;
     Number l0d = u20 * s0d;
 
-    //std::cout << l3d << " " << l2d << " " << l1d << " " << l0d << std::endl;
-
     // 5. u' を計算．
     Number k4 = f6;
     Number k3 = f5 - f6 * u21;
     Number k2 = f4 - f6 * u20 - (f5 - f6 * u21) * u21;
-    //std::cout << "k : " << k4 << " " << k3 << " " << k2 << std::endl;
 
     Number t4 = s1d * l3d - k4 * r * r;
     Number t3 = s1d * l2d + s0d * l3d - k3 * r * r;
     Number t2 = s1d * (l1d + r * v21 * 2) + s0d * l2d - k2 * r * r;
-    //std::cout << "t : " << t4 << " " << t3 << " " << t2 << std::endl; 
 
     Number u0d = t2 - t4 * u10 - (t3 - t4 * u11) * u11;
     Number u1d = t3 - t4 * u11;
     Number u2d = t4;
-    //std::cout << u2d << " " << u1d << " " << u0d << std::endl;
 
     // 6. u' をモニックにする．
-    w1 = (u2d * l3d).inv();
-    w2 = w1 * l3d;
+    w1 = (u2d * r).inv();
+    w2 = w1 * r;
     w3 = w1 * u2d;
     u1d = u1d * w2;
     u0d = u0d * w2;
-    //std::cout << w1 << " " << w2 << " " << w3 << std::endl;
-    std::cout << u1d << " " << u0d << std::endl;
     // ud の計算まで正しい．
 
     // 7. v' を計算．
+    Number l3 = l3d * w3;
     Number l2 = l2d * w3;
     Number l1 = l1d * w3;
     Number l0 = l0d * w3;
-    Number v1d = -l1 - v21 + (u0d - u1d * u1d) + u1d * l2;
-    Number v0d = -l0 - v20 - u1d * u0d + u0d * l2;
-    //std::cout << l2 << " " << l1 << " " << l0 << std::endl;
-    std::cout << v1d << " " << v0d << std::endl;
+    Number v1d = -l1 - v21 + (u0d - u1d * u1d) * l3 + u1d * l2;
+    Number v0d = -l0 - v20 - u1d * u0d * l3 + u0d * l2;
 
     u.coeff[2] = Number::ONE();
     u.coeff[1] = u1d;
