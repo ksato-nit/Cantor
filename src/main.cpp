@@ -11,8 +11,8 @@ int main(){
     int hc[1] = {0};
     int u1c[3] = {5, 25, 1};
     int v1c[2] = {-2, -23};
-    int u2c[3] = {17, 17, 1};
-    int v2c[2] = {-27, -16};
+    int u2c[3] = {23, 16, 1};
+    int v2c[2] = {-15, -18};
 
     Polynomial f(6, fc);
     Polynomial h(0, hc);
