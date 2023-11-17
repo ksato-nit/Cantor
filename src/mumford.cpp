@@ -132,7 +132,7 @@ Mumford Mumford::operator + (const Mumford& m) const{
 
     // deg u1 = deg u2 = 2
     if(this->f.deg == 6){
-        return this->CostelloAdd(m);
+        return this->LangeAdd(m);
     }else{
         return this->CantorAdd(m);
     }
@@ -407,6 +407,101 @@ Mumford Mumford::HarleyAddDegenerated(const Mumford& m) const{
     v.coeff[0] = v0d;
 
     Mumford ret(f, h, u, v);
+    return ret;
+}
+
+Mumford Mumford::LangeAdd(const Mumford& m) const{
+    std::cout << "Harley Addition." << std::endl;
+    Polynomial u1 = this->u;
+    Polynomial v1 = this->v;
+    Polynomial u2 = m.u;
+    Polynomial v2 = m.v;
+
+    Number u11 = u1.coeff[1];
+    Number u10 = u1.coeff[0];
+    Number u21 = u2.coeff[1];
+    Number u20 = u2.coeff[0];
+
+    Number v11 = v1.coeff[1];
+    Number v10 = v1.coeff[0];
+    Number v21 = v2.coeff[1];
+    Number v20 = v2.coeff[0];
+
+    Number f6 = f.coeff[6];
+    Number f5 = f.coeff[5];
+    Number f4 = f.coeff[4];
+
+    Polynomial u(2);
+    Polynomial v(1);
+
+    // 1. u1, u2 の終結式を計算．
+    Number z1 = u11 - u21;
+    Number z2 = u20 - u10;
+    Number z3 = u11 * z1 + z2;
+    Number r = z2 * z3 + z1 * z1 * u10;
+
+    // 2. u2 の almost inverse (mod u1) を計算．
+    Number inv1 = z1;
+    Number inv0 = z3;
+
+    // 3. s' を計算．
+    Number w0 = v10 - v20;
+    Number w1 = v11 - v21;
+    Number w2 = inv0 * w0;
+    Number w3 = inv1 * w1;
+    Number s1d = (inv0 + inv1) * (w0 + w1) - w2 - w3 * (Number::ONE() + u11);
+    Number s0d = w2 - u10 * w3;
+
+    if(s1d.isZero()){
+        std::cout << "Special case." << std::endl;
+        Mumford ret(f, h, u, v);
+        return ret;
+    }
+
+    // 4. l' を計算．
+    Number l3d = s1d;
+    Number l2d = u21 * s1d + s0d;
+    Number l1d = u21 * s0d + u20 * s1d;
+    Number l0d = u20 * s0d;
+
+    // 5. u' を計算．
+    Number k4 = f6;
+    Number k3 = f5 - f6 * u21;
+    Number k2 = f4 - f6 * u20 - (f5 - f6 * u21) * u21;
+
+    Number t4 = s1d * l3d - k4 * r * r;
+    Number t3 = s1d * l2d + s0d * l3d - k3 * r * r;
+    Number t2 = s1d * (l1d + r * v21 * 2) + s0d * l2d - k2 * r * r;
+
+    Number u0d = t2 - t4 * u10 - (t3 - t4 * u11) * u11;
+    Number u1d = t3 - t4 * u11;
+    Number u2d = t4;
+
+    // 6. u' をモニックにする．
+    w1 = (u2d * r).inv();
+    w2 = w1 * r;
+    w3 = w1 * u2d;
+    u1d = u1d * w2;
+    u0d = u0d * w2;
+    // ud の計算まで正しい．
+
+    // 7. v' を計算．
+    Number l3 = l3d * w3;
+    Number l2 = l2d * w3;
+    Number l1 = l1d * w3;
+    Number l0 = l0d * w3;
+    Number v1d = -l1 - v21 + (u0d - u1d * u1d) * l3 + u1d * l2;
+    Number v0d = -l0 - v20 - u1d * u0d * l3 + u0d * l2;
+
+    u.coeff[2] = Number::ONE();
+    u.coeff[1] = u1d;
+    u.coeff[0] = u0d;
+
+    v.coeff[1] = v1d;
+    v.coeff[0] = v0d;
+
+    Mumford ret(f, h, u, v);
+
     return ret;
 }
 
