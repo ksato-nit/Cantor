@@ -5,9 +5,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: install boost
+      - run: sudo apt install -y libboost-all-dev
+
       - name: Configure CMake
         run: mkdir build && cd build && cmake ..
         working-directory: ${{ github.workspace }}
+
       - name: build
         run: make -j4
         working-directory: ${{ github.workspace }}/build
