@@ -1,20 +1,21 @@
 #pragma once
 #include "algorithm"
 #include "iostream"
+#include <boost/multiprecision/cpp_int.hpp>
 
 // 抽象的な体の要素を実現する．
 class Number {
 public:
-    static const int CHARA = 31;
+    boost::multiprecision::cpp_int CHARA = 31;
         
-    int value;
+    boost::multiprecision::cpp_int value;
 
     Number();
-    Number(int value);
+    Number(boost::multiprecision::cpp_int value);
     Number operator + (const Number&) const;
     Number operator - (const Number&) const;
     Number operator * (const Number&) const;
-    Number operator * (const int ) const;
+    Number operator * (const boost::multiprecision::cpp_int) const;
     Number operator / (const Number&) const;
     bool operator == (const Number&) const;
     bool operator != (const Number&) const;
