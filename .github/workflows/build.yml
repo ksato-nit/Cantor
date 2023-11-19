@@ -16,3 +16,7 @@ jobs:
       - name: build
         run: make -j4
         working-directory: ${{ github.workspace }}/build
+
+      - name: test
+        run: ctest
+        working-directory: ${{ github.workspace }}/build
