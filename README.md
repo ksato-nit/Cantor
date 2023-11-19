@@ -1,11 +1,14 @@
 # Cantor
-Cantor のアルゴリズムの C++ による実装．超楕円曲線上のイデアル類群での和を計算する．
+[![build](https://github.com/ksato-nit/Cantor/actions/workflows/build.yml/badge.svg)](https://github.com/ksato-nit/Cantor/actions/workflows/build.yml)
 
-2023 年度卒業研究の準備として作った．
+超楕円曲線上の加算アルゴリズムの C++ による実装．
+
+2023 年度卒業研究の一環として作った．
 
 # Dependencies
 - GCC 3.11
 - CMake 
+- Boost C++ 
 
 # Build
 ```./build.sh```
