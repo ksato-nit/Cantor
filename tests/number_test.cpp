@@ -3,13 +3,13 @@
 
 TEST(NumberTest, ModValueEquals) {
     Number x(1);
-    Number y(1 - Number::CHARA);
+    Number y(1 - x.CHARA);
     EXPECT_EQ(x, y);
 }
 
 TEST(NumberTest, ModValueNotEquals) {
     Number x(1);
-    Number y(2 - Number::CHARA);
+    Number y(2 - x.CHARA);
     EXPECT_NE(x, y);
 }
 

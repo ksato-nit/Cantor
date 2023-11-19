@@ -3,7 +3,7 @@
 Polynomial::Polynomial(){
     this->deg = 0;
     this->coeff.resize(1);
-    this->coeff[0] = 0;
+    this->coeff[0] = Number::ZERO();
 }
 
 Polynomial::Polynomial(int deg){
@@ -92,8 +92,8 @@ Polynomial Polynomial::operator + (const Polynomial& q) const{
     int deg = std::max(this->deg, q.deg);
     Polynomial r(deg);
     for(int i = 0; i <= deg; ++i){
-        Number a = (this->deg >= i) ? this->coeff[i] : 0;
-        Number b = (q.deg >= i) ? q.coeff[i] : 0;
+        Number a = (this->deg >= i) ? this->coeff[i] : Number::ZERO();
+        Number b = (q.deg >= i) ? q.coeff[i] : Number::ZERO();
         r.coeff[i] = a + b;
     }
     //r.normalize();
@@ -104,8 +104,8 @@ Polynomial Polynomial::operator - (const Polynomial& q) const{
     int deg = std::max(this->deg, q.deg);
     Polynomial r(deg);
     for(int i = 0; i <= deg; ++i){
-        Number a = (this->deg >= i) ? this->coeff[i] : 0;
-        Number b = (q.deg >= i) ? q.coeff[i] : 0;
+        Number a = (this->deg >= i) ? this->coeff[i] : Number::ZERO();
+        Number b = (q.deg >= i) ? q.coeff[i] : Number::ZERO();
         r.coeff[i] = a - b;
     }
     //r.normalize();
@@ -117,8 +117,8 @@ Polynomial Polynomial::operator * (const Polynomial& q) const{
     Polynomial r(deg);
     for(int i = 0; i <= this->deg; ++i){
         for(int j = 0; j <= q.deg; ++j){
-            Number a = (this->deg >= i) ? this->coeff[i] : 0;
-            Number b = (q.deg >= j) ? q.coeff[j] : 0;
+            Number a = (this->deg >= i) ? this->coeff[i] : Number::ZERO();
+            Number b = (q.deg >= j) ? q.coeff[j] : Number::ZERO();
             r.coeff[i + j] = r.coeff[i + j] + a * b;
         }
     }

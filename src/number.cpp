@@ -4,37 +4,37 @@ Number::Number(){
     this->value = 0;
 }
 
-Number::Number(int x){
+Number::Number(boost::multiprecision::cpp_int x){
     this->value = x % CHARA;
 }
 
 Number Number::operator + (const Number& y) const{
-    int value = (y.value + this->value) % CHARA;
+    boost::multiprecision::cpp_int value = (y.value + this->value) % CHARA;
     Number z(value);
     return z;
 }
 
 Number Number::operator - (const Number& y) const{
-    int value = (this->value - y.value) % CHARA;
+    boost::multiprecision::cpp_int value = (this->value - y.value) % CHARA;
     Number z(value);
     return z;
 }
 
 Number Number::operator * (const Number& y) const{
-    int value = (y.value * this->value) % CHARA;
+    boost::multiprecision::cpp_int value = (y.value * this->value) % CHARA;
     Number z(value);
     return z;
 }
 
-Number Number::operator * (const int y) const{
-    int value = (y * this->value) % CHARA;
+Number Number::operator * (const boost::multiprecision::cpp_int y) const{
+    boost::multiprecision::cpp_int value = (y * this->value) % CHARA;
     Number z(value);
     return z;
 }
 
 Number Number::operator / (const Number& y) const{
     Number yinv = y.inv();
-    int value = (this->value * yinv.value) % CHARA;
+    boost::multiprecision::cpp_int value = (this->value * yinv.value) % CHARA;
     Number z(value);
     return z;
 }
@@ -52,7 +52,7 @@ Number Number::operator + () const{
 }
 
 Number Number::operator - () const{
-    int value = -this->value % CHARA;
+    boost::multiprecision::cpp_int value = -this->value % CHARA;
     Number z(value);
     return z;
 }
@@ -80,9 +80,9 @@ Number Number::inv() const{
         return mx;
     }
 
-    int s = this->value, t = CHARA;
-    int x = 1, u = 0;
-    int k;
+    boost::multiprecision::cpp_int s = this->value, t = CHARA;
+    boost::multiprecision::cpp_int x = 1, u = 0;
+    boost::multiprecision::cpp_int k;
     while(t > 0) {
         k = s / t;
         s = s - (k * t);
