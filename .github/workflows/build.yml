@@ -1,8 +1,13 @@
 name: build
 on: [push]
 jobs:
-  check-bats-version:
+  build-Cantor:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
+      - name: Configure CMake
+        run: mkdir build && cd build && cmake ..
+        working-directory: ${{ github.workspace }}
+      - name: build
+        run: make -j4
+        working-directory: ${{ github.workspace }}/build
