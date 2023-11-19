@@ -30,6 +30,7 @@ int main(){
     std::cout << "D2:" << std::endl;
     D2.print();
 
+
     std::cout << "D1 + D2:" << std::endl;
     Mumford sum1 = D1.CostelloAdd(D2);
     sum1.print();

@@ -200,5 +200,12 @@ void WeightedProjectiveMumford::print(){
     std::cout << ", ";
     std::cout << this->Z1 << " " << this->Z2;
     std::cout << "]" << std::endl;
+
+    Polynomial u(2); Polynomial v(1);
+    Number Z1S = this->Z1 * this->Z1;
+    u.coeff[2] = Number::ONE(); u.coeff[1] = this->U1 / Z1S; u.coeff[0] = this->U0 / Z1S;
+    v.coeff[1] = this->V1 / (Z1S * this->Z1 * this->Z2); v.coeff[0] = this->V0 / (Z1S * this->Z1 * this->Z2);
+
+    std::cout << "[" << u << ", " << v << "]" << std::endl;
     return;
 }

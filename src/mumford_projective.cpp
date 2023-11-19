@@ -192,5 +192,12 @@ void ProjectiveMumford::print(){
     std::cout << ", ";
     std::cout << this->Z.value;
     std::cout << "]" << std::endl;
+
+    Polynomial u(2); Polynomial v(1);
+    u.coeff[2] = Number::ONE(); u.coeff[1] = this->U1 / this->Z; u.coeff[0] = this->U0 / this->Z;
+    v.coeff[1] = this->V1 / this->Z; v.coeff[0] = this->V0 / this->Z;
+
+    std::cout << "[" << u << ", " << v << "]" << std::endl;
+    
     return;
 }

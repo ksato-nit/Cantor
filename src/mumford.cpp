@@ -620,6 +620,8 @@ Mumford Mumford::doubling(){
 }
 
 Mumford Mumford::CantorAdd(const Mumford& m) const{
+    std::cout << "Cantor Addition." << std::endl;
+
     Polynomial h = this->h;
 
     Polynomial u1 = this->u;
