@@ -182,7 +182,7 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     Number z1 = U11 * Z2 - U21 * Z1;
     Number z2 = U20 * Z1 - U10 * Z2;
     Number z3 = U11 * Z1 + z2 * Z1;
-    Number r = z2 * z3 + z1 * z1 * U10; // Z_1^3 Z_2^2 がかかっている．
+    Number r = z2 * z3 + z1 * z1 * U10; // Z1^3 Z2^2 がかかっている．
 
     // 2. almost inverse を計算．
     Number inv1 = z1;
@@ -197,7 +197,11 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     Number s1 = (inv0 + Z1 * inv1) * (w0 + w1) - w2 - w3 * (Z1 + U11);
     Number s0 = w2 - U10 * w3;
 
-    // 4. l を計算．
+    // 4. l を計算．全体に (Z1 Z2)^3 がかかっている．
+    Number l3 = s1 * Z2;
+    Number l2 = s1 * U21 + s0 * Z2;
+    Number l1 = s1 * U20 + s0 * U21;
+    Number l0 = s0 * U20;
 
     Number U1d, U0d, V1d, V0d, Zd;
 
