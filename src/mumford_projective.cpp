@@ -157,6 +157,54 @@ ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) con
     return ret;
 }
 
+ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
+    std::cout << "Projective Lange Addition." << std::endl;
+
+    Number U11 = this->U1;
+    Number U10 = this->U0;
+    Number U21 = m.U1;
+    Number U20 = m.U0;
+
+    Number V11 = this->V1;
+    Number V10 = this->V0;
+    Number V21 = m.V1;
+    Number V20 = m.V0;
+
+    Number Z1 = this->Z;
+    Number Z2 = m.Z;
+
+    Number f6 = this->f.coeff[6];
+    Number f5 = this->f.coeff[5];
+    Number f4 = this->f.coeff[4];
+
+
+    // 1. 終結式を計算．
+    Number z1 = U11 * Z2 - U21 * Z1;
+    Number z2 = U20 * Z1 - U10 * Z2;
+    Number z3 = U11 * Z1 + z2 * Z1;
+    Number r = z2 * z3 + z1 * z1 * U10; // Z_1^3 Z_2^2 がかかっている．
+
+    // 2. almost inverse を計算．
+    Number inv1 = z1;
+    Number inv0 = z3;
+
+    Number w0 = V10 * Z2 - V20 * Z1;
+    Number w1 = V11 * Z2 - V21 * Z1;
+    Number w2 = inv0 * w0;
+    Number w3 = inv1 * w1;
+
+    // 3. s を計算．
+    Number s1 = (inv0 + Z1 * inv1) * (w0 + w1) - w2 - w3 * (Z1 + U11);
+    Number s0 = w2 - U10 * w3;
+
+    // 4. l を計算．
+
+    Number U1d, U0d, V1d, V0d, Zd;
+
+    ProjectiveMumford ret(f, h, U1d, U0d, V1d, V0d, Zd);
+    return ret;
+}
+
 ProjectiveMumford ProjectiveMumford::inv(){
     Polynomial f = this->f;
     Polynomial h = this->h;

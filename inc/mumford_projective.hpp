@@ -22,6 +22,7 @@ public:
 
     ProjectiveMumford operator + (const ProjectiveMumford& q) const;
     ProjectiveMumford CostelloAdd(const ProjectiveMumford& q) const;
+    ProjectiveMumford LangeAdd(const ProjectiveMumford& q) const;
     ProjectiveMumford inv();
     ProjectiveMumford zero();
     void print();
