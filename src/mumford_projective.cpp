@@ -181,8 +181,11 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     // 1. 終結式を計算．
     Number z1 = U11 * Z2 - U21 * Z1;
     Number z2 = U20 * Z1 - U10 * Z2;
-    Number z3 = U11 * Z1 + z2 * Z1;
+    Number z3 = U11 * z1 + z2 * Z1;
     Number r = z2 * z3 + z1 * z1 * U10; // Z1^3 Z2^2 がかかっている．
+
+    //std::cout << "Z1, Z2: " << Z1 << " " << Z2 << std::endl;
+    //std::cout << "z1, z2, z3, r: " << z1 << " " << z2 << " " << z3 << " " << r << std::endl;
 
     // 2. almost inverse を計算．
     Number inv1 = z1;
@@ -202,6 +205,8 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     Number l2 = s1 * U21 + s0 * Z2;
     Number l1 = s1 * U20 + s0 * U21;
     Number l0 = s0 * U20;
+
+    // ここまで正しい．
 
     Number U1d, U0d, V1d, V0d, Zd;
 
