@@ -20,6 +20,8 @@ FetchContent_Declare(
     URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
 )
 
+find_package(Boost REQUIRED)
+
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
@@ -32,6 +34,7 @@ file(GLOB TEST ${TEST_DIR}/*.cpp)
 
 include_directories(
     ${INC_DIR}
+    ${Boost_INCLUDE_DIRS}
 )
 
 add_executable(
