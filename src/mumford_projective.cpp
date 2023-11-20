@@ -208,9 +208,27 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
 
     // ここまで正しい．
 
-    Number U1d, U0d, V1d, V0d, Zd;
 
-    ProjectiveMumford ret(f, h, U1d, U0d, V1d, V0d, Zd);
+    // 5. 多項式の係数を計算．全体に (Z1 Z2)^6 (Z2)^2 がかかっている．
+    Number Z = Z1 * Z2;
+    Number ZS = Z * Z;
+    Number Z6 = ZS * ZS * ZS;
+    Number t4 = s1 * l3 * Z2 - r * r * Z6 * f6;
+    t4 = t4 * Z2 * Z2;
+    Number t3 = (l2 * s1 + l3 * s0) * Z2 * Z2 - r * r * Z6 * (f5 * Z2 - f6 * U21);
+    t3 = t3 * Z2;
+    Number t2 = Z2 * Z2 * (s0 * Z2 * l2 + s1 * (Z2 * l1 + r * ZS * Z * V21 * 2)) - r * r * Z6 * ( (f4 * Z2 - f6 * U20) * Z2 - (f5 * Z2 - f6 * U21) * U21 );
+
+    // 全体に (Z1)^9 (Z2)^8 がかかっている．
+    Number Ud2 = t4;
+    Ud2 = Ud2 * Z1 * Z1;
+    Number Ud1 = t3 * Z1 - U11;
+    Ud1 = Ud1 * Z1;
+    Number Ud0 = (t2 * Z1 - U10) * Z1 - (t3 * Z1 - U11) * U10;
+
+    Number V1d, V0d, Zd;
+
+    ProjectiveMumford ret(f, h, Ud1, Ud0, V1d, V0d, Zd);
     return ret;
 }
 
