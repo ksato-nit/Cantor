@@ -219,6 +219,8 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     t3 = t3 * Z2;
     Number t2 = Z2 * Z2 * (s0 * Z2 * l2 + s1 * (Z2 * l1 + r * ZS * Z * V21 * 2)) - r * r * Z6 * ( (f4 * Z2 - f6 * U20) * Z2 - (f5 * Z2 - f6 * U21) * U21 );
 
+    std::cout << "t: " << t4 << " " << t3 << " " << t2 << std::endl;
+
     // 全体に (Z1)^9 (Z2)^8 がかかっている．
     Number Ud2 = t4;
     Ud2 = Ud2 * Z1 * Z1;

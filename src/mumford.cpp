@@ -473,6 +473,8 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
     Number t3 = s1d * l2d + s0d * l3d - k3 * r * r;
     Number t2 = s1d * (l1d + r * v21 * 2) + s0d * l2d - k2 * r * r;
 
+    std::cout << "t: " << t4 << " " << t3 << " " << t2 << std::endl;
+
     Number u0d = t2 - t4 * u10 - (t3 - t4 * u11) * u11;
     Number u1d = t3 - t4 * u11;
     Number u2d = t4;
