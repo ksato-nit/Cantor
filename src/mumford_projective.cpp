@@ -177,7 +177,10 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     Number f5 = this->f.coeff[5];
     Number f4 = this->f.coeff[4];
 
+    // 72M, 6S
+
     // 1. 終結式を計算．
+    // 8M, 2S
     Number z1 = U11 * Z2 - U21 * Z1;
     Number z2 = U20 * Z1 - U10 * Z2;
     Number z3 = U11 * z1 + z2 * Z1;
@@ -185,6 +188,7 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     Number rs = r * r;
 
     // 2. almost inverse を計算．
+    // 6M
     Number inv1 = z1;
     Number inv0 = z3;
 
@@ -194,16 +198,19 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     Number w3 = inv1 * w1;
 
     // 3. s を計算．
+    // 4M
     Number s1 = (inv0 + Z1 * inv1) * (w0 + w1) - w2 - w3 * (Z1 + U11);
     Number s0 = w2 - U10 * w3;
 
     // 4. l を計算．全体に (Z1 Z2)^3 がかかっている．
+    // 6M
     Number l3 = s1 * Z2;
     Number l2 = s1 * U21 + s0 * Z2;
     Number l1 = s1 * U20 + s0 * U21;
     Number l0 = s0 * U20;
 
     // 5. U' を計算．全体に (Z1 Z2)^6 がかかっている．
+    // 23M, 2S
     Number Z = Z1 * Z2;
     Number ZS = Z * Z;
 
@@ -211,6 +218,7 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     Number t3 = (l2 * s1 + l3 * s0) * Z2 - rs * Z2 * (f5 * Z2 - f6 * U21);
     Number t2 = Z2 * (s0 * l2 + s1 * (l1 + r * V21 * 2)) - rs * ( (f4 * Z2 - f6 * U20) * Z2 - (f5 * Z2 - f6 * U21) * U21 );
  
+    // 8M, 2S
     Number Ud2 = t4;
     Ud2 = Ud2 * Z1 * Z1;
     Number Ud1 = t3 * Z1 - t4 * U11;
@@ -220,9 +228,12 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     Number ZdS = Zd * Zd;
 
     // 6. V' を計算．
-    Number Vd0 = -l0 * ZdS - V20 * r * ZdS - Ud0 * (Ud1 * l3 - l2 * Zd);
-    Number Vd1 = -l1 * ZdS - V21 * r * ZdS - l3 * (Ud1 * Ud1 - Ud0 * Zd) + Zd * Ud1 * l2;
+    // 12M
+    Number Vd0 = (-l0 - V20 * r) * ZdS - Ud0 * (Ud1 * l3 - l2 * Zd);
+    Number Vd1 = (-l1 - V21 * r) * ZdS - l3 * (Ud1 * Ud1 - Ud0 * Zd) + Zd * Ud1 * l2;
 
+    // 7. Z' を調整．
+    // 5M
     Number M = Zd * Z2 * r;
     Ud1 = Ud1 * M;
     Ud0 = Ud0 * M;
