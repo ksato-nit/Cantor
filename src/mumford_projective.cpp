@@ -209,18 +209,22 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     // ここまで正しい．
 
 
-    // 5. 多項式の係数を計算．全体に (Z1 Z2)^6 (Z2)^2 がかかっている．
+    // 5. 多項式の係数を計算．全体に (Z1 Z2)^6 がかかっている．
     Number Z = Z1 * Z2;
     Number ZS = Z * Z;
+    Number Z3 = Z * ZS;
     Number Z6 = ZS * ZS * ZS;
-    Number t4 = s1 * l3 * Z2 - r * r * Z6 * f6;
-    t4 = t4 * Z2 * Z2;
-    Number t3 = (l2 * s1 + l3 * s0) * Z2 * Z2 - r * r * Z6 * (f5 * Z2 - f6 * U21);
-    t3 = t3 * Z2;
-    Number t2 = Z2 * Z2 * (s0 * Z2 * l2 + s1 * (Z2 * l1 + r * ZS * Z * V21 * 2)) - r * r * Z6 * ( (f4 * Z2 - f6 * U20) * Z2 - (f5 * Z2 - f6 * U21) * U21 );
+
+    std::cout << "s: " << s1 * Z2 / Z3 << " " << s0 * Z2 / Z3 << std::endl;
+    std::cout << "l: " << l3 / Z3 << " " << l2 / Z3 << " " << l1 / Z3 << " " << l0 / Z3 << std::endl;
+
+    Number t4 = s1 * l3 * Z2 - r * r * Z2 * Z2 * f6;
+    Number t3 = (l2 * s1 + l3 * s0) * Z2 - r * r * Z2 * (f5 * Z2 - f6 * U21);
+    Number t2 = Z2 * (s0 * l2 + s1 * (l1 + r * V21 * 2)) - r * r * ( (f4 * Z2 - f6 * U20) * Z2 - (f5 * Z2 - f6 * U21) * U21 );
 
     std::cout << "t: " << t4 << " " << t3 << " " << t2 << std::endl;
-
+    std::cout << t4 / Z6 << " " << t3 / Z6 << " " << t2 / Z6 << std::endl;
+ 
     // 全体に (Z1)^9 (Z2)^8 がかかっている．
     Number Ud2 = t4;
     Ud2 = Ud2 * Z1 * Z1;
