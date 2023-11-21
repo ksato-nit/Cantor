@@ -177,15 +177,11 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     Number f5 = this->f.coeff[5];
     Number f4 = this->f.coeff[4];
 
-
     // 1. 終結式を計算．
     Number z1 = U11 * Z2 - U21 * Z1;
     Number z2 = U20 * Z1 - U10 * Z2;
     Number z3 = U11 * z1 + z2 * Z1;
     Number r = z2 * z3 + z1 * z1 * U10; // Z1^3 Z2^2 がかかっている．
-
-    //std::cout << "Z1, Z2: " << Z1 << " " << Z2 << std::endl;
-    //std::cout << "z1, z2, z3, r: " << z1 << " " << z2 << " " << z3 << " " << r << std::endl;
 
     // 2. almost inverse を計算．
     Number inv1 = z1;
@@ -206,26 +202,16 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     Number l1 = s1 * U20 + s0 * U21;
     Number l0 = s0 * U20;
 
-    // ここまで正しい．
-
-
-    // 5. 多項式の係数を計算．全体に (Z1 Z2)^6 がかかっている．
+    // 5. U' を計算．全体に (Z1 Z2)^6 がかかっている．
     Number Z = Z1 * Z2;
     Number ZS = Z * Z;
     Number Z3 = Z * ZS;
     Number Z6 = ZS * ZS * ZS;
 
-    //std::cout << "s: " << s1 * Z2 / Z3 << " " << s0 * Z2 / Z3 << std::endl;
-    //std::cout << "l: " << l3 / Z3 << " " << l2 / Z3 << " " << l1 / Z3 << " " << l0 / Z3 << std::endl;
-
     Number t4 = s1 * l3 * Z2 - r * r * Z2 * Z2 * f6;
     Number t3 = (l2 * s1 + l3 * s0) * Z2 - r * r * Z2 * (f5 * Z2 - f6 * U21);
     Number t2 = Z2 * (s0 * l2 + s1 * (l1 + r * V21 * 2)) - r * r * ( (f4 * Z2 - f6 * U20) * Z2 - (f5 * Z2 - f6 * U21) * U21 );
-
-    //std::cout << "t: " << t4 << " " << t3 << " " << t2 << std::endl;
-    //std::cout << t4 / Z6 << " " << t3 / Z6 << " " << t2 / Z6 << std::endl;
  
-    // 全体に (Z1 Z2)^6 Z1^2 がかかっている．
     Number Ud2 = t4;
     Ud2 = Ud2 * Z1 * Z1;
     Number Ud1 = t3 * Z1 - t4 * U11;
@@ -233,14 +219,9 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     Number Ud0 = (t2 * Z1 - t4 * U10) * Z1 - (t3 * Z1 - t4 * U11) * U11;
     Number Zd = Ud2;
 
-    //std::cout << "Ud: " << Ud2 << " " << Ud1 << " " << Ud0 << std::endl;
-    //std::cout << Ud1 / Ud2 << " " << Ud0 / Ud2 << std::endl;
-
-
+    // 6. V' を計算．
     Number Vd0 = -l0 * Zd * Zd - V20 * r * Zd * Zd - Ud0 * (Ud1 * l3 - l2 * Zd);
     Number Vd1 = -l1 * Zd * Zd - V21 * r * Zd * Zd - l3 * (Ud1 * Ud1 - Ud0 * Zd) + Zd * Ud1 * l2;
-
-    //std::cout << Vd1 / (r * Zd * Zd * Z2) << " " << Vd0 / (r * Zd * Zd * Z2) << std::endl;
 
     Ud1 = Ud1 * Zd * Z2 * r;
     Ud0 = Ud0 * Zd * Z2 * r;
