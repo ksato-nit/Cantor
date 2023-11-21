@@ -215,26 +215,38 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     Number Z3 = Z * ZS;
     Number Z6 = ZS * ZS * ZS;
 
-    std::cout << "s: " << s1 * Z2 / Z3 << " " << s0 * Z2 / Z3 << std::endl;
-    std::cout << "l: " << l3 / Z3 << " " << l2 / Z3 << " " << l1 / Z3 << " " << l0 / Z3 << std::endl;
+    //std::cout << "s: " << s1 * Z2 / Z3 << " " << s0 * Z2 / Z3 << std::endl;
+    //std::cout << "l: " << l3 / Z3 << " " << l2 / Z3 << " " << l1 / Z3 << " " << l0 / Z3 << std::endl;
 
     Number t4 = s1 * l3 * Z2 - r * r * Z2 * Z2 * f6;
     Number t3 = (l2 * s1 + l3 * s0) * Z2 - r * r * Z2 * (f5 * Z2 - f6 * U21);
     Number t2 = Z2 * (s0 * l2 + s1 * (l1 + r * V21 * 2)) - r * r * ( (f4 * Z2 - f6 * U20) * Z2 - (f5 * Z2 - f6 * U21) * U21 );
 
-    std::cout << "t: " << t4 << " " << t3 << " " << t2 << std::endl;
-    std::cout << t4 / Z6 << " " << t3 / Z6 << " " << t2 / Z6 << std::endl;
+    //std::cout << "t: " << t4 << " " << t3 << " " << t2 << std::endl;
+    //std::cout << t4 / Z6 << " " << t3 / Z6 << " " << t2 / Z6 << std::endl;
  
-    // 全体に (Z1)^9 (Z2)^8 がかかっている．
+    // 全体に (Z1 Z2)^6 Z1^2 がかかっている．
     Number Ud2 = t4;
     Ud2 = Ud2 * Z1 * Z1;
-    Number Ud1 = t3 * Z1 - U11;
+    Number Ud1 = t3 * Z1 - t4 * U11;
     Ud1 = Ud1 * Z1;
-    Number Ud0 = (t2 * Z1 - U10) * Z1 - (t3 * Z1 - U11) * U10;
+    Number Ud0 = (t2 * Z1 - t4 * U10) * Z1 - (t3 * Z1 - t4 * U11) * U11;
+    Number Zd = Ud2;
 
-    Number V1d, V0d, Zd;
+    //std::cout << "Ud: " << Ud2 << " " << Ud1 << " " << Ud0 << std::endl;
+    //std::cout << Ud1 / Ud2 << " " << Ud0 / Ud2 << std::endl;
 
-    ProjectiveMumford ret(f, h, Ud1, Ud0, V1d, V0d, Zd);
+
+    Number Vd0 = -l0 * Zd * Zd - V20 * r * Zd * Zd - Ud0 * (Ud1 * l3 - l2 * Zd);
+    Number Vd1 = -l1 * Zd * Zd - V21 * r * Zd * Zd - l3 * (Ud1 * Ud1 - Ud0 * Zd) + Zd * Ud1 * l2;
+
+    //std::cout << Vd1 / (r * Zd * Zd * Z2) << " " << Vd0 / (r * Zd * Zd * Z2) << std::endl;
+
+    Ud1 = Ud1 * Zd * Z2 * r;
+    Ud0 = Ud0 * Zd * Z2 * r;
+    Zd = Zd * Zd * Z2 * r;
+
+    ProjectiveMumford ret(f, h, Ud1, Ud0, Vd1, Vd0, Zd);
     return ret;
 }
 

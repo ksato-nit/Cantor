@@ -464,8 +464,8 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
     Number l1d = u21 * s0d + u20 * s1d;
     Number l0d = u20 * s0d;
 
-    std::cout << "s: " << s1d << " " << s0d << std::endl;
-    std::cout << "l: " << l3d << " " << l2d << " " << l1d << " " << l0d << std::endl;
+    //std::cout << "s: " << s1d << " " << s0d << std::endl;
+    //std::cout << "l: " << l3d << " " << l2d << " " << l1d << " " << l0d << std::endl;
 
     // 5. u' を計算．
     Number k4 = f6;
@@ -476,7 +476,7 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
     Number t3 = s1d * l2d + s0d * l3d - k3 * r * r;
     Number t2 = s1d * (l1d + r * v21 * 2) + s0d * l2d - k2 * r * r;
 
-    std::cout << "t: " << t4 << " " << t3 << " " << t2 << std::endl;
+    //std::cout << "t: " << t4 << " " << t3 << " " << t2 << std::endl;
 
     Number u0d = t2 - t4 * u10 - (t3 - t4 * u11) * u11;
     Number u1d = t3 - t4 * u11;
