@@ -11,12 +11,15 @@ public:
     Number V1;
     Number V0;
     Number Z;
+    Number W1;
+    Number W0;
 
     Polynomial f;
     Polynomial h;
 
     ProjectiveMumford();
     ProjectiveMumford(Polynomial f, Polynomial h);
+    ProjectiveMumford(Polynomial f, Polynomial h, Number, Number, Number, Number, Number, Number, Number);
     ProjectiveMumford(Polynomial f, Polynomial h, Number, Number, Number, Number, Number);
     ProjectiveMumford(Polynomial f, Polynomial h, Number, Number, Number, Number);
 

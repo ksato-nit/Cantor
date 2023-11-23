@@ -20,6 +20,18 @@ ProjectiveMumford::ProjectiveMumford(Polynomial f, Polynomial h){
     this->Z = Number::ZERO();
 }
 
+ProjectiveMumford::ProjectiveMumford(Polynomial f, Polynomial h, Number U1, Number U0, Number V1, Number V0, Number Z, Number W1, Number W0){
+    this->f = f;
+    this->h = h;
+    this->U1 = U1;
+    this->U0 = U0;
+    this->V1 = V1;
+    this->V0 = V0;
+    this->Z = Z;
+    this->W1 = W1;
+    this->W0 = W0;
+}
+
 ProjectiveMumford::ProjectiveMumford(Polynomial f, Polynomial h, Number U1, Number U0, Number V1, Number V0, Number Z){
     this->f = f;
     this->h = h;
@@ -28,6 +40,8 @@ ProjectiveMumford::ProjectiveMumford(Polynomial f, Polynomial h, Number U1, Numb
     this->V1 = V1;
     this->V0 = V0;
     this->Z = Z;
+    this->W1 = U1 * U1;
+    this->W0 = U1 * U0;
 }
 
 ProjectiveMumford::ProjectiveMumford(Polynomial f, Polynomial h, Number U1, Number U0, Number V1, Number V0){
@@ -38,6 +52,8 @@ ProjectiveMumford::ProjectiveMumford(Polynomial f, Polynomial h, Number U1, Numb
     this->V1 = V1;
     this->V0 = V0;
     this->Z = Number::ONE();
+    this->W1 = U1 * U1;
+    this->W0 = U1 * U0;
 }
 
 ProjectiveMumford ProjectiveMumford::operator + (const ProjectiveMumford& m) const{
@@ -210,12 +226,12 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     Number l0 = s0 * U20;
 
     // 5. U' を計算．全体に (Z1 Z2)^6 がかかっている．
-    // 23M, 2S
+    // 21M, 2S
     Number Z = Z1 * Z2;
     Number ZS = Z * Z;
 
-    Number t4 = s1 * l3 * Z2 - rs * Z2 * Z2 * f6;
-    Number t3 = (l2 * s1 + l3 * s0) * Z2 - rs * Z2 * (f5 * Z2 - f6 * U21);
+    Number t4 = (s1 * l3 - rs * Z2 * f6) * Z2;
+    Number t3 = ((l2 * s1 + l3 * s0) - rs * (f5 * Z2 - f6 * U21)) * Z2;
     Number t2 = Z2 * (s0 * l2 + s1 * (l1 + r * V21 * 2)) - rs * ( (f4 * Z2 - f6 * U20) * Z2 - (f5 * Z2 - f6 * U21) * U21 );
  
     // 8M, 2S
