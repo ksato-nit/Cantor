@@ -486,12 +486,8 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
     // ud の計算まで正しい．
 
     // 7. v' を計算．
-    Number l3 = l3d * w3;
-    Number l2 = l2d * w3;
-    Number l1 = l1d * w3;
-    Number l0 = l0d * w3;
-    Number v1d = -l1 - v21 + (u0d - u1d * u1d) * l3 + u1d * l2;
-    Number v0d = -l0 - v20 - u1d * u0d * l3 + u0d * l2;
+    Number v1d = (-l1d + (u0d - u1d * u1d) * l3d + u1d * l2d) * w3 - v21;
+    Number v0d = (-l0d  - u1d * u0d * l3d + u0d * l2d) * w3 - v20;
 
     u.coeff[2] = Number::ONE();
     u.coeff[1] = u1d;
