@@ -227,13 +227,14 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     l2 = l2 + s0 * Z2;
 
     // 5. U' を計算．全体に (Z1 Z2)^6 がかかっている．
-    // 21M, 2S
+    // 20M, 2S
     Number Z = Z1 * Z2;
     Number ZS = Z * Z;
+    Number f5Z2 = f5 * Z2;
 
     Number t4 = (s1 * l3 - rs * Z2 * f6) * Z2;
-    Number t3 = ((l2 * s1 + l3 * s0) - rs * (f5 * Z2 - f6 * U21)) * Z2;
-    Number t2 = Z2 * (s0 * l2 + s1 * (l1 + r * V21 * 2)) - rs * ( (f4 * Z2 - f6 * U20) * Z2 - (f5 * Z2 - f6 * U21) * U21 );
+    Number t3 = ((l2 * s1 + l3 * s0) - rs * (f5Z2 - f6 * U21)) * Z2;
+    Number t2 = Z2 * (s0 * l2 + s1 * (l1 + r * V21 * 2)) - rs * ( (f4 * Z2 - f6 * U20) * Z2 - (f5Z2 - f6 * U21) * U21 );
  
     // 8M, 2S
     Number Ud2 = t4;
