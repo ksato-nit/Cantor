@@ -5,6 +5,12 @@ cmake_minimum_required(VERSION 3.5.0)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Mac で GCC の使用を強制
+if(CMAKE_SYSTEM_NAME MATCHES "Sonoma")
+    set(CMAKE_C_COMPILER "/opt/homebrew/bin/gcc" CACHE string "clang compiler" FORCE)
+    set(CMAKE_CXX_COMPILER "/opt/homebrew/bin/g++" CACHE string "clang++ compiler" FORCE)
+endif()
+
 # プロジェクト名
 project(Cantor)
 
