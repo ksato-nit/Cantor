@@ -193,7 +193,7 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     Number f5 = this->f.coeff[5];
     Number f4 = this->f.coeff[4];
 
-    // 72M, 6S
+    // 71M, 6S
 
     // 1. 終結式を計算．
     // 8M, 2S
@@ -219,11 +219,12 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     Number s0 = w2 - U10 * w3;
 
     // 4. l を計算．全体に (Z1 Z2)^3 がかかっている．
-    // 6M
+    // 5M
     Number l3 = s1 * Z2;
-    Number l2 = s1 * U21 + s0 * Z2;
-    Number l1 = s1 * U20 + s0 * U21;
+    Number l2 = s1 * U21;
     Number l0 = s0 * U20;
+    Number l1 = (s1 + s0) * (U21 + U20) - l2 - l0; //s1 * U20 + s0 * U21;
+    l2 = l2 + s0 * Z2;
 
     // 5. U' を計算．全体に (Z1 Z2)^6 がかかっている．
     // 21M, 2S

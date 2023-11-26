@@ -411,7 +411,7 @@ Mumford Mumford::HarleyAddDegenerated(const Mumford& m) const{
 }
 
 Mumford Mumford::LangeAdd(const Mumford& m) const{
-    std::cout << "Harley Addition." << std::endl;
+    std::cout << "Lange Addition." << std::endl;
     Polynomial u1 = this->u;
     Polynomial v1 = this->v;
     Polynomial u2 = m.u;
@@ -460,9 +460,10 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
 
     // 4. l' を計算．
     Number l3d = s1d;
-    Number l2d = u21 * s1d + s0d;
-    Number l1d = u21 * s0d + u20 * s1d;
+    Number l2d = u21 * s1d;
     Number l0d = u20 * s0d;
+    Number l1d = (s1d + s0d) * (u21 + u20) - l2d - l0d; //u21 * s0d + u20 * s1d; 
+    l2d = l2d + s0d;
 
     // 5. u' を計算．
     Number k4 = f6;
