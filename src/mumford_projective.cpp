@@ -193,7 +193,7 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     Number f5 = this->f.coeff[5];
     Number f4 = this->f.coeff[4];
 
-    // 68M, 6S
+    // 65M, 7S
 
     // 1. 終結式を計算．
     // 8M, 2S
@@ -232,12 +232,13 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     Number ZS = Z * Z;
     Number f5Z2 = f5 * Z2;
     Number f6U21 = f6 * U21;
+    Number rV21 = r * V21;
 
     Number t4 = (s1 * l3 - rs * Z2 * f6) * Z2;
     Number t3 = ((l2 * s1 + l3 * s0) - rs * (f5Z2 - f6U21)) * Z2;
-    Number t2 = Z2 * (s0 * l2 + s1 * (l1 + r * V21 * 2)) - rs * ( (f4 * Z2 - f6 * U20) * Z2 - (f5Z2 - f6U21) * U21 );
+    Number t2 = Z2 * (s0 * l2 + s1 * (l1 + rV21 * 2)) - rs * ( (f4 * Z2 - f6 * U20) * Z2 - (f5Z2 - f6U21) * U21 );
  
-    // 7M, 2S
+    // 8M, 2S
     Number t4U11 = t4 * U11;
     Number t3Z1 = t3 * Z1;
     Number Ud2 = t4;
@@ -249,9 +250,9 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     Number ZdS = Zd * Zd;
 
     // 6. V' を計算．
-    // 12M
+    // 10M, 1S
     Number Vd0 = (-l0 - V20 * r) * ZdS - Ud0 * (Ud1 * l3 - l2 * Zd);
-    Number Vd1 = (-l1 - V21 * r) * ZdS - l3 * (Ud1 * Ud1 - Ud0 * Zd) + Zd * Ud1 * l2;
+    Number Vd1 = (-l1 - rV21) * ZdS - l3 * (Ud1 * Ud1 - Ud0 * Zd) + Zd * Ud1 * l2;
 
     // 7. Z' を調整．
     // 5M
