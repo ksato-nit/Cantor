@@ -193,7 +193,7 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     Number f5 = this->f.coeff[5];
     Number f4 = this->f.coeff[4];
 
-    // 71M, 6S
+    // 68M, 6S
 
     // 1. 終結式を計算．
     // 8M, 2S
@@ -227,21 +227,24 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     l2 = l2 + s0 * Z2;
 
     // 5. U' を計算．全体に (Z1 Z2)^6 がかかっている．
-    // 20M, 2S
+    // 19M, 2S
     Number Z = Z1 * Z2;
     Number ZS = Z * Z;
     Number f5Z2 = f5 * Z2;
+    Number f6U21 = f6 * U21;
 
     Number t4 = (s1 * l3 - rs * Z2 * f6) * Z2;
-    Number t3 = ((l2 * s1 + l3 * s0) - rs * (f5Z2 - f6 * U21)) * Z2;
-    Number t2 = Z2 * (s0 * l2 + s1 * (l1 + r * V21 * 2)) - rs * ( (f4 * Z2 - f6 * U20) * Z2 - (f5Z2 - f6 * U21) * U21 );
+    Number t3 = ((l2 * s1 + l3 * s0) - rs * (f5Z2 - f6U21)) * Z2;
+    Number t2 = Z2 * (s0 * l2 + s1 * (l1 + r * V21 * 2)) - rs * ( (f4 * Z2 - f6 * U20) * Z2 - (f5Z2 - f6U21) * U21 );
  
-    // 8M, 2S
+    // 7M, 2S
+    Number t4U11 = t4 * U11;
+    Number t3Z1 = t3 * Z1;
     Number Ud2 = t4;
     Ud2 = Ud2 * Z1 * Z1;
-    Number Ud1 = t3 * Z1 - t4 * U11;
+    Number Ud1 = t3Z1 - t4U11;
     Ud1 = Ud1 * Z1;
-    Number Ud0 = (t2 * Z1 - t4 * U10) * Z1 - (t3 * Z1 - t4 * U11) * U11;
+    Number Ud0 = (t2 * Z1 - t4 * U10) * Z1 - (t3Z1 - t4U11) * U11;
     Number Zd = Ud2;
     Number ZdS = Zd * Zd;
 
