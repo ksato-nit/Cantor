@@ -20,6 +20,18 @@ ProjectiveMumford::ProjectiveMumford(Polynomial f, Polynomial h){
     this->Z = Number::ZERO();
 }
 
+ProjectiveMumford::ProjectiveMumford(Polynomial f, Polynomial h, Number U1, Number U0, Number V1, Number V0, Number Z, Number W1, Number W0){
+    this->f = f;
+    this->h = h;
+    this->U1 = U1;
+    this->U0 = U0;
+    this->V1 = V1;
+    this->V0 = V0;
+    this->Z = Z;
+    this->W1 = W1;
+    this->W0 = W0;
+}
+
 ProjectiveMumford::ProjectiveMumford(Polynomial f, Polynomial h, Number U1, Number U0, Number V1, Number V0, Number Z){
     this->f = f;
     this->h = h;
@@ -28,6 +40,8 @@ ProjectiveMumford::ProjectiveMumford(Polynomial f, Polynomial h, Number U1, Numb
     this->V1 = V1;
     this->V0 = V0;
     this->Z = Z;
+    this->W1 = U1 * U1;
+    this->W0 = U1 * U0;
 }
 
 ProjectiveMumford::ProjectiveMumford(Polynomial f, Polynomial h, Number U1, Number U0, Number V1, Number V0){
@@ -38,6 +52,8 @@ ProjectiveMumford::ProjectiveMumford(Polynomial f, Polynomial h, Number U1, Numb
     this->V1 = V1;
     this->V0 = V0;
     this->Z = Number::ONE();
+    this->W1 = U1 * U1;
+    this->W0 = U1 * U0;
 }
 
 ProjectiveMumford ProjectiveMumford::operator + (const ProjectiveMumford& m) const{
@@ -154,6 +170,98 @@ ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) con
     U0d = U0d * ZdM;
 
     ProjectiveMumford ret(f, h, U1d, U0d, V1d, V0d, Zd);
+    return ret;
+}
+
+ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
+    std::cout << "Projective Lange Addition." << std::endl;
+
+    Number U11 = this->U1;
+    Number U10 = this->U0;
+    Number U21 = m.U1;
+    Number U20 = m.U0;
+
+    Number V11 = this->V1;
+    Number V10 = this->V0;
+    Number V21 = m.V1;
+    Number V20 = m.V0;
+
+    Number Z1 = this->Z;
+    Number Z2 = m.Z;
+
+    Number f6 = this->f.coeff[6];
+    Number f5 = this->f.coeff[5];
+    Number f4 = this->f.coeff[4];
+
+    // 65M, 7S
+
+    // 1. 終結式を計算．
+    // 8M, 2S
+    Number z1 = U11 * Z2 - U21 * Z1;
+    Number z2 = U20 * Z1 - U10 * Z2;
+    Number z3 = U11 * z1 + z2 * Z1;
+    Number r = z2 * z3 + z1 * z1 * U10; // Z1^3 Z2^2 がかかっている．
+    Number rs = r * r;
+
+    // 2. almost inverse を計算．
+    // 6M
+    Number inv1 = z1;
+    Number inv0 = z3;
+
+    Number w0 = V10 * Z2 - V20 * Z1;
+    Number w1 = V11 * Z2 - V21 * Z1;
+    Number w2 = inv0 * w0;
+    Number w3 = inv1 * w1;
+
+    // 3. s を計算．
+    // 4M
+    Number s1 = (inv0 + Z1 * inv1) * (w0 + w1) - w2 - w3 * (Z1 + U11);
+    Number s0 = w2 - U10 * w3;
+
+    // 4. l を計算．全体に (Z1 Z2)^3 がかかっている．
+    // 5M
+    Number l3 = s1 * Z2;
+    Number l2 = s1 * U21;
+    Number l0 = s0 * U20;
+    Number l1 = (s1 + s0) * (U21 + U20) - l2 - l0; //s1 * U20 + s0 * U21;
+    l2 = l2 + s0 * Z2;
+
+    // 5. U' を計算．全体に (Z1 Z2)^6 がかかっている．
+    // 19M, 2S
+    Number Z = Z1 * Z2;
+    Number ZS = Z * Z;
+    Number f5Z2 = f5 * Z2;
+    Number f6U21 = f6 * U21;
+    Number rV21 = r * V21;
+
+    Number t4 = (s1 * l3 - rs * Z2 * f6) * Z2;
+    Number t3 = ((l2 * s1 + l3 * s0) - rs * (f5Z2 - f6U21)) * Z2;
+    Number t2 = Z2 * (s0 * l2 + s1 * (l1 + rV21 * 2)) - rs * ( (f4 * Z2 - f6 * U20) * Z2 - (f5Z2 - f6U21) * U21 );
+ 
+    // 8M, 2S
+    Number t4U11 = t4 * U11;
+    Number t3Z1 = t3 * Z1;
+    Number Ud2 = t4;
+    Ud2 = Ud2 * Z1 * Z1;
+    Number Ud1 = t3Z1 - t4U11;
+    Ud1 = Ud1 * Z1;
+    Number Ud0 = (t2 * Z1 - t4 * U10) * Z1 - (t3Z1 - t4U11) * U11;
+    Number Zd = Ud2;
+    Number ZdS = Zd * Zd;
+
+    // 6. V' を計算．
+    // 10M, 1S
+    Number Vd0 = (-l0 - V20 * r) * ZdS - Ud0 * (Ud1 * l3 - l2 * Zd);
+    Number Vd1 = (-l1 - rV21) * ZdS - l3 * (Ud1 * Ud1 - Ud0 * Zd) + Zd * Ud1 * l2;
+
+    // 7. Z' を調整．
+    // 5M
+    Number M = Zd * Z2 * r;
+    Ud1 = Ud1 * M;
+    Ud0 = Ud0 * M;
+    Zd = Zd * M;
+
+    ProjectiveMumford ret(f, h, Ud1, Ud0, Vd1, Vd0, Zd);
     return ret;
 }
 

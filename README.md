@@ -7,8 +7,9 @@
 
 # Dependencies
 - GCC 3.11
-- CMake 
-- Boost C++ 
+- CMake 3.5
+- Boost C++
+- GMP
 
 # Build
 ```./build.sh```

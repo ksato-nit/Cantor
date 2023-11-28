@@ -31,11 +31,23 @@ int main(){
     D2.print();
 
     std::cout << "D1 + D2:" << std::endl;
-    Mumford sum1 = D1.CostelloAdd(D2);
+    Mumford sum1 = D1.LangeAdd(D2);
     sum1.print();
 
-    Mumford sum2 = D1.LangeAdd(D2);
-    sum2.print();
+    Polynomial u1_half = u1 * Number(2);
+    Polynomial v1_half = v1 * Number(2);
+    Polynomial u2_half = u2 * Number(3);
+    Polynomial v2_half = v2 * Number(3);
+
+    ProjectiveMumford D1P(f, h, u1_half.coeff[1], u1_half.coeff[0], v1_half.coeff[1], v1_half.coeff[0], Number(2));
+    ProjectiveMumford D2P(f, h, u2_half.coeff[1], u2_half.coeff[0], v2_half.coeff[1], v2_half.coeff[0], Number(3));
+    std::cout << "D1P:" << std::endl;
+    D1P.print();
+    std::cout << "D2P:" << std::endl;
+    D2P.print();
+
+    std::cout << "D1P + D2P:" << std::endl;
+    D1P.LangeAdd(D2P).print();
 
     return 0;
 }

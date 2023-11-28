@@ -11,17 +11,21 @@ public:
     Number V1;
     Number V0;
     Number Z;
+    Number W1;
+    Number W0;
 
     Polynomial f;
     Polynomial h;
 
     ProjectiveMumford();
     ProjectiveMumford(Polynomial f, Polynomial h);
+    ProjectiveMumford(Polynomial f, Polynomial h, Number, Number, Number, Number, Number, Number, Number);
     ProjectiveMumford(Polynomial f, Polynomial h, Number, Number, Number, Number, Number);
     ProjectiveMumford(Polynomial f, Polynomial h, Number, Number, Number, Number);
 
     ProjectiveMumford operator + (const ProjectiveMumford& q) const;
     ProjectiveMumford CostelloAdd(const ProjectiveMumford& q) const;
+    ProjectiveMumford LangeAdd(const ProjectiveMumford& q) const;
     ProjectiveMumford inv();
     ProjectiveMumford zero();
     void print();
