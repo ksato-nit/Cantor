@@ -2,20 +2,20 @@
 #include "algorithm"
 #include "iostream"
 #include <boost/multiprecision/cpp_int.hpp>
+#include <gmpxx.h>
 
 // 抽象的な体の要素を実現する．
 class Number {
 public:
-    boost::multiprecision::cpp_int CHARA = 31;
-        
-    boost::multiprecision::cpp_int value;
+    mpz_class CHARA = 31;
+    mpz_class value;
 
     Number();
-    Number(boost::multiprecision::cpp_int value);
+    Number(mpz_class value);
     Number operator + (const Number&) const;
     Number operator - (const Number&) const;
     Number operator * (const Number&) const;
-    Number operator * (const boost::multiprecision::cpp_int) const;
+    Number operator * (const mpz_class) const;
     Number operator / (const Number&) const;
     bool operator == (const Number&) const;
     bool operator != (const Number&) const;
