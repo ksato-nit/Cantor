@@ -9,7 +9,6 @@
 // 2 次拡大体の要素．
 class ExtendedNumber{
 public:
-    Number CHARA = Number(mpz_class(31));
     Polynomial f; // 既約多項式
 
     Polynomial g;

@@ -7,7 +7,7 @@ TEST(ExtehdedNumberTest, ModValueEquals) {
     Polynomial f(2);
     f.coeff[0] = Number::ONE(); f.coeff[1] = Number::ONE(); f.coeff[2] = Number::ONE();
     ExtendedNumber x(f, Number::ONE(), Number::ZERO());
-    ExtendedNumber y(f, Number::ONE() - x.CHARA, Number::ZERO());
+    ExtendedNumber y(f, Number::ONE() - f.coeff[0].CHARA, Number::ZERO());
     EXPECT_EQ(x, y);
 }
 
