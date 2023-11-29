@@ -35,14 +35,20 @@ int main(){
     Mumford D1(f, h, u1, v1);
     Mumford D2(f, h, u2, v2);
 
+    /*
     std::cout << "D1:" << std::endl;
     D1.print();
     std::cout << "D2:" << std::endl;
     D2.print();
+    */
 
+    std::chrono::system_clock::time_point start, end;
+    start = std::chrono::system_clock::now();
     std::cout << "D1 + D2:" << std::endl;
-    Mumford sum1 = D1.LangeAdd(D2);
+    Mumford sum1 = D1.CostelloAdd(D2);
+    end = std::chrono::system_clock::now();
     sum1.print();
+    std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
 
     Polynomial u1_half = u1 * Number(2);
     Polynomial v1_half = v1 * Number(2);
@@ -51,13 +57,20 @@ int main(){
 
     ProjectiveMumford D1P(f, h, u1_half.coeff[1], u1_half.coeff[0], v1_half.coeff[1], v1_half.coeff[0], Number(2));
     ProjectiveMumford D2P(f, h, u2_half.coeff[1], u2_half.coeff[0], v2_half.coeff[1], v2_half.coeff[0], Number(3));
+
+    /*
     std::cout << "D1P:" << std::endl;
     D1P.print();
     std::cout << "D2P:" << std::endl;
     D2P.print();
+    */
 
     std::cout << "D1P + D2P:" << std::endl;
-    D1P.LangeAdd(D2P).print();
+    start = std::chrono::system_clock::now();
+    ProjectiveMumford sum1P = D1P.LangeAdd(D2P);
+    end = std::chrono::system_clock::now();
+    sum1P.print();
+    std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
 
     return 0;
 }
