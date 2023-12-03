@@ -569,9 +569,24 @@ Mumford Mumford::doubling(){
     std::cout << u2d << " " << u1d << " " << u0d << std::endl;
     // ここまで正しい．
 
+    // 7. r と u2d の逆元を計算．
+    w0 = (r * u2d).inv();
+    w1 = w0 * r;
+    w2 = w0 * u2d;
+
+    // 8. u' を計算．
+    u1d = u1d * w1;
+    u0d = u0d * w1;
+
     // 9. v' を計算．
-    Number v1d ;
-    Number v0d ;
+    Number l3 = s1d * w2;
+    Number l2 = (s1d * u1 + s0d) * w2;
+    Number l1 = (s1d * u0 + s0d * u1) * w2;
+    Number l0 = s0d * u0 * w2;
+    std::cout << l3 << " " << l2 << " " << l1 << " " << l0 << std::endl;
+    Number v1d = l3 * u1d * u1d - l3 * u0d - l2 * u1d + l1 + v1;
+    Number v0d = l3 * u1d * u0d - l2 * u0d + l0 + v0;
+    std::cout << v1d << " " << v0d << std::endl;
 
     Polynomial ud(2);
     Polynomial vd(1);
