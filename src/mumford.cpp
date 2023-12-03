@@ -511,17 +511,15 @@ Mumford Mumford::doubling(){
     Number v1 = v.coeff[1];
     Number v0 = v.coeff[0];
 
-    Number h0 = this->h.coeff[0];
-    Number h1 = this->h.coeff[1];
-    Number h2 = this->h.coeff[2];
-
     Number f2 = this->f.coeff[2];
     Number f3 = this->f.coeff[3];
     Number f4 = this->f.coeff[4];
+    Number f5 = this->f.coeff[5];
+    Number f6 = this->f.coeff[6];
 
     // 1. v~ を計算．
-    Number v1t = h1 + v1 * 2 - h2 * u1;
-    Number v0t = h0 + v0 * 2 - h2 * u0;
+    Number v1t = v1 * 2;
+    Number v0t = v0 * 2;
 
     // 2. v~ と u の終結式を計算．
     Number w0 = v1 * v1;
@@ -529,90 +527,74 @@ Mumford Mumford::doubling(){
     Number w2 = v1t * v1t;
     Number w3 = u1 * v1t;
     Number r = u0 * w2 + v0t * (v0t - w3);
+    std::cout << r << std::endl;
 
     // 3. r の almost inverse を計算．
     Number inv1d = v1t * (-1);
     Number inv0d = v0t - w3;
+    std::cout << inv1d << " " << inv0d << std::endl;
 
-    // 4. k' を計算．
-    w3 = f3 + w1;
+    // 4. k を計算．
     Number w4 = u0 * 2;
-    Number k1d = (w1 - f4 * u1) * 2 + w3 - w4 - h2 * v1;
-    Number k0d = u1 * (w4 * 2 - w3 + f4 * u1 + h2 * v1) + f2 - w0 - f4 * u0 * 2 - h1 * v1 - h2 * v0;
+    Number k4 = f6;
+    Number k3 = f5 - f6 * u1;
+    Number k2 = f4 - k4 * u0 - k3 * u1;
+    Number k1 = f3 - k3 * u0 - k2 * u1;
+    Number k0 = f2 - v1 * v1 - k2 * u0 - k1 * u1;
+    Number k1d = k1 - u1 * k2 + u1 * u1 * k3 - u0 * k3 + k4 * u1 * u0 * 2 - u1 * u1 * u1 * k4;
+    Number k0d = k0 - u0 * k2 + u1 * u0 * k3 - u1 * u1 * u0 * k4 + u0 * u0 * k4;
+    std::cout << k4 << " " << k3 << " " << k2 << " " << k1 << " " << k0 << " " << k1d << " " << k0d << std::endl;
 
     // 5. s' を計算．
     w0 = k0d * inv0d;
     w1 = k1d * inv1d;
     Number s1d = (inv0d + inv1d) * (k0d + k1d) - w0 - w1 * (Number::ONE() + u1);
     Number s0d = w0 - u0 * w1;
+    std::cout << s1d << " " << s0d << std::endl;
+    // ここまで正しい．
 
     if(!s1d.isZero()){
-        // 6. s'' を計算．
-        w1 = (r * s1d).inv();
-        w2 = r * w1;
-        w3 = s1d * s1d * w1;
-        w4 = r * w2;
-        Number w5 = w4 * w4;
-        Number s0dd = s0d * w2;
-
-        // 7. l' を計算．
-        Number l2d = u1 + s0dd;
-        Number l1d = u1 * s0dd + u0;
-        Number l0d = u0 * s0dd;
-
-        // 8. u' を計算．
-        Number u0d = s0dd * s0dd + w4 * (h2 * (s0dd - u1) + v1 * 2 + h1) + w5 * (u1 * 2 - f4);
-        Number u1d = s0dd * 2 + h2 * w4 - w5;
-
-        // 9. v' を計算．
-        w1 = l2d - u1d;
-        w2 = u1d * w1 + u0d - l1d;
-        Number v1d = w2 * w3 - v1 - h1 + h2 * u1d;
-        w2 = u0d * w1 - l0d;
-        Number v0d = w2 * w3 - v0 - h0 + h2 * u0d;
-
-        Polynomial u(2);
-        Polynomial v(1);
-
-        u.coeff[2] = Number::ONE();
-        u.coeff[1] = u1d;
-        u.coeff[0] = u0d;
-
-        v.coeff[1] = v1d;
-        v.coeff[0] = v0d;
-
-        Mumford ret(f, h, u, v);
-        return ret;
-    }else{
         std::cout << "Special case." << std::endl;
         // サブルーチン
-
-        // 6'. s を計算．
-        w1 = r.inv();
-        Number s0 = s0d * w1;
-        w2 = u0 * s0 + v0 + h0;
-
-        // 7'. u' を計算．
-        Number u0d = f4 - s0 * s0 - s0 * h2 - u1 * 2;
-
-        // 8. v' を計算．
-        Number w1 = s0 * (u1 - u0d) - h2 * h2 * u0d + v1 + h1;
-        Number v0d = v0d * w1 - w2;
-
-
-        Polynomial u(1);
-        Polynomial v(0);
-
-        u.coeff[1] = Number::ONE();
-        u.coeff[0] = u0d;
-
-        v.coeff[0] = v0d;
-
         Mumford ret(f, h, u, v);
         return ret;
     }
 
-    Mumford ret;
+    // 6. s'' を計算．
+    w1 = (r * s1d).inv();
+    w2 = r * w1;
+    w3 = s1d * s1d * w1;
+    w4 = r * w2;
+    Number w5 = w4 * w4;
+    Number s0dd = s0d * w2;
+
+    // 7. l' を計算．
+    Number l2d = u1 + s0dd;
+    Number l1d = u1 * s0dd + u0;
+    Number l0d = u0 * s0dd;
+
+    // 8. u' を計算．
+    Number u0d = s0dd * s0dd + w4 * (v1 * 2) + w5 * (u1 * 2 - f4);
+    Number u1d = s0dd * 2 - w5;
+
+    // 9. v' を計算．
+    w1 = l2d - u1d;
+    w2 = u1d * w1 + u0d - l1d;
+    Number v1d = w2 * w3 - v1;
+    w2 = u0d * w1 - l0d;
+    Number v0d = w2 * w3 - v0;
+
+    Polynomial ud(2);
+    Polynomial vd(1);
+
+    ud.coeff[2] = Number::ONE();
+    ud.coeff[1] = u1d;
+    ud.coeff[0] = u0d;
+
+    vd.coeff[1] = v1d;
+    vd.coeff[0] = v0d;
+
+    Mumford ret(f, h, ud, vd);
     return ret;
 }
 
