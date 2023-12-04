@@ -535,14 +535,17 @@ Mumford Mumford::doubling(){
     std::cout << inv1d << " " << inv0d << std::endl;
 
     // 4. k を計算．
-    Number w4 = u0 * 2;
     Number k4 = f6;
-    Number k3 = f5 - f6 * u1;
-    Number k2 = f4 - k4 * u0 - k3 * u1;
-    Number k1 = f3 - k3 * u0 - k2 * u1;
-    Number k0 = f2 - v1 * v1 - k2 * u0 - k1 * u1;
-    Number k1d = k1 - u1 * k2 + u1 * u1 * k3 - u0 * k3 + k4 * u1 * u0 * 2 - u1 * u1 * u1 * k4;
-    Number k0d = k0 - u0 * k2 + u1 * u0 * k3 - u1 * u1 * u0 * k4 + u0 * u0 * k4;
+    Number k4u0 = k4 * u0;
+    Number k4u1 = k4 * u1;
+    Number k3 = f5 - k4u1;
+    Number k3u0 = k3 * u0;
+    Number k2 = f4 - k4u0 - k3 * u1;
+    Number k1 = f3 - k3u0 - k2 * u1;
+    Number k0 = f2 - w0 - k2 * u0 - k1 * u1;
+    Number u1kd = u1 * (k3 - k4u1);
+    Number k1d = k1 + w1 * (k3 - k4u1) - k3u0 + u1 * (k4u0 * 2 - k2);
+    Number k0d = k0 + u0 * (u1kd + k4u0 - k2);
     std::cout << k4 << " " << k3 << " " << k2 << " " << k1 << " " << k0 << " " << k1d << " " << k0d << std::endl;
 
     // 5. s' を計算．
@@ -560,9 +563,9 @@ Mumford Mumford::doubling(){
     }
 
     // 6. u' を計算．
-    Number u0d = r * k2 - v1 * s1d * 2 - r * k4 * u0 - r * (k3 - k4 * u1) * u1;
-    Number u1d = r * k3 - r * k4 * u1;
     Number u2d = r * k4;
+    Number u1d = r * (k3 - u2d);
+    Number u0d = r * (k2 - k4u0 - u1kd) - v1 * s1d * 2;
     u0d = s0d * s0d - r * u0d;
     u1d = s1d * s0d * 2 - r * u1d;
     u2d = s1d * s1d - r * u2d;
@@ -584,7 +587,7 @@ Mumford Mumford::doubling(){
     Number l1 = (s1d * u0 + s0d * u1) * w2;
     Number l0 = s0d * u0 * w2;
     std::cout << l3 << " " << l2 << " " << l1 << " " << l0 << std::endl;
-    Number v1d = l3 * u1d * u1d - l3 * u0d - l2 * u1d + l1 + v1;
+    Number v1d = l3 * (u1d * u1d - u0d) - l2 * u1d + l1 + v1;
     Number v0d = l3 * u1d * u0d - l2 * u0d + l0 + v0;
     std::cout << v1d << " " << v0d << std::endl;
 
