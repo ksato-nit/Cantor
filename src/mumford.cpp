@@ -562,6 +562,64 @@ Mumford Mumford::doubling(){
         return ret;
     }
 
+    // 6. r と u2d と s1d の逆元を計算．
+    Number f6r = r * f6;
+    Number u2d = s1d * s1d - r * f6r;
+    Number u2dr = r * u2d;
+    Number q0 = (u2dr * s1d).inv();
+    Number q0s1d = q0 * s1d;
+    Number q1 = q0s1d * r; // = 1/u2d
+    Number q2 = q0s1d * u2d; // = 1/r
+    Number s0dd = s0d * (q0 * u2dr);
+
+    w3 = s1d * q2;
+    Number w4 = r * q0 * u2dr;
+    Number w5 = w4 * w4;
+
+    // 7. u' を計算．
+    Number u0d = s0dd * s0dd + w4 * 2 * v1 - w5 * (f4 - (u0 * 2 + u1 * u1) * f6 - (f5 - u1 * f6 * 2) * u1 * 2);
+    Number u1d = s0dd * 2 - w5 * (f5 - u1 * f6 * 2);
+    u2d = Number::ONE() - w5 * f6;
+
+    /*
+    Number u1d = r * (k3 - f6r);
+    Number u0d = r * (k2 - k4u0 - u1kd) - v1 * s1d * 2;
+    u0d = s0d * s0d - r * u0d;
+    u1d = s1d * s0d * 2 - r * u1d;
+    */
+    std::cout << u2d << " " << u1d << " " << u0d << std::endl;
+
+    // 8. u' を計算．
+    u1d = u1d * q1;
+    u0d = u0d * q1;
+
+    // 9. v' を計算．
+    Number l2 = u1 + s0dd;
+    Number l1 = u1 * s0dd + u0;
+    Number l0 = u0 * s0dd;
+
+    w1 = l2 - u1d;
+    w2 = u1d * w1 + u0d - l1;
+    Number v1d = w2 * w3 - v1;
+    w2 = u0d * w1 - l0;
+    Number v0d = w2 * w3 - v0;
+    std::cout << v1d << " " << v0d << std::endl;
+
+    /*
+    // 5. s' を計算．
+    w0 = k0d * inv0d;
+    w1 = k1d * inv1d;
+    Number s1d = (inv0d + inv1d) * (k0d + k1d) - w0 - w1 * (Number::ONE() + u1);
+    Number s0d = w0 - u0 * w1;
+    std::cout << s1d << " " << s0d << std::endl;
+
+    if(s1d.isZero()){
+        std::cout << "Special case." << std::endl;
+        // サブルーチン
+        Mumford ret(f, h, u, v);
+        return ret;
+    }
+
     // 6. u' を計算．
     Number u2d = r * k4;
     Number u1d = r * (k3 - u2d);
@@ -590,6 +648,8 @@ Mumford Mumford::doubling(){
     Number v1d = l3 * (u1d * u1d - u0d) - l2 * u1d + l1 + v1;
     Number v0d = l3 * u1d * u0d - l2 * u0d + l0 + v0;
     std::cout << v1d << " " << v0d << std::endl;
+
+    */
 
     Polynomial ud(2);
     Polynomial vd(1);
