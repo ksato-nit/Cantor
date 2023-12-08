@@ -334,7 +334,17 @@ ProjectiveMumford ProjectiveMumford::doubling() const{
     Number Zd = Ud2 * Z * Z;
     std::cout << Zd << " " << Ud1 << " " << Ud0 << std::endl;
 
-    Number Vd1, Vd0;
+    // v' を計算．
+    // r Z^7 がかかっている．
+    Number l3 = s1d * Z * Z;
+    Number l2 = (s1d * U1 + s0d) * Z;
+    Number l1 = (s1d * U0 * Z + s0d * U1);
+    Number l0 = s0d * U0;
+    std::cout << l3 << " " << l2 << " " << l1 << " " << l0 << std::endl;
+    Number Vd1 = l3 * (Ud1 * Ud1 - Ud0 * Zd) - l2 * Ud1 * Zd + l1 * Zd * Zd + V1 * (Z * Z * Z) * r * Zd * Zd;
+    Number Vd0 = l3 * Ud1 * Ud0 - l2 * Ud0 * Zd + l0 * Zd * Zd + V0 * (Z * Z * Z) * r * Zd * Zd;
+    Zd = Z * Z * Z * Z * Zd * Zd * r;
+    std::cout << Vd1 << " " << Vd0 << " " << Zd << std::endl;
 
     ProjectiveMumford ret(f, h, Ud1, Ud0, Vd1, Vd0, Zd);
     return ret;
