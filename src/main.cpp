@@ -24,10 +24,15 @@ int main(){
     v1.coeff[0].value.set_str("-24", 10);
 
     Mumford D1(f, h, u1, v1);
-
-    std::cout << "2 * D1" << std::endl;
     Mumford sum1 = D1.doubling();
     sum1.print();
+
+    Polynomial u1_half = u1 * Number(2);
+    Polynomial v1_half = v1 * Number(2);
+
+    ProjectiveMumford D1P(f, h, u1_half.coeff[1], u1_half.coeff[0], v1_half.coeff[1], v1_half.coeff[0], Number(2));
+    ProjectiveMumford sum2 = D1P.doubling();
+    sum2.print();
 
     return 0;
 }

@@ -517,14 +517,18 @@ Mumford Mumford::doubling(){
     Number f5 = this->f.coeff[5];
     Number f6 = this->f.coeff[6];
 
+    // 45M, 6S, I
+
     // 1. v~ を計算．
     Number v1t = v1 * 2;
     Number v0t = v0 * 2;
 
     // 2. v~ と u の終結式を計算．
+    // 3M, 2S
     Number w0 = v1 * v1;
-    Number w1 = u1 * u1;
-    Number w2 = v1t * v1t;
+    Number u1s = u1 * u1;
+    Number w1 = u1s;
+    Number w2 = w0 * 4;
     Number w3 = u1 * v1t;
     Number r = u0 * w2 + v0t * (v0t - w3);
     std::cout << r << std::endl;
@@ -535,6 +539,7 @@ Mumford Mumford::doubling(){
     std::cout << inv1d << " " << inv0d << std::endl;
 
     // 4. k を計算．
+    // 11M
     Number k4 = f6;
     Number k4u0 = k4 * u0;
     Number k4u1 = k4 * u1;
@@ -549,64 +554,7 @@ Mumford Mumford::doubling(){
     std::cout << k4 << " " << k3 << " " << k2 << " " << k1 << " " << k0 << " " << k1d << " " << k0d << std::endl;
 
     // 5. s' を計算．
-    w0 = k0d * inv0d;
-    w1 = k1d * inv1d;
-    Number s1d = (inv0d + inv1d) * (k0d + k1d) - w0 - w1 * (Number::ONE() + u1);
-    Number s0d = w0 - u0 * w1;
-    std::cout << s1d << " " << s0d << std::endl;
-
-    if(s1d.isZero()){
-        std::cout << "Special case." << std::endl;
-        // サブルーチン
-        Mumford ret(f, h, u, v);
-        return ret;
-    }
-
-    // 6. r と u2d と s1d の逆元を計算．
-    Number f6r = r * f6;
-    Number u2d = s1d * s1d - r * f6r;
-    Number u2dr = r * u2d;
-    Number q0 = (u2dr * s1d).inv();
-    Number q0s1d = q0 * s1d;
-    Number q1 = q0s1d * r; // = 1/u2d
-    Number q2 = q0s1d * u2d; // = 1/r
-    Number s0dd = s0d * (q0 * u2dr);
-
-    w3 = s1d * q2;
-    Number w4 = r * q0 * u2dr;
-    Number w5 = w4 * w4;
-
-    // 7. u' を計算．
-    Number u0d = s0dd * s0dd + w4 * 2 * v1 - w5 * (f4 - (u0 * 2 + u1 * u1) * f6 - (f5 - u1 * f6 * 2) * u1 * 2);
-    Number u1d = s0dd * 2 - w5 * (f5 - u1 * f6 * 2);
-    u2d = Number::ONE() - w5 * f6;
-
-    /*
-    Number u1d = r * (k3 - f6r);
-    Number u0d = r * (k2 - k4u0 - u1kd) - v1 * s1d * 2;
-    u0d = s0d * s0d - r * u0d;
-    u1d = s1d * s0d * 2 - r * u1d;
-    */
-    std::cout << u2d << " " << u1d << " " << u0d << std::endl;
-
-    // 8. u' を計算．
-    u1d = u1d * q1;
-    u0d = u0d * q1;
-
-    // 9. v' を計算．
-    Number l2 = u1 + s0dd;
-    Number l1 = u1 * s0dd + u0;
-    Number l0 = u0 * s0dd;
-
-    w1 = l2 - u1d;
-    w2 = u1d * w1 + u0d - l1;
-    Number v1d = w2 * w3 - v1;
-    w2 = u0d * w1 - l0;
-    Number v0d = w2 * w3 - v0;
-    std::cout << v1d << " " << v0d << std::endl;
-
-    /*
-    // 5. s' を計算．
+    // 5M
     w0 = k0d * inv0d;
     w1 = k1d * inv1d;
     Number s1d = (inv0d + inv1d) * (k0d + k1d) - w0 - w1 * (Number::ONE() + u1);
@@ -621,25 +569,26 @@ Mumford Mumford::doubling(){
     }
 
     // 6. u' を計算．
-    Number u2d = r * k4;
-    Number u1d = r * (k3 - u2d);
-    Number u0d = r * (k2 - k4u0 - u1kd) - v1 * s1d * 2;
-    u0d = s0d * s0d - r * u0d;
-    u1d = s1d * s0d * 2 - r * u1d;
-    u2d = s1d * s1d - r * u2d;
+    // 8M, 3S
+    Number rs = r * r;
+    Number u2d = s1d * s1d - rs * f6;
+    Number u1d = s1d * s0d * 2 - rs * (f5 - k4u1 * 2);
+    Number u0d = s0d * s0d + v1 * s1d * r * 2 - rs * (f4 - (u0 * 2 + u1s) * f6 - u1 * (f5 - k4u1 * 2) * 2);
     std::cout << u2d << " " << u1d << " " << u0d << std::endl;
-    // ここまで正しい．
 
     // 7. r と u2d の逆元を計算．
+    // 3M, I
     w0 = (r * u2d).inv();
     w1 = w0 * r;
     w2 = w0 * u2d;
 
     // 8. u' を計算．
+    // 2M
     u1d = u1d * w1;
     u0d = u0d * w1;
 
     // 9. v' を計算．
+    // 13M, 1S
     Number l3 = s1d * w2;
     Number l2 = (s1d * u1 + s0d) * w2;
     Number l1 = (s1d * u0 + s0d * u1) * w2;
@@ -648,8 +597,6 @@ Mumford Mumford::doubling(){
     Number v1d = l3 * (u1d * u1d - u0d) - l2 * u1d + l1 + v1;
     Number v0d = l3 * u1d * u0d - l2 * u0d + l0 + v0;
     std::cout << v1d << " " << v0d << std::endl;
-
-    */
 
     Polynomial ud(2);
     Polynomial vd(1);
