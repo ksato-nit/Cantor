@@ -311,18 +311,19 @@ ProjectiveMumford ProjectiveMumford::doubling() const{
     Number inv0d = Z * V0t - W3;
 
     // 4. k を計算．
-    // 22M
+    // 16M
     Number k4 = f6;
     Number k4U1 = k4 * U1;
+    Number k4U0Z = k4 * U0Z;
     Number k3 = f5 * Z - k4U1;
     Number k3U0Z = k3 * U0Z;
-    Number k2 = f4 * Z2 - k4 * U0Z - k3 * U1;
+    Number k2 = f4 * Z2 - k4U0Z - k3 * U1;
     Number k1 = f3 * Z3 - k3U0Z - k2 * U1;
-    Number k0 = f2 * Z4- W0 * Z2 - k2 * U0Z - k1 * U1;
+    Number k0 = f2 * Z4 - W0 * Z2 - k2 * U0Z - k1 * U1;
     // Z^3 がかかっている．
-    Number k1d = k1 + W1 * (k3 - k4 * U1) - k3U0Z + U1 * (k4 * U0 * Z * 2 - k2);
+    Number k1d = k1 + W1 * (k3 - k4U1) - k3U0Z + U1 * (k4U0Z * 2 - k2);
     // Z^4 がかかっている．
-    Number k0d = k0 + U0Z * (U1 * (k3 - k4U1) + k4 * U0Z - k2);
+    Number k0d = k0 + U0Z * (U1 * (k3 - k4U1) + k4U0Z - k2);
     std::cout << k4 << " " << k3 << " " << k2 << " " << k1 << " " << k0 << " " << k1d << " " << k0d << std::endl;
 
     // 5. s を計算．
