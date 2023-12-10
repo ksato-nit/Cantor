@@ -280,7 +280,7 @@ ProjectiveMumford ProjectiveMumford::doubling() const{
     Number f3 = this->f.coeff[3];
     Number f2 = this->f.coeff[2];
 
-    // 62M, 7S
+    // 60M, 9S
 
     // 1. v~ を計算．
     Number V1t = V1 * 2;
@@ -294,28 +294,29 @@ ProjectiveMumford ProjectiveMumford::doubling() const{
     Number W2 = W0 * 4;
     Number W3 = U1 * V1t;
     // Z^3 がかかっている．
-    Number r = U0 * W2 + V0t * (V0t * Z - W3);
+    Number V0tZ = V0t * Z;
+    Number r = U0 * W2 + V0t * (V0tZ - W3);
     std::cout << Z << std::endl;
     std::cout << r << std::endl;
 
     Number U0Z = U0 * Z;
+    Number f5Z = f5 * Z;
     Number Z2 = Z * Z;
     Number Z3 = Z2 * Z;
     Number Z4 = Z2 * Z2;
 
     // 3. almost inverse を計算．
-    // 1M
     // Z がかかっている．
     Number inv1d = -V1t;
     // Z^2 がかかっている．
-    Number inv0d = Z * V0t - W3;
+    Number inv0d = V0tZ - W3;
 
     // 4. k を計算．
     // 16M
     Number k4 = f6;
     Number k4U1 = k4 * U1;
     Number k4U0Z = k4 * U0Z;
-    Number k3 = f5 * Z - k4U1;
+    Number k3 = f5Z - k4U1;
     Number k3U0Z = k3 * U0Z;
     Number k2 = f4 * Z2 - k4U0Z - k3 * U1;
     Number k1 = f3 * Z3 - k3U0Z - k2 * U1;
@@ -337,9 +338,9 @@ ProjectiveMumford ProjectiveMumford::doubling() const{
     std::cout << s1d << " " << s0d << std::endl;
 
     // 6. U' を計算．
-    // 15M, 4S
+    // 14M, 4S
     Number rs = r * r;
-    Number f5Zk = f5 * Z - k4U1 * 2;
+    Number f5Zk = f5Z - k4U1 * 2;
     Number Z3r = Z3 * r;
     Number rsZ4 = rs * Z4;
     // Z^10 がかかっている．
