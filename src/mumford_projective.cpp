@@ -280,12 +280,14 @@ ProjectiveMumford ProjectiveMumford::doubling() const{
     Number f3 = this->f.coeff[3];
     Number f2 = this->f.coeff[2];
 
+    // 74M, 7S
+
     // 1. v~ を計算．
     Number V1t = V1 * 2;
     Number V0t = V0 * 2;
 
     // 2. v~ と u の終結式を計算．
-    // 3M, 2S
+    // 4M, 2S
     Number W0 = V1 * V1;
     Number U1s = U1 * U1;
     Number W1 = U1s;
@@ -296,55 +298,78 @@ ProjectiveMumford ProjectiveMumford::doubling() const{
     std::cout << Z << std::endl;
     std::cout << r << std::endl;
 
+    Number U0Z = U0 * Z;
+    Number Z2 = Z * Z;
+    Number Z3 = Z2 * Z;
+    Number Z4 = Z2 * Z2;
+
     // 3. almost inverse を計算．
+    // 1M
     // Z がかかっている．
     Number inv1d = -V1t;
     // Z^2 がかかっている．
     Number inv0d = Z * V0t - W3;
 
     // 4. k を計算．
-    // 11M
+    // 22M
     Number k4 = f6;
-    Number k3 = f5 * Z - k4 * U1;
-    Number k2 = f4 * Z * Z - k4 * U0 * Z - k3 * U1;
-    Number k1 = f3 * Z * Z * Z - k3 * U0 * Z - k2 * U1;
-    Number k0 = f2 * Z * Z * Z * Z- W0 * Z * Z - k2 * U0 * Z - k1 * U1;
+    Number k4U1 = k4 * U1;
+    Number k3 = f5 * Z - k4U1;
+    Number k3U0Z = k3 * U0Z;
+    Number k2 = f4 * Z2 - k4 * U0Z - k3 * U1;
+    Number k1 = f3 * Z3 - k3U0Z - k2 * U1;
+    Number k0 = f2 * Z4- W0 * Z2 - k2 * U0Z - k1 * U1;
     // Z^3 がかかっている．
-    Number k1d = k1 + W1 * (k3 - k4 * U1) - k3 * U0 * Z + U1 * (k4 * U0 * Z * 2 - k2);
+    Number k1d = k1 + W1 * (k3 - k4 * U1) - k3U0Z + U1 * (k4 * U0 * Z * 2 - k2);
     // Z^4 がかかっている．
-    Number k0d = k0 + U0 * Z * (U1 * (k3 - k4 * U1) + Z * k4 * U0 - k2);
+    Number k0d = k0 + U0Z * (U1 * (k3 - k4U1) + k4 * U0Z - k2);
     std::cout << k4 << " " << k3 << " " << k2 << " " << k1 << " " << k0 << " " << k1d << " " << k0d << std::endl;
 
+    // 5. s を計算．
+    // 4M, 2S
     W0 = k0d * inv0d;
     W1 = k1d * inv1d;
     // Z^5 がかかっている．
-    Number s1d = inv1d * k0d + inv0d * k1d - k1d * inv1d * U1;
+    Number s1d = inv1d * k0d + inv0d * k1d - W1 * U1;
     // Z^6 がかかっている．
-    Number s0d = inv0d * k0d - k1d * inv1d * U0 * Z;
+    Number s0d = W0 - W1 * U0Z;
     std::cout << s1d << " " << s0d << std::endl;
 
+    // 6. U' を計算．
+    // 17M, 4S
     Number rs = r * r;
+    Number f5Zk = f5 * Z - k4 * U1 * 2;
+    Number Z3r = Z3 * r;
     // Z^10 がかかっている．
-    Number Ud2 = s1d * s1d - rs * f6 * Z * Z * Z * Z;
+    Number Ud2 = s1d * s1d - rs * f6 * Z4;
     // Z^11 がかかっている．
-    Number Ud1 = s1d * s0d * 2 - rs * (f5 * Z - k4 * U1 * 2) * Z * Z * Z * Z;
+    Number Ud1 = s1d * s0d * 2 - rs * f5Zk * Z4;
     // Z^12 がかかっている．
-    Number Ud0 = s0d * s0d + V1 * s1d * r * Z * Z * Z * 2 - rs * (f4 * Z * Z - (U0 * Z * 2 + U1s) * f6 - U1 * (f5 * Z - k4 * U1 * 2) * 2) * Z * Z * Z * Z;
+    Number Ud0 = s0d * s0d + V1 * s1d * Z3r * 2 - rs * (f4 * Z2 - (U0Z * 2 + U1s) * f6 - U1 * f5Zk * 2) * Z4;
     Ud1 = Ud1 * Z;
-    Number Zd = Ud2 * Z * Z;
-    std::cout << Zd << " " << Ud1 << " " << Ud0 << std::endl;
+    Number Zd = Ud2 * Z2;
+    Number Zd2 = Zd * Zd;
+    std::cout << Zd << " " << Ud1 / Zd << " " << Ud0 / Zd << std::endl;
 
-    // v' を計算．
+    // 7. V' を計算．
+    // 18M, 1S
     // r Z^7 がかかっている．
-    Number l3 = s1d * Z * Z;
+    Number l3 = s1d * Z2;
     Number l2 = (s1d * U1 + s0d) * Z;
-    Number l1 = (s1d * U0 * Z + s0d * U1);
+    Number l1 = (s1d * U0Z + s0d * U1);
     Number l0 = s0d * U0;
     std::cout << l3 << " " << l2 << " " << l1 << " " << l0 << std::endl;
-    Number Vd1 = l3 * (Ud1 * Ud1 - Ud0 * Zd) - l2 * Ud1 * Zd + l1 * Zd * Zd + V1 * (Z * Z * Z) * r * Zd * Zd;
-    Number Vd0 = l3 * Ud1 * Ud0 - l2 * Ud0 * Zd + l0 * Zd * Zd + V0 * (Z * Z * Z) * r * Zd * Zd;
-    Zd = Z * Z * Z * Z * Zd * Zd * r;
+    Number Vd1 = l3 * (Ud1 * Ud1 - Ud0 * Zd) - l2 * Ud1 * Zd + (l1 + V1 * Z3r) * Zd2;
+    Number Vd0 = (l3 * Ud1 - l2 * Zd) * Ud0 + (l0 + V0 * Z3r) * Zd2;
+
+    // 8. 調整
+    // 5M
+    Number ZM = Z4 * Zd * r;
+    Ud1 = Ud1 * ZM;
+    Ud0 = Ud0 * ZM;
+    Zd = Zd * ZM;
     std::cout << Vd1 << " " << Vd0 << " " << Zd << std::endl;
+
 
     ProjectiveMumford ret(f, h, Ud1, Ud0, Vd1, Vd0, Zd);
     return ret;
