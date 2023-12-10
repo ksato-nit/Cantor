@@ -318,7 +318,8 @@ ProjectiveMumford ProjectiveMumford::doubling() const{
     Number k4U0Z = k4 * U0Z;
     Number k3 = f5Z - k4U1;
     Number k3U0Z = k3 * U0Z;
-    Number k2 = f4 * Z2 - k4U0Z - k3 * U1;
+    Number f4Z2 = f4 * Z2;
+    Number k2 = f4Z2 - k4U0Z - k3 * U1;
     Number k1 = f3 * Z3 - k3U0Z - k2 * U1;
     Number k0 = f2 * Z4 - W0 * Z2 - k2 * U0Z - k1 * U1;
     // Z^3 がかかっている．
@@ -349,7 +350,7 @@ ProjectiveMumford ProjectiveMumford::doubling() const{
     Number Ud1 = s1d * s0d * 2 - rsZ4 * f5Zk;
     // Z^12 がかかっている．
     Number V1Z3r = V1 * Z3r;
-    Number Ud0 = s0d * s0d + s1d * V1Z3r * 2 - rs * (f4 * Z2 - (U0Z * 2 + U1s) * f6 - U1 * f5Zk * 2) * Z4;
+    Number Ud0 = s0d * s0d + s1d * V1Z3r * 2 - rs * (f4Z2 - (U0Z * 2 + U1s) * f6 - U1 * f5Zk * 2) * Z4;
     Ud1 = Ud1 * Z;
     Number Zd = Ud2 * Z2;
     Number Zd2 = Zd * Zd;
