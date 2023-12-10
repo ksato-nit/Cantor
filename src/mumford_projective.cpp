@@ -280,7 +280,7 @@ ProjectiveMumford ProjectiveMumford::doubling() const{
     Number f3 = this->f.coeff[3];
     Number f2 = this->f.coeff[2];
 
-    // 60M, 9S
+    // 59M, 9S
 
     // 1. v~ を計算．
     Number V1t = V1 * 2;
