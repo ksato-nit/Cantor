@@ -517,14 +517,13 @@ Mumford Mumford::doubling(){
     Number f5 = this->f.coeff[5];
     Number f6 = this->f.coeff[6];
 
-    // 45M, 6S, I
+    // 44M, 6S, I
 
-    // 1. v~ を計算．
+    // 1. v~ (=2v) と u の終結式を計算．
+    // 3M, 2S
     Number v1t = v1 * 2;
     Number v0t = v0 * 2;
 
-    // 2. v~ と u の終結式を計算．
-    // 3M, 2S
     Number w0 = v1 * v1;
     Number u1s = u1 * u1;
     Number w1 = u1s;
@@ -533,12 +532,12 @@ Mumford Mumford::doubling(){
     Number r = u0 * w2 + v0t * (v0t - w3);
     std::cout << r << std::endl;
 
-    // 3. r の almost inverse を計算．
+    // 2. r の almost inverse を計算．
     Number inv1d = v1t * (-1);
     Number inv0d = v0t - w3;
     std::cout << inv1d << " " << inv0d << std::endl;
 
-    // 4. k を計算．
+    // 3. k を計算．
     // 11M
     Number k4 = f6;
     Number k4u0 = k4 * u0;
@@ -553,7 +552,7 @@ Mumford Mumford::doubling(){
     Number k0d = k0 + u0 * (u1kd + k4u0 - k2);
     std::cout << k4 << " " << k3 << " " << k2 << " " << k1 << " " << k0 << " " << k1d << " " << k0d << std::endl;
 
-    // 5. s' を計算．
+    // 4. s' を計算．
     // 5M
     w0 = k0d * inv0d;
     w1 = k1d * inv1d;
@@ -568,7 +567,7 @@ Mumford Mumford::doubling(){
         return ret;
     }
 
-    // 6. u' を計算．
+    // 5. u' を計算．
     // 8M, 3S
     Number rs = r * r;
     Number u2d = s1d * s1d - rs * f6;
@@ -576,26 +575,26 @@ Mumford Mumford::doubling(){
     Number u0d = s0d * s0d + v1 * s1d * r * 2 - rs * (f4 - (u0 * 2 + u1s) * f6 - u1 * (f5 - k4u1 * 2) * 2);
     std::cout << u2d << " " << u1d << " " << u0d << std::endl;
 
-    // 7. r と u2d の逆元を計算．
+    // 6. r と u2d の逆元を計算．
     // 3M, I
     w0 = (r * u2d).inv();
     w1 = w0 * r;
     w2 = w0 * u2d;
 
-    // 8. u' を計算．
+    // 7. u' を計算．
     // 2M
     u1d = u1d * w1;
     u0d = u0d * w1;
 
-    // 9. v' を計算．
-    // 13M, 1S
+    // 8. v' を計算．
+    // 12M, 1S
     Number l3 = s1d * w2;
     Number l2 = (s1d * u1 + s0d) * w2;
     Number l1 = (s1d * u0 + s0d * u1) * w2;
     Number l0 = s0d * u0 * w2;
     std::cout << l3 << " " << l2 << " " << l1 << " " << l0 << std::endl;
     Number v1d = l3 * (u1d * u1d - u0d) - l2 * u1d + l1 + v1;
-    Number v0d = l3 * u1d * u0d - l2 * u0d + l0 + v0;
+    Number v0d = (l3 * u1d - l2) * u0d + l0 + v0;
     std::cout << v1d << " " << v0d << std::endl;
 
     Polynomial ud(2);
