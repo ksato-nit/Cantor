@@ -280,7 +280,7 @@ ProjectiveMumford ProjectiveMumford::doubling() const{
     Number f3 = this->f.coeff[3];
     Number f2 = this->f.coeff[2];
 
-    // 60M, 9S
+    // 59M, 9S
 
     // 1. precomputation.
     // 3M, 2S
@@ -331,11 +331,11 @@ ProjectiveMumford ProjectiveMumford::doubling() const{
     std::cout << k4 << " " << k3 << " " << k2 << " " << k1 << " " << k0 << " " << k1d << " " << k0d << std::endl;
 
     // 5. s を計算．
-    // 6M
+    // 5M
     W0 = k0d * inv0d;
     W1 = k1d * inv1d;
     // Z^5 がかかっている．
-    Number s1d = inv1d * k0d + inv0d * k1d - W1 * U1;
+    Number s1d = (inv0d + inv1d) * (k0d + k1d) - W0 - W1 * (Number::ONE() + U1);
     // Z^6 がかかっている．
     Number s0d = W0 - W1 * U0Z;
     std::cout << s1d << " " << s0d << std::endl;
