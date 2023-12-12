@@ -153,3 +153,28 @@ TEST(MumfordTest, CostelloSumOfDeg6NonMonicEquals) {
     EXPECT_EQ(D12.u, Sum.u);
     EXPECT_EQ(D12.v, Sum.v);
 }
+
+TEST(MumfordTest, DoublingDeg6NonMonicEquals) {
+    int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
+    int hc[1] = {0};
+    int uc[3] = {6, 24, 1};
+    int vc[2] = {-24, -1};
+    int udc[3] = {-28, -14, 1};
+    int vdc[2] = {-10, -13};    
+
+    Polynomial f(6, fc);
+    Polynomial h(0, hc);
+
+    Polynomial u(2, uc);
+    Polynomial v(1, vc);
+    Polynomial ud(2, udc);
+    Polynomial vd(1, vdc);
+
+    Mumford D1(f, h, u, v);
+    Mumford Ret(f, h, ud, vd);
+
+    Mumford Sum = D1.doubling();
+
+    EXPECT_EQ(Ret.u, Sum.u);
+    EXPECT_EQ(Ret.v, Sum.v);
+}

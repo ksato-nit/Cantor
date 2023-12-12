@@ -74,3 +74,33 @@ TEST(ProjectiveMumfordTest, CostelloSumEquals) {
     EXPECT_EQ(D12.V1, Sum.V1 / Sum.Z);
     EXPECT_EQ(D12.V0, Sum.V0 / Sum.Z);    
 }
+
+TEST(ProjectiveMumfordTest, DoublingEquals) {
+    int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
+    int hc[1] = {0};
+    int uc[3] = {6, 24, 1};
+    int vc[2] = {-24, -1};
+    int udc[3] = {-28, -14, 1};
+    int vdc[2] = {-10, -13};    
+
+    Polynomial f(6, fc);
+    Polynomial h(0, hc);
+
+    Polynomial u(2, uc);
+    Polynomial v(1, vc);
+    Polynomial ud(2, udc);
+    Polynomial vd(1, vdc);
+
+    Polynomial u_half = u * Number(2);
+    Polynomial v_half = v * Number(2);
+
+    ProjectiveMumford DP(f, h, u_half.coeff[1], u_half.coeff[0], v_half.coeff[1], v_half.coeff[0], Number(2));
+    ProjectiveMumford Sum = DP.doubling();
+
+    ProjectiveMumford D12(f, h, ud.coeff[1], ud.coeff[0], vd.coeff[1], vd.coeff[0]);
+
+    EXPECT_EQ(D12.U1, Sum.U1 / Sum.Z);
+    EXPECT_EQ(D12.U0, Sum.U0 / Sum.Z);
+    EXPECT_EQ(D12.V1, Sum.V1 / Sum.Z);
+    EXPECT_EQ(D12.V0, Sum.V0 / Sum.Z); 
+}
