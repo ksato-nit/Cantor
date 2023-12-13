@@ -17,11 +17,11 @@ int main(){
     Polynomial v1(1);
 
     u1.coeff[2].value.set_str("1", 10);
-    u1.coeff[1].value.set_str("24", 10);
-    u1.coeff[0].value.set_str("6", 10);
+    u1.coeff[1].value.set_str("25", 10);
+    u1.coeff[0].value.set_str("5", 10);
 
-    v1.coeff[1].value.set_str("-1", 10);
-    v1.coeff[0].value.set_str("-24", 10);
+    v1.coeff[1].value.set_str("-23", 10);
+    v1.coeff[0].value.set_str("-2", 10);
 
     Mumford D1(f, h, u1, v1);
     Mumford sum1 = D1.doubling();

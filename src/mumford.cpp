@@ -72,6 +72,8 @@ Mumford Mumford::operator + (const Mumford& m) const{
     Number v10 = v1.coeff[0];
     Number v20 = v2.coeff[0];
 
+    Polynomial h = this->h;
+
     if(u1.deg > u2.deg){
         //std::cerr << "Flip." << std::endl;
         return m + *this;
@@ -87,12 +89,18 @@ Mumford Mumford::operator + (const Mumford& m) const{
             if(u1 == u2){
                 Number h_eval = h.eval(-u10);
                 Polynomial h_eval_as_poly(0, h_eval);
-                if(-v1\ == v2 + h_eval_as_poly){
+                if(-v1 == v2 + h_eval_as_poly){
                     return Mumford::zero();
                 }else{
                     Polynomial u = u1 * u1;
-                    Polynomial v; // TODO : Lange p. 6 をもとに書く．
+                    Polynomial m = v1 * Number(2) + h_eval_as_poly;
+                    Polynomial fd_eval(0, f.derivative().eval(-u10));
+                    Polynomial hd_eval(0, h.derivative().eval(-u10));
+                    Polynomial fvh = fd_eval - v1 * hd_eval;
+                    Polynomial x(1, Number::ZERO(), Number::ONE());
+                    Polynomial v = (fvh * x + fvh * u10) / m + v1;
                     Mumford ret(f, h, u, v);
+                    return ret;
                 }
             }else{
                 Polynomial u = u1 * u2;
@@ -100,6 +108,8 @@ Mumford Mumford::operator + (const Mumford& m) const{
                 Number c1 = (v20 - v10) / (u10 - u20);
                 Number c0 = (v20 * u10 - v10 * u20) / (u10 - u20);
                 Polynomial v(1, c0, c1);
+                Mumford ret(f, h, u, v);
+                return ret;
             }
         }else{
             Number u10 = u1.coeff[0];
@@ -502,7 +512,7 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
     return ret;
 }
 
-Mumford Mumford::doubling(){
+Mumford Mumford::doubling() const{
     Polynomial u = this->u;
     Polynomial v = this->v;
 

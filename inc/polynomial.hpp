@@ -40,6 +40,8 @@ public:
     static std::tuple<Polynomial, Polynomial> divide(Polynomial f, Polynomial g);
     static std::tuple<Polynomial, Polynomial, Polynomial> extended_gcd(Polynomial f, Polynomial g);
     void print();
+
+    Polynomial derivative() const;
 };
 
 inline std::ostream& operator << (std::ostream& os, const Polynomial& f){

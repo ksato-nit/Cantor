@@ -23,7 +23,7 @@ public:
     Mumford CostelloAdd(const Mumford& q) const;
     Mumford HarleyAddDegenerated(const Mumford& q) const;
     Mumford LangeAdd(const Mumford& q) const;
-    Mumford doubling();
+    Mumford doubling() const;
     Mumford inv();
     Mumford zero();
     void print();

@@ -265,3 +265,12 @@ Number Polynomial::eval(Number x){
     }
     return ret;
 }
+
+Polynomial Polynomial::derivative() const{
+    int deg = this->deg;
+    Polynomial r(deg - 1);
+    for(int i = 1; i <= this->deg; ++i){
+        r.coeff[i - 1] = this->coeff[i] * i;
+    }
+    return r;
+}
