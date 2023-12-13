@@ -95,7 +95,7 @@ TEST(ProjectiveMumfordTest, DoublingEquals) {
     Polynomial v_half = v * Number(2);
 
     ProjectiveMumford DP(f, h, u_half.coeff[1], u_half.coeff[0], v_half.coeff[1], v_half.coeff[0], Number(2));
-    ProjectiveMumford Sum = DP.doubling();
+    ProjectiveMumford Sum = DP.LangeDoubling();
 
     ProjectiveMumford D12(f, h, ud.coeff[1], ud.coeff[0], vd.coeff[1], vd.coeff[0]);
 

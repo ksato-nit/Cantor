@@ -263,7 +263,7 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     return ret;
 }
 
-ProjectiveMumford ProjectiveMumford::doubling() const{
+ProjectiveMumford ProjectiveMumford::LangeDoubling() const{
     std::cout << "Projective Lange Doubling." << std::endl;
 
     Number U1 = this->U1;
@@ -401,7 +401,7 @@ ProjectiveMumford ProjectiveMumford::inv(){
     return inv;
 }
 
-ProjectiveMumford ProjectiveMumford::zero(){
+ProjectiveMumford ProjectiveMumford::zero() const{
     Polynomial f = this->f;
     Polynomial h = this->h;
 

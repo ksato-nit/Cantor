@@ -173,7 +173,7 @@ TEST(MumfordTest, DoublingDeg6NonMonicEquals) {
     Mumford D1(f, h, u, v);
     Mumford Ret(f, h, ud, vd);
 
-    Mumford Sum = D1.doubling();
+    Mumford Sum = D1.LangeDoubling();
 
     EXPECT_EQ(Ret.u, Sum.u);
     EXPECT_EQ(Ret.v, Sum.v);

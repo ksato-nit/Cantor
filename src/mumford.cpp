@@ -60,6 +60,14 @@ Mumford::Mumford(Polynomial f, Polynomial h, Divisor d){
     }
 }
 
+Mumford Mumford::operator * (const Number& k) const{
+    Polynomial h = this->h;
+    Polynomial f = this->f;
+    Polynomial u = this->u;
+    Polynomial v = this->v; 
+    Mumford ret(f, h, u, v);
+}
+
 Mumford Mumford::operator + (const Mumford& m) const{
     Polynomial u1 = this->u;
     Polynomial u2 = m.u;
@@ -136,7 +144,7 @@ Mumford Mumford::operator + (const Mumford& m) const{
 
     /*
     if(u1 == u2 && v1 == v2){
-        Mumford ret = this->doubling();
+        Mumford ret = this->LangeDoubling();
         return ret;
     }else{
         Mumford ret = this->HarleyAdd(m);
@@ -516,7 +524,7 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
     return ret;
 }
 
-Mumford Mumford::doubling() const{
+Mumford Mumford::LangeDoubling() const{
     Polynomial u = this->u;
     Polynomial v = this->v;
 
