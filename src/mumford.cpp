@@ -85,12 +85,15 @@ Mumford Mumford::operator * (const mpz_class& k_) const{
         }
     }
 
+    Mumford D = Mumford::zero();
+    Mumford now = *this;
     for(int i = 0; i < count; ++i){
-        std::cout << bits[i] << std::endl;
+        if(bits[i] == 1){
+            D = D + now;
+        }
+        now = now.LangeDoubling();
     }
-
-    Mumford ret(f, h, u, v);
-    return ret;
+    return D;
 }
 
 Mumford Mumford::operator + (const Mumford& m) const{
