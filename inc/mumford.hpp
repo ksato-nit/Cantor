@@ -25,6 +25,6 @@ public:
     Mumford LangeAdd(const Mumford& q) const;
     Mumford doubling() const;
     Mumford inv();
-    Mumford zero();
+    Mumford zero() const; // todo: static で書き直したい
     void print();
 };

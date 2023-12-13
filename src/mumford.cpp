@@ -83,7 +83,6 @@ Mumford Mumford::operator + (const Mumford& m) const{
         return m;
     }
 
-    /*
     if(u1.deg == 1){
         if(u2.deg == 1){
             if(u1 == u2){
@@ -116,21 +115,26 @@ Mumford Mumford::operator + (const Mumford& m) const{
             Number u21 = u2.coeff[1];
             Number h_eval = h.eval(-u10);
             Number v2_eval = v2.eval(-u10);
+            Number u2_eval = u2.eval(-u10);
 
-            if(v2_eval == v10 + h_eval){
-                Polynomial u(1, Number::ONE(), u21 - u10);
-                Polynomial v(0, v20 * (u10 - u21));
-                Mumford ret(f, h, u, v);
-                return ret;
+            if(u2_eval.isZero()){
+                if(v2_eval == v10 + h_eval){
+                    Polynomial u(1, Number::ONE(), u21 - u10);
+                    Polynomial v(0, v20 * (u10 - u21));
+                    Mumford ret(f, h, u, v);
+                    return ret;
+                }else{
+                    // 2. (b) ii 後半
+                }
             }else{
-                // 2. (b) ii 後半
+                //std::cerr << "Degenerated." << std::endl;
+                Mumford ret = this->HarleyAddDegenerated(m);
+                return ret;
             }
-            //std::cerr << "Degenerated." << std::endl;
-            Mumford ret = this->HarleyAddDegenerated(m);
-            return ret;
         }
     }
 
+    /*
     if(u1 == u2 && v1 == v2){
         Mumford ret = this->doubling();
         return ret;
@@ -673,7 +677,7 @@ Mumford Mumford::inv(){
     return inv;
 }
 
-Mumford Mumford::zero(){
+Mumford Mumford::zero() const{
     Polynomial f = this->f;
     Polynomial h = this->h;
     Polynomial ONE(0, 1);
