@@ -60,12 +60,37 @@ Mumford::Mumford(Polynomial f, Polynomial h, Divisor d){
     }
 }
 
-Mumford Mumford::operator * (const Number& k) const{
+Mumford Mumford::operator * (const mpz_class& k_) const{
     Polynomial h = this->h;
     Polynomial f = this->f;
     Polynomial u = this->u;
-    Polynomial v = this->v; 
+    Polynomial v = this->v;
+    mpz_class k = k_;
+
+    // double-and-add method によりスカラー倍を計算する．
+
+    // 連除法で 2 進数に変換．
+    mpz_class two = 2;
+    int count = 0;
+    std::vector<int> bits;
+    while(true){
+        mpz_class rem = k % 2;
+        bits.push_back((int) rem.get_si());
+
+        k = k / 2;
+        ++count;
+
+        if(k < 1){
+            break;
+        }
+    }
+
+    for(int i = 0; i < count; ++i){
+        std::cout << bits[i] << std::endl;
+    }
+
     Mumford ret(f, h, u, v);
+    return ret;
 }
 
 Mumford Mumford::operator + (const Mumford& m) const{

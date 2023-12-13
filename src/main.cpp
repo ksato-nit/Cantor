@@ -27,6 +27,9 @@ int main(){
     Mumford sum1 = D1.LangeDoubling();
     sum1.print();
 
+    mpz_class k = 314;
+    D1 * k;
+
     Polynomial u1_half = u1 * Number(2);
     Polynomial v1_half = v1 * Number(2);
 

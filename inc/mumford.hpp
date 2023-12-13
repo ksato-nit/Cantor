@@ -19,7 +19,7 @@ public:
 
     Mumford operator + (const Mumford& q) const;
 
-    Mumford operator * (const Number& k) const;
+    Mumford operator * (const mpz_class& k) const;
 
     Mumford CantorAdd(const Mumford& q) const;
     
