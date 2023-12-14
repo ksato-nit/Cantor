@@ -92,6 +92,7 @@ Mumford Mumford::operator * (const mpz_class& k_) const{
             D = D + now;
         }
         now = now.LangeDoubling();
+        //now.print();
     }
     return D;
 }
@@ -229,14 +230,10 @@ Mumford Mumford::CostelloAdd(const Mumford& m) const{
     Number M3 = u11 - u21;
     Number M4 = u20 - u10;
 
-    //std::cout << M1 << " " << M2 << " " << M3 << " " << M4 << std::endl;
-
     Number t1 = (M2 - v0D) * (v1D - M1);
     Number t2 = -(v0D + M2) * (v1D + M1);
     Number t3 = (M4 - v0D) * (v1D - M3);
     Number t4 = -(v0D + M4) * (v1D + M3);
-
-    //std::cout << t1 << " " << t2 << " " << t3 << " " << t4 << std::endl;
 
     Number l2_num = t1 - t2;
     Number l3_num = t3 - t4;
@@ -253,15 +250,6 @@ Mumford Mumford::CostelloAdd(const Mumford& m) const{
 
     Number l2 = l2_num * d_inv;
     Number l3 = l3_num * d_inv;
-
-    /*
-    std::cout << "d : " << d << std::endl;
-    std::cout << "B : " << B << std::endl;
-    std::cout << "d_shifted_inv : " << d_shifted_inv << std::endl;
-    
-    */
-    std::cout << l2_num << " " << l3_num << " " << d << std::endl;
-    //std::cout << l3 << " " << l2 << " " << std::endl;
 
     Number l0 = v10 + l2 * u10 - l3 * U10;
     Number l1 = v11 + l2 * u11 - l3 * (U11 - u10);
@@ -553,6 +541,7 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
 }
 
 Mumford Mumford::LangeDoubling() const{
+    std::cout << "Lange Doubling." << std::endl;
     Polynomial u = this->u;
     Polynomial v = this->v;
 
@@ -580,12 +569,10 @@ Mumford Mumford::LangeDoubling() const{
     Number w2 = w0 * 4;
     Number w3 = u1 * v1t;
     Number r = u0 * w2 + v0t * (v0t - w3);
-    std::cout << r << std::endl;
 
     // 2. r の almost inverse を計算．
     Number inv1d = v1t * (-1);
     Number inv0d = v0t - w3;
-    std::cout << inv1d << " " << inv0d << std::endl;
 
     // 3. k を計算．
     // 11M
@@ -600,7 +587,6 @@ Mumford Mumford::LangeDoubling() const{
     Number u1kd = u1 * (k3 - k4u1);
     Number k1d = k1 + w1 * (k3 - k4u1) - k3u0 + u1 * (k4u0 * 2 - k2);
     Number k0d = k0 + u0 * (u1kd + k4u0 - k2);
-    std::cout << k4 << " " << k3 << " " << k2 << " " << k1 << " " << k0 << " " << k1d << " " << k0d << std::endl;
 
     // 4. s' を計算．
     // 5M
@@ -608,7 +594,6 @@ Mumford Mumford::LangeDoubling() const{
     w1 = k1d * inv1d;
     Number s1d = (inv0d + inv1d) * (k0d + k1d) - w0 - w1 * (Number::ONE() + u1);
     Number s0d = w0 - u0 * w1;
-    std::cout << s1d << " " << s0d << std::endl;
 
     if(s1d.isZero()){
         std::cout << "Special case." << std::endl;
@@ -623,7 +608,6 @@ Mumford Mumford::LangeDoubling() const{
     Number u2d = s1d * s1d - rs * f6;
     Number u1d = s1d * s0d * 2 - rs * (f5 - k4u1 * 2);
     Number u0d = s0d * s0d + v1 * s1d * r * 2 - rs * (f4 - (u0 * 2 + u1s) * f6 - u1 * (f5 - k4u1 * 2) * 2);
-    std::cout << u2d << " " << u1d << " " << u0d << std::endl;
 
     // 6. r と u2d の逆元を計算．
     // 3M, I
@@ -642,10 +626,8 @@ Mumford Mumford::LangeDoubling() const{
     Number l2 = (s1d * u1 + s0d) * w2;
     Number l1 = (s1d * u0 + s0d * u1) * w2;
     Number l0 = s0d * u0 * w2;
-    std::cout << l3 << " " << l2 << " " << l1 << " " << l0 << std::endl;
     Number v1d = l3 * (u1d * u1d - u0d) - l2 * u1d + l1 + v1;
     Number v0d = (l3 * u1d - l2) * u0d + l0 + v0;
-    std::cout << v1d << " " << v0d << std::endl;
 
     Polynomial ud(2);
     Polynomial vd(1);

@@ -304,8 +304,6 @@ ProjectiveMumford ProjectiveMumford::LangeDoubling() const{
     // Z^3 がかかっている．
     Number V0tZ = V0t * Z;
     Number r = U0 * W2 + V0t * (V0tZ - W3);
-    std::cout << Z << std::endl;
-    std::cout << r << std::endl;
 
     // 3. almost inverse を計算．
     // Z がかかっている．
@@ -328,7 +326,6 @@ ProjectiveMumford ProjectiveMumford::LangeDoubling() const{
     Number k1d = k1 + W1 * (k3 - k4U1) - k3U0Z + U1 * (k4U0Z * 2 - k2);
     // Z^4 がかかっている．
     Number k0d = k0 + U0Z * (U1 * (k3 - k4U1) + k4U0Z - k2);
-    std::cout << k4 << " " << k3 << " " << k2 << " " << k1 << " " << k0 << " " << k1d << " " << k0d << std::endl;
 
     // 5. s を計算．
     // 5M
@@ -338,7 +335,6 @@ ProjectiveMumford ProjectiveMumford::LangeDoubling() const{
     Number s1d = (inv0d + inv1d) * (k0d + k1d) - W0 - W1 * (Number::ONE() + U1);
     // Z^6 がかかっている．
     Number s0d = W0 - W1 * U0Z;
-    std::cout << s1d << " " << s0d << std::endl;
 
     // 6. U' を計算．
     // 12M, 4S
@@ -365,7 +361,6 @@ ProjectiveMumford ProjectiveMumford::LangeDoubling() const{
     Number l1 = (s1d * U0Z + s0d * U1);
     Number l0 = s0d * U0;
     Number l2Zd = l2 * Zd;
-    std::cout << l3 << " " << l2 << " " << l1 << " " << l0 << std::endl;
     Number Vd1 = l3 * (Ud1 * Ud1 - Ud0 * Zd) - Ud1 * l2Zd + (l1 + V1Z3r) * Zd2;
     Number Vd0 = (l3 * Ud1 - l2Zd) * Ud0 + (l0 + V0 * Z3r) * Zd2;
 
@@ -375,7 +370,6 @@ ProjectiveMumford ProjectiveMumford::LangeDoubling() const{
     Ud1 = Ud1 * ZM;
     Ud0 = Ud0 * ZM;
     Zd = Zd * ZM;
-    std::cout << Vd1 << " " << Vd0 << " " << Zd << std::endl;
 
 
     ProjectiveMumford ret(f, h, Ud1, Ud0, Vd1, Vd0, Zd);
