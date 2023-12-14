@@ -676,7 +676,7 @@ Mumford Mumford::CostelloDoubling() const{
     // 32M, 6S, I
 
     Number vv = v1 * v1;
-    Number va = (v1 + u1) * 2 - vv - U1;
+    Number va = (v1 + u1) * (v1 + u1) - vv - U1;
 
     Number M1 = (v0 - va) * 2;
     Number M2 = (U1 * 2 + u0) * v1 * 2;
