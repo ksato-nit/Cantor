@@ -498,7 +498,11 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
 
     if(s1d.isZero()){
         std::cout << "Special case." << std::endl;
-        // todo: ここを書く．
+        // todo: ここの場合分けを厳密に書く．
+        u.deg = 0;
+        u.coeff[0] = Number::ONE();
+        v.deg = 0;
+        v.coeff[0] = Number::ZERO();
         Mumford ret(f, h, u, v);
         return ret;
     }
