@@ -243,7 +243,7 @@ std::tuple<Polynomial, Polynomial, Polynomial> Polynomial::extended_gcd(Polynomi
     return std::forward_as_tuple(s, u, v);
 }
 
-void Polynomial::print(){
+void Polynomial::print() const{
     for(int i = this->deg; i >= 0; --i){
         std::cout << this->coeff[i];
         if(i != 0){
@@ -254,7 +254,7 @@ void Polynomial::print(){
     return;
 }
 
-Number Polynomial::eval(Number x){
+Number Polynomial::eval(Number x) const{
     Number ret(0);
     for(int i = this->deg; i >= 0; --i){
         Number c = this->coeff[i].value;

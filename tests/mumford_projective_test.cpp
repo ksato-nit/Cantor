@@ -81,7 +81,7 @@ TEST(ProjectiveMumfordTest, DoublingEquals) {
     int uc[3] = {6, 24, 1};
     int vc[2] = {-24, -1};
     int udc[3] = {-28, -14, 1};
-    int vdc[2] = {-10, -13};    
+    int vdc[2] = {10, 13};    
 
     Polynomial f(6, fc);
     Polynomial h(0, hc);

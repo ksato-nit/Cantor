@@ -160,7 +160,7 @@ TEST(MumfordTest, DoublingDeg6NonMonicEquals) {
     int uc[3] = {6, 24, 1};
     int vc[2] = {-24, -1};
     int udc[3] = {-28, -14, 1};
-    int vdc[2] = {-10, -13};    
+    int vdc[2] = {10, 13};    
 
     Polynomial f(6, fc);
     Polynomial h(0, hc);
@@ -177,4 +177,40 @@ TEST(MumfordTest, DoublingDeg6NonMonicEquals) {
 
     EXPECT_EQ(Ret.u, Sum.u);
     EXPECT_EQ(Ret.v, Sum.v);
+}
+
+TEST(MumfordTest, ScalarMultiplicationEquals) {
+    int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
+    int hc[1] = {0};
+
+    Polynomial f(6, fc);
+    Polynomial h(0, hc);
+
+    Polynomial u1(2);
+    Polynomial v1(1);
+
+    u1.coeff[2].value.set_str("1", 10);
+    u1.coeff[1].value.set_str("25", 10);
+    u1.coeff[0].value.set_str("5", 10);
+
+    v1.coeff[1].value.set_str("-23", 10);
+    v1.coeff[0].value.set_str("-2", 10);
+
+    Mumford D1(f, h, u1, v1);
+
+    mpz_class k = 200;
+    Mumford Dk = D1 * k;
+
+    Polynomial u2(2);
+    Polynomial v2(1);
+
+    u2.coeff[2].value.set_str("1", 10);
+    u2.coeff[1].value.set_str("11", 10);
+    u2.coeff[0].value.set_str("28", 10);
+
+    v2.coeff[1].value.set_str("-29", 10);
+    v2.coeff[0].value.set_str("-21", 10);
+
+    EXPECT_EQ(Dk.u, u2);
+    EXPECT_EQ(Dk.v, v2);
 }

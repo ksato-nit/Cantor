@@ -24,16 +24,10 @@ int main(){
     v1.coeff[0].value.set_str("-2", 10);
 
     Mumford D1(f, h, u1, v1);
-    D1 = D1 * 128;
-    D1.print();
-    Mumford sum1 = D1.LangeDoubling();
-    sum1.print();
 
-    /*
-    mpz_class k = 314;
+    mpz_class k = 200;
     Mumford Dk = D1 * k;
     Dk.print();
-    */
 
     /*
     Polynomial u1_half = u1 * Number(2);

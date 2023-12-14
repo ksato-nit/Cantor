@@ -61,8 +61,8 @@ Mumford::Mumford(Polynomial f, Polynomial h, Divisor d){
 }
 
 Mumford Mumford::operator * (const mpz_class& k_) const{
-    Polynomial h = this->h;
     Polynomial f = this->f;
+    Polynomial h = this->h;
     Polynomial u = this->u;
     Polynomial v = this->v;
     mpz_class k = k_;
@@ -85,14 +85,13 @@ Mumford Mumford::operator * (const mpz_class& k_) const{
         }
     }
 
-    Mumford D = Mumford::zero();
+    Mumford D = Mumford::zero(f, h);
     Mumford now = *this;
     for(int i = 0; i < count; ++i){
         if(bits[i] == 1){
-            D = D + now;
+            D = D.CantorAdd(now);
         }
         now = now.LangeDoubling();
-        //now.print();
     }
     return D;
 }
@@ -636,8 +635,8 @@ Mumford Mumford::LangeDoubling() const{
     ud.coeff[1] = u1d;
     ud.coeff[0] = u0d;
 
-    vd.coeff[1] = v1d;
-    vd.coeff[0] = v0d;
+    vd.coeff[1] = -v1d;
+    vd.coeff[0] = -v0d;
 
     Mumford ret(f, h, ud, vd);
     return ret;
@@ -698,6 +697,14 @@ Mumford Mumford::inv(){
 Mumford Mumford::zero() const{
     Polynomial f = this->f;
     Polynomial h = this->h;
+    Polynomial ONE(0, 1);
+    Polynomial ZERO(0, 0);
+
+    Mumford zero(f, h, ONE, ZERO);
+    return zero;
+}
+
+Mumford Mumford::zero(const Polynomial& f, const Polynomial& h){
     Polynomial ONE(0, 1);
     Polynomial ZERO(0, 0);
 
