@@ -30,6 +30,7 @@ public:
     Mumford HarleyAdd(const Mumford& q) const;
     Mumford HarleyAddDegenerated(const Mumford& q) const;
     
+    Mumford CostelloDoubling() const;
     Mumford LangeDoubling() const;
 
     Mumford inv();
