@@ -89,7 +89,13 @@ Mumford Mumford::operator * (const mpz_class& k_) const{
     Mumford now = *this;
     for(int i = 0; i < count; ++i){
         if(bits[i] == 1){
-            D = D.CantorAdd(now);
+            if(D.isZero()){
+                D = now;
+            }else if(now.isZero()){
+                // D = D;
+            }else{
+                D = D.LangeAdd(now);
+            }
         }
         now = now.LangeDoubling();
     }
@@ -712,7 +718,19 @@ Mumford Mumford::zero(const Polynomial& f, const Polynomial& h){
     return zero;
 }
 
-void Mumford::print(){
+void Mumford::print() const{
     std::cout << "[" << this->u << ", " << this->v << "]" << std::endl;
     return;
+}
+
+bool Mumford::isZero() const{
+    Polynomial u = this->u;
+    Polynomial v = this->v;
+
+    if(v.isZero()){
+        if(u.deg == 0 && u.coeff[0] == Number::ONE()){
+            return true;
+        }
+    }
+    return false;
 }

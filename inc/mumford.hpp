@@ -35,5 +35,6 @@ public:
     Mumford inv();
     Mumford zero() const; // todo: static で書き直したい
     static Mumford zero(const Polynomial& f, const Polynomial& h);
-    void print();
+    void print() const;
+    bool isZero() const;
 };
