@@ -2,9 +2,11 @@
 
 Number::Number(){
     this->value = 0;
+    CHARA.set_str("31", 10);
 }
 
 Number::Number(mpz_class x){
+    CHARA.set_str("31", 10);
     this->value = x % CHARA;
 }
 

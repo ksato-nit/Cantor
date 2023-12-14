@@ -25,7 +25,7 @@ public:
 
     void normalize();
 
-    Number eval(Number x);
+    Number eval(Number x) const;
 
     Polynomial operator + (const Polynomial&) const;
     Polynomial operator - (const Polynomial&) const;
@@ -39,7 +39,9 @@ public:
     bool operator != (const Polynomial& g) const;
     static std::tuple<Polynomial, Polynomial> divide(Polynomial f, Polynomial g);
     static std::tuple<Polynomial, Polynomial, Polynomial> extended_gcd(Polynomial f, Polynomial g);
-    void print();
+    void print() const;
+
+    Polynomial derivative() const;
 };
 
 inline std::ostream& operator << (std::ostream& os, const Polynomial& f){

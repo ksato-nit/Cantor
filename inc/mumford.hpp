@@ -18,13 +18,24 @@ public:
     Mumford(Polynomial f, Polynomial h, Divisor d);
 
     Mumford operator + (const Mumford& q) const;
+
+    Mumford operator * (const mpz_class& k) const;
+
     Mumford CantorAdd(const Mumford& q) const;
-    Mumford HarleyAdd(const Mumford& q) const;
+    
     Mumford CostelloAdd(const Mumford& q) const;
-    Mumford HarleyAddDegenerated(const Mumford& q) const;
     Mumford LangeAdd(const Mumford& q) const;
-    Mumford doubling();
+
+    // 5 次・モニックにのみ対応
+    Mumford HarleyAdd(const Mumford& q) const;
+    Mumford HarleyAddDegenerated(const Mumford& q) const;
+    
+    Mumford CostelloDoubling() const;
+    Mumford LangeDoubling() const;
+
     Mumford inv();
-    Mumford zero();
-    void print();
+    Mumford zero() const; // todo: static で書き直したい
+    static Mumford zero(const Polynomial& f, const Polynomial& h);
+    void print() const;
+    bool isZero() const;
 };

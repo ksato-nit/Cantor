@@ -127,3 +127,20 @@ TEST(PolynomialTest, RemainderEquals) {
     EXPECT_EQ(0, (f % g).deg);
     EXPECT_EQ(r, f % g);
 }
+
+TEST(PolynomialTest, DerivativeEquals) {
+    // (4x^2 + x + 3)' = 8x + 1.
+    Number f0(3);
+    Number f1(1);
+    Number f2(4);
+    int f_deg = 2;
+    Polynomial f(f_deg);
+    f.coeff[0] = f0; f.coeff[1] = f1; f.coeff[2] = f2;
+
+    Number g0(1);
+    Number g1(8);
+    int g_deg = 1;
+    Polynomial g(g_deg, g0, g1);
+
+    EXPECT_EQ(g, f.derivative());
+}

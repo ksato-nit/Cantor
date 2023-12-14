@@ -193,7 +193,7 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     Number f5 = this->f.coeff[5];
     Number f4 = this->f.coeff[4];
 
-    // 65M, 7S
+    // 64M, 6S
 
     // 1. 終結式を計算．
     // 8M, 2S
@@ -227,9 +227,7 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     l2 = l2 + s0 * Z2;
 
     // 5. U' を計算．全体に (Z1 Z2)^6 がかかっている．
-    // 19M, 2S
-    Number Z = Z1 * Z2;
-    Number ZS = Z * Z;
+    // 18M, 1S
     Number f5Z2 = f5 * Z2;
     Number f6U21 = f6 * U21;
     Number rV21 = r * V21;
@@ -265,6 +263,119 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
     return ret;
 }
 
+ProjectiveMumford ProjectiveMumford::LangeDoubling() const{
+    std::cout << "Projective Lange Doubling." << std::endl;
+
+    Number U1 = this->U1;
+    Number U0 = this->U0;
+
+    Number V1 = this->V1;
+    Number V0 = this->V0;
+
+    Number Z = this->Z;
+
+    Number f6 = this->f.coeff[6];
+    Number f5 = this->f.coeff[5];
+    Number f4 = this->f.coeff[4];
+    Number f3 = this->f.coeff[3];
+    Number f2 = this->f.coeff[2];
+
+    // 59M, 9S
+
+    // 1. precomputation.
+    // 3M, 2S
+
+    Number U0Z = U0 * Z;
+    Number f5Z = f5 * Z;
+    Number Z2 = Z * Z;
+    Number Z3 = Z2 * Z;
+    Number Z4 = Z2 * Z2;
+
+    // 2. v~ と u の終結式を計算．
+    // 4M, 2S
+    Number V1t = V1 * 2;
+    Number V0t = V0 * 2;
+
+    Number W0 = V1 * V1;
+    Number U1s = U1 * U1;
+    Number W1 = U1s;
+    Number W2 = W0 * 4;
+    Number W3 = U1 * V1t;
+    // Z^3 がかかっている．
+    Number V0tZ = V0t * Z;
+    Number r = U0 * W2 + V0t * (V0tZ - W3);
+
+    // 3. almost inverse を計算．
+    // Z がかかっている．
+    Number inv1d = -V1t;
+    // Z^2 がかかっている．
+    Number inv0d = V0tZ - W3;
+
+    // 4. k を計算．
+    // 15M
+    Number k4 = f6;
+    Number k4U1 = k4 * U1;
+    Number k4U0Z = k4 * U0Z;
+    Number k3 = f5Z - k4U1;
+    Number k3U0Z = k3 * U0Z;
+    Number f4Z2 = f4 * Z2;
+    Number k2 = f4Z2 - k4U0Z - k3 * U1;
+    Number k1 = f3 * Z3 - k3U0Z - k2 * U1;
+    Number k0 = f2 * Z4 - W0 * Z2 - k2 * U0Z - k1 * U1;
+    // Z^3 がかかっている．
+    Number k1d = k1 + W1 * (k3 - k4U1) - k3U0Z + U1 * (k4U0Z * 2 - k2);
+    // Z^4 がかかっている．
+    Number k0d = k0 + U0Z * (U1 * (k3 - k4U1) + k4U0Z - k2);
+
+    // 5. s を計算．
+    // 5M
+    W0 = k0d * inv0d;
+    W1 = k1d * inv1d;
+    // Z^5 がかかっている．
+    Number s1d = (inv0d + inv1d) * (k0d + k1d) - W0 - W1 * (Number::ONE() + U1);
+    // Z^6 がかかっている．
+    Number s0d = W0 - W1 * U0Z;
+
+    // 6. U' を計算．
+    // 12M, 4S
+    Number rs = r * r;
+    Number f5Zk = f5Z - k4U1 * 2;
+    Number Z3r = Z3 * r;
+    Number rsZ4 = rs * Z4;
+    // Z^10 がかかっている．
+    Number Ud2 = s1d * s1d - rsZ4 * f6;
+    // Z^11 がかかっている．
+    Number Ud1 = s1d * s0d * 2 - rsZ4 * f5Zk;
+    // Z^12 がかかっている．
+    Number V1Z3r = V1 * Z3r;
+    Number Ud0 = s0d * s0d + s1d * V1Z3r * 2 - rsZ4 * (f4Z2 - (U0Z * 2 + U1s) * f6 - U1 * f5Zk * 2);
+    Ud1 = Ud1 * Z;
+    Number Zd = Ud2 * Z2;
+    Number Zd2 = Zd * Zd;
+
+    // 7. V' を計算．
+    // 15M, 1S
+    // r Z^7 がかかっている．
+    Number l3 = s1d * Z2;
+    Number l2 = (s1d * U1 + s0d) * Z;
+    Number l1 = (s1d * U0Z + s0d * U1);
+    Number l0 = s0d * U0;
+    Number l2Zd = l2 * Zd;
+    Number Vd1 = -l3 * (Ud1 * Ud1 - Ud0 * Zd) + Ud1 * l2Zd - (l1 + V1Z3r) * Zd2;
+    Number Vd0 = -(l3 * Ud1 - l2Zd) * Ud0 - (l0 + V0 * Z3r) * Zd2;
+
+    // 8. 調整
+    // 5M
+    Number ZM = Z4 * Zd * r;
+    Ud1 = Ud1 * ZM;
+    Ud0 = Ud0 * ZM;
+    Zd = Zd * ZM;
+
+
+    ProjectiveMumford ret(f, h, Ud1, Ud0, Vd1, Vd0, Zd);
+    return ret;
+}
+
 ProjectiveMumford ProjectiveMumford::inv(){
     Polynomial f = this->f;
     Polynomial h = this->h;
@@ -284,7 +395,7 @@ ProjectiveMumford ProjectiveMumford::inv(){
     return inv;
 }
 
-ProjectiveMumford ProjectiveMumford::zero(){
+ProjectiveMumford ProjectiveMumford::zero() const{
     Polynomial f = this->f;
     Polynomial h = this->h;
 

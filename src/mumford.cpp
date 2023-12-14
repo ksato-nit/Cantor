@@ -60,6 +60,49 @@ Mumford::Mumford(Polynomial f, Polynomial h, Divisor d){
     }
 }
 
+Mumford Mumford::operator * (const mpz_class& k_) const{
+    Polynomial f = this->f;
+    Polynomial h = this->h;
+    Polynomial u = this->u;
+    Polynomial v = this->v;
+    mpz_class k = k_;
+
+    // double-and-add method によりスカラー倍を計算する．
+
+    // 連除法で 2 進数に変換．
+    mpz_class two = 2;
+    int count = 0;
+    std::vector<int> bits;
+    while(true){
+        mpz_class rem = k % 2;
+        bits.push_back((int) rem.get_si());
+
+        k = k / 2;
+        ++count;
+
+        if(k < 1){
+            break;
+        }
+    }
+
+    Mumford D = Mumford::zero(f, h);
+    Mumford now = *this;
+    for(int i = 0; i < count; ++i){
+        if(bits[i] == 1){
+            if(D.isZero()){
+                D = now;
+            }else if(now.isZero()){
+                // D = D;
+            }else{
+                D = D.LangeAdd(now);
+            }
+            //D.print();
+        }
+        now = now.LangeDoubling();
+    }
+    return D;
+}
+
 Mumford Mumford::operator + (const Mumford& m) const{
     Polynomial u1 = this->u;
     Polynomial u2 = m.u;
@@ -72,6 +115,8 @@ Mumford Mumford::operator + (const Mumford& m) const{
     Number v10 = v1.coeff[0];
     Number v20 = v2.coeff[0];
 
+    Polynomial h = this->h;
+
     if(u1.deg > u2.deg){
         //std::cerr << "Flip." << std::endl;
         return m + *this;
@@ -81,18 +126,23 @@ Mumford Mumford::operator + (const Mumford& m) const{
         return m;
     }
 
-    /*
     if(u1.deg == 1){
         if(u2.deg == 1){
             if(u1 == u2){
                 Number h_eval = h.eval(-u10);
                 Polynomial h_eval_as_poly(0, h_eval);
-                if(-v1\ == v2 + h_eval_as_poly){
+                if(-v1 == v2 + h_eval_as_poly){
                     return Mumford::zero();
                 }else{
                     Polynomial u = u1 * u1;
-                    Polynomial v; // TODO : Lange p. 6 をもとに書く．
+                    Polynomial m = v1 * Number(2) + h_eval_as_poly;
+                    Polynomial fd_eval(0, f.derivative().eval(-u10));
+                    Polynomial hd_eval(0, h.derivative().eval(-u10));
+                    Polynomial fvh = fd_eval - v1 * hd_eval;
+                    Polynomial x(1, Number::ZERO(), Number::ONE());
+                    Polynomial v = (fvh * x + fvh * u10) / m + v1;
                     Mumford ret(f, h, u, v);
+                    return ret;
                 }
             }else{
                 Polynomial u = u1 * u2;
@@ -100,29 +150,36 @@ Mumford Mumford::operator + (const Mumford& m) const{
                 Number c1 = (v20 - v10) / (u10 - u20);
                 Number c0 = (v20 * u10 - v10 * u20) / (u10 - u20);
                 Polynomial v(1, c0, c1);
+                Mumford ret(f, h, u, v);
+                return ret;
             }
         }else{
             Number u10 = u1.coeff[0];
             Number u21 = u2.coeff[1];
             Number h_eval = h.eval(-u10);
             Number v2_eval = v2.eval(-u10);
+            Number u2_eval = u2.eval(-u10);
 
-            if(v2_eval == v10 + h_eval){
-                Polynomial u(1, Number::ONE(), u21 - u10);
-                Polynomial v(0, v20 * (u10 - u21));
-                Mumford ret(f, h, u, v);
-                return ret;
+            if(u2_eval.isZero()){
+                if(v2_eval == v10 + h_eval){
+                    Polynomial u(1, Number::ONE(), u21 - u10);
+                    Polynomial v(0, v20 * (u10 - u21));
+                    Mumford ret(f, h, u, v);
+                    return ret;
+                }else{
+                    // 2. (b) ii 後半
+                }
             }else{
-                // 2. (b) ii 後半
+                //std::cerr << "Degenerated." << std::endl;
+                Mumford ret = this->HarleyAddDegenerated(m);
+                return ret;
             }
-            //std::cerr << "Degenerated." << std::endl;
-            Mumford ret = this->HarleyAddDegenerated(m);
-            return ret;
         }
     }
 
+    /*
     if(u1 == u2 && v1 == v2){
-        Mumford ret = this->doubling();
+        Mumford ret = this->LangeDoubling();
         return ret;
     }else{
         Mumford ret = this->HarleyAdd(m);
@@ -139,7 +196,7 @@ Mumford Mumford::operator + (const Mumford& m) const{
 }
 
 Mumford Mumford::CostelloAdd(const Mumford& m) const{
-    std::cout << "Costello Addition." << std::endl;
+    //std::cout << "Costello Addition." << std::endl;
     Polynomial u1 = this->u;
     Polynomial v1 = this->v;
     Polynomial u2 = m.u;
@@ -179,14 +236,10 @@ Mumford Mumford::CostelloAdd(const Mumford& m) const{
     Number M3 = u11 - u21;
     Number M4 = u20 - u10;
 
-    //std::cout << M1 << " " << M2 << " " << M3 << " " << M4 << std::endl;
-
     Number t1 = (M2 - v0D) * (v1D - M1);
     Number t2 = -(v0D + M2) * (v1D + M1);
     Number t3 = (M4 - v0D) * (v1D - M3);
     Number t4 = -(v0D + M4) * (v1D + M3);
-
-    //std::cout << t1 << " " << t2 << " " << t3 << " " << t4 << std::endl;
 
     Number l2_num = t1 - t2;
     Number l3_num = t3 - t4;
@@ -203,15 +256,6 @@ Mumford Mumford::CostelloAdd(const Mumford& m) const{
 
     Number l2 = l2_num * d_inv;
     Number l3 = l3_num * d_inv;
-
-    /*
-    std::cout << "d : " << d << std::endl;
-    std::cout << "B : " << B << std::endl;
-    std::cout << "d_shifted_inv : " << d_shifted_inv << std::endl;
-    
-    */
-    std::cout << l2_num << " " << l3_num << " " << d << std::endl;
-    //std::cout << l3 << " " << l2 << " " << std::endl;
 
     Number l0 = v10 + l2 * u10 - l3 * U10;
     Number l1 = v11 + l2 * u11 - l3 * (U11 - u10);
@@ -411,7 +455,7 @@ Mumford Mumford::HarleyAddDegenerated(const Mumford& m) const{
 }
 
 Mumford Mumford::LangeAdd(const Mumford& m) const{
-    std::cout << "Lange Addition." << std::endl;
+    //std::cout << "Lange Addition." << std::endl;
     Polynomial u1 = this->u;
     Polynomial v1 = this->v;
     Polynomial u2 = m.u;
@@ -454,6 +498,11 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
 
     if(s1d.isZero()){
         std::cout << "Special case." << std::endl;
+        // todo: ここの場合分けを厳密に書く．
+        u.deg = 0;
+        u.coeff[0] = Number::ONE();
+        v.deg = 0;
+        v.coeff[0] = Number::ZERO();
         Mumford ret(f, h, u, v);
         return ret;
     }
@@ -502,7 +551,8 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
     return ret;
 }
 
-Mumford Mumford::doubling(){
+Mumford Mumford::LangeDoubling() const{
+    //std::cout << "Lange Doubling." << std::endl;
     Polynomial u = this->u;
     Polynomial v = this->v;
 
@@ -511,108 +561,194 @@ Mumford Mumford::doubling(){
     Number v1 = v.coeff[1];
     Number v0 = v.coeff[0];
 
-    Number h0 = this->h.coeff[0];
-    Number h1 = this->h.coeff[1];
-    Number h2 = this->h.coeff[2];
-
     Number f2 = this->f.coeff[2];
     Number f3 = this->f.coeff[3];
     Number f4 = this->f.coeff[4];
+    Number f5 = this->f.coeff[5];
+    Number f6 = this->f.coeff[6];
 
-    // 1. v~ を計算．
-    Number v1t = h1 + v1 * 2 - h2 * u1;
-    Number v0t = h0 + v0 * 2 - h2 * u0;
+    // 44M, 6S, I
 
-    // 2. v~ と u の終結式を計算．
+    // 1. v~ (=2v) と u の終結式を計算．
+    // 3M, 2S
+    Number v1t = v1 * 2;
+    Number v0t = v0 * 2;
+
     Number w0 = v1 * v1;
-    Number w1 = u1 * u1;
-    Number w2 = v1t * v1t;
+    Number u1s = u1 * u1;
+    Number w1 = u1s;
+    Number w2 = w0 * 4;
     Number w3 = u1 * v1t;
     Number r = u0 * w2 + v0t * (v0t - w3);
 
-    // 3. r の almost inverse を計算．
+    // 2. r の almost inverse を計算．
     Number inv1d = v1t * (-1);
     Number inv0d = v0t - w3;
 
-    // 4. k' を計算．
-    w3 = f3 + w1;
-    Number w4 = u0 * 2;
-    Number k1d = (w1 - f4 * u1) * 2 + w3 - w4 - h2 * v1;
-    Number k0d = u1 * (w4 * 2 - w3 + f4 * u1 + h2 * v1) + f2 - w0 - f4 * u0 * 2 - h1 * v1 - h2 * v0;
+    // 3. k を計算．
+    // 11M
+    Number k4 = f6;
+    Number k4u0 = k4 * u0;
+    Number k4u1 = k4 * u1;
+    Number k3 = f5 - k4u1;
+    Number k3u0 = k3 * u0;
+    Number k2 = f4 - k4u0 - k3 * u1;
+    Number k1 = f3 - k3u0 - k2 * u1;
+    Number k0 = f2 - w0 - k2 * u0 - k1 * u1;
+    Number u1kd = u1 * (k3 - k4u1);
+    Number k1d = k1 + w1 * (k3 - k4u1) - k3u0 + u1 * (k4u0 * 2 - k2);
+    Number k0d = k0 + u0 * (u1kd + k4u0 - k2);
 
-    // 5. s' を計算．
+    // 4. s' を計算．
+    // 5M
     w0 = k0d * inv0d;
     w1 = k1d * inv1d;
     Number s1d = (inv0d + inv1d) * (k0d + k1d) - w0 - w1 * (Number::ONE() + u1);
     Number s0d = w0 - u0 * w1;
 
-    if(!s1d.isZero()){
-        // 6. s'' を計算．
-        w1 = (r * s1d).inv();
-        w2 = r * w1;
-        w3 = s1d * s1d * w1;
-        w4 = r * w2;
-        Number w5 = w4 * w4;
-        Number s0dd = s0d * w2;
-
-        // 7. l' を計算．
-        Number l2d = u1 + s0dd;
-        Number l1d = u1 * s0dd + u0;
-        Number l0d = u0 * s0dd;
-
-        // 8. u' を計算．
-        Number u0d = s0dd * s0dd + w4 * (h2 * (s0dd - u1) + v1 * 2 + h1) + w5 * (u1 * 2 - f4);
-        Number u1d = s0dd * 2 + h2 * w4 - w5;
-
-        // 9. v' を計算．
-        w1 = l2d - u1d;
-        w2 = u1d * w1 + u0d - l1d;
-        Number v1d = w2 * w3 - v1 - h1 + h2 * u1d;
-        w2 = u0d * w1 - l0d;
-        Number v0d = w2 * w3 - v0 - h0 + h2 * u0d;
-
-        Polynomial u(2);
-        Polynomial v(1);
-
-        u.coeff[2] = Number::ONE();
-        u.coeff[1] = u1d;
-        u.coeff[0] = u0d;
-
-        v.coeff[1] = v1d;
-        v.coeff[0] = v0d;
-
-        Mumford ret(f, h, u, v);
-        return ret;
-    }else{
+    if(s1d.isZero()){
         std::cout << "Special case." << std::endl;
         // サブルーチン
-
-        // 6'. s を計算．
-        w1 = r.inv();
-        Number s0 = s0d * w1;
-        w2 = u0 * s0 + v0 + h0;
-
-        // 7'. u' を計算．
-        Number u0d = f4 - s0 * s0 - s0 * h2 - u1 * 2;
-
-        // 8. v' を計算．
-        Number w1 = s0 * (u1 - u0d) - h2 * h2 * u0d + v1 + h1;
-        Number v0d = v0d * w1 - w2;
-
-
-        Polynomial u(1);
-        Polynomial v(0);
-
-        u.coeff[1] = Number::ONE();
-        u.coeff[0] = u0d;
-
-        v.coeff[0] = v0d;
-
         Mumford ret(f, h, u, v);
         return ret;
     }
 
-    Mumford ret;
+    // 5. u' を計算．
+    // 8M, 3S
+    Number rs = r * r;
+    Number u2d = s1d * s1d - rs * f6;
+    Number u1d = s1d * s0d * 2 - rs * (f5 - k4u1 * 2);
+    Number u0d = s0d * s0d + v1 * s1d * r * 2 - rs * (f4 - (u0 * 2 + u1s) * f6 - u1 * (f5 - k4u1 * 2) * 2);
+
+    // 6. r と u2d の逆元を計算．
+    // 3M, I
+    w0 = (r * u2d).inv();
+    w1 = w0 * r;
+    w2 = w0 * u2d;
+
+    // 7. u' を計算．
+    // 2M
+    u1d = u1d * w1;
+    u0d = u0d * w1;
+
+    // 8. v' を計算．
+    // 12M, 1S
+    Number l3 = s1d * w2;
+    Number l2 = (s1d * u1 + s0d) * w2;
+    Number l1 = (s1d * u0 + s0d * u1) * w2;
+    Number l0 = s0d * u0 * w2;
+    Number v1d = l3 * (u1d * u1d - u0d) - l2 * u1d + l1 + v1;
+    Number v0d = (l3 * u1d - l2) * u0d + l0 + v0;
+
+    Polynomial ud(2);
+    Polynomial vd(1);
+
+    ud.coeff[2] = Number::ONE();
+    ud.coeff[1] = u1d;
+    ud.coeff[0] = u0d;
+
+    vd.coeff[1] = -v1d;
+    vd.coeff[0] = -v0d;
+
+    Mumford ret(f, h, ud, vd);
+    return ret;
+}
+
+Mumford Mumford::CostelloDoubling() const{
+    std::cout << "Costello Doubling." << std::endl;
+    Polynomial u = this->u;
+    Polynomial v = this->v;
+
+    Number u1 = u.coeff[1];
+    Number u0 = u.coeff[0];
+    Number v1 = v.coeff[1];
+    Number v0 = v.coeff[0];
+
+    Number U1 = u1 * u1;
+    Number U0 = u1 * u0;
+
+    Number f2 = this->f.coeff[2];
+    Number f3 = this->f.coeff[3];
+    Number f4 = this->f.coeff[4];
+    Number f5 = this->f.coeff[5];
+    Number f6 = this->f.coeff[6];
+
+    // 32M, 6S, I
+
+    Number vv = v1 * v1;
+    Number va = (v1 + u1) * (v1 + u1) - vv - U1;
+
+    Number M1 = (v0 - va) * 2;
+    Number M2 = (U1 * 2 + u0) * v1 * 2;
+    Number M3 = -v1 * 2;
+    Number M4 = va + v0 * 2;
+
+    Number f6u0 = f6 * u0;
+    Number f6U1 = f6 * U1;
+    Number f5u0 = f5 * u0;
+    Number f5u1 = f5 * u1;
+
+    Number z11 = f5u1 * 2 - f6U1 * 3 - f4;
+    z11 = z11 * U1;
+    Number z12 = f5u1 * 2 + f6u0 * 3 - f4 * 2;
+    z12 = z12 * u0;
+
+    Number z1 = z11 + z12 - vv + f2;
+    Number z2 = (f6u0 * 6 - f6U1 * 4 + f5u1 * 3 - f4 * 2) * u1 - f5u0 * 2 + f3;
+
+    Number t11 = M2 - z1;
+    Number t12 = z2 - M1;
+    Number t21 = -(z1 + M2);
+    Number t22 = z2 + M1;
+    Number t31 = -z1 + M4;
+    Number t32 = z2 - M3;
+    Number t41 = -(z1 + M4);
+    Number t42 = z2 + M3;
+
+    Number t1 = t11 * t12;
+    Number t2 = t21 * t22;
+    Number t3 = t31 * t32;
+    Number t4 = t41 * t42;
+
+    Number l2_num = t1 - t2;
+    Number l3_num = t3 - t4;
+
+    Number d11 = M4 - M2;
+    Number d12 = M1 + M3;
+    Number d = d11 * d12 * 2 + t3 + t4 - t1 - t2;
+
+    Number A = d * d;
+    Number B1 = l3_num * l3_num;
+    Number B2 = f6 * A;
+    Number B = B1 - B2;
+    Number C = (d * B).inv();
+
+    Number d_inv = B * C;
+    Number d_shifted_inv = A * C * d;
+
+    Number l2 = l2_num * d_inv;
+    Number l3 = l3_num * d_inv;
+
+    Number u1d = (l2 * l3 * 2 - f5) * d_shifted_inv - u1 * 2;
+    Number u0d = (((u0 - U1) * l3 + l2 * u1 + v1) * l3 * 2 + l2 * l2 - f4) * d_shifted_inv;
+    u0d = u0d - u0 * 2 - u1d * u1 * 2 - U1;
+    Number U1d = u1d * u1d;
+    Number U0d = u1d * u0d;
+
+    Number v1d = (u0d - U1d + U1 - u0) * l3 + (u1d - u1) * l2 - v1;
+    Number v0d = (U0 - U0d) * l3 + (u0d - u0) * l2 - v0;
+
+    Polynomial ud(2);
+    Polynomial vd(1);
+
+    ud.coeff[2] = Number::ONE();
+    ud.coeff[1] = u1d;
+    ud.coeff[0] = u0d;
+
+    vd.coeff[1] = v1d;
+    vd.coeff[0] = v0d;
+
+    Mumford ret(f, h, ud, vd);
     return ret;
 }
 
@@ -668,7 +804,7 @@ Mumford Mumford::inv(){
     return inv;
 }
 
-Mumford Mumford::zero(){
+Mumford Mumford::zero() const{
     Polynomial f = this->f;
     Polynomial h = this->h;
     Polynomial ONE(0, 1);
@@ -678,7 +814,27 @@ Mumford Mumford::zero(){
     return zero;
 }
 
-void Mumford::print(){
+Mumford Mumford::zero(const Polynomial& f, const Polynomial& h){
+    Polynomial ONE(0, 1);
+    Polynomial ZERO(0, 0);
+
+    Mumford zero(f, h, ONE, ZERO);
+    return zero;
+}
+
+void Mumford::print() const{
     std::cout << "[" << this->u << ", " << this->v << "]" << std::endl;
     return;
+}
+
+bool Mumford::isZero() const{
+    Polynomial u = this->u;
+    Polynomial v = this->v;
+
+    if(v.isZero()){
+        if(u.deg == 0 && u.coeff[0] == Number::ONE()){
+            return true;
+        }
+    }
+    return false;
 }
