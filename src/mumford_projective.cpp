@@ -361,8 +361,8 @@ ProjectiveMumford ProjectiveMumford::LangeDoubling() const{
     Number l1 = (s1d * U0Z + s0d * U1);
     Number l0 = s0d * U0;
     Number l2Zd = l2 * Zd;
-    Number Vd1 = l3 * (Ud1 * Ud1 - Ud0 * Zd) - Ud1 * l2Zd + (l1 + V1Z3r) * Zd2;
-    Number Vd0 = (l3 * Ud1 - l2Zd) * Ud0 + (l0 + V0 * Z3r) * Zd2;
+    Number Vd1 = -l3 * (Ud1 * Ud1 - Ud0 * Zd) + Ud1 * l2Zd - (l1 + V1Z3r) * Zd2;
+    Number Vd0 = -(l3 * Ud1 - l2Zd) * Ud0 - (l0 + V0 * Z3r) * Zd2;
 
     // 8. 調整
     // 5M
