@@ -96,6 +96,7 @@ Mumford Mumford::operator * (const mpz_class& k_) const{
             }else{
                 D = D.LangeAdd(now);
             }
+            D.print();
         }
         now = now.LangeDoubling();
     }
@@ -497,6 +498,7 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
 
     if(s1d.isZero()){
         std::cout << "Special case." << std::endl;
+        // todo: ここを書く．
         Mumford ret(f, h, u, v);
         return ret;
     }
