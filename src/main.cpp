@@ -31,18 +31,15 @@ int main(){
     v1.coeff[1].value.set_str("-16356435725421449606272205061240827370228669314115845329141561788096218629065", 10);
     v1.coeff[0].value.set_str("-14070429986860860266841156334061046472731180035955518717936741632036392261964", 10);
 
-    Mumford D1(f, h, u1, v1);
+    ProjectiveMumford D1(f, h, u1.coeff[1], u1.coeff[0], v1.coeff[1], v1.coeff[0]);
 
     (D1.LangeDoubling()).print();
-    (D1.CostelloDoubling()).print();
-    (D1.CantorAdd(D1)).print();
+    //(D1.CostelloDoubling()).print();
 
-    /*
     mpz_class k;
     k.set_str("16613960161207197506610974848157905611744466278275346794947826509160636299164", 10);
-    Mumford Dk = D1 * (k * k);
+    ProjectiveMumford Dk = D1 * (k * k);
     Dk.print();
-    */
 
     return 0;
 }
