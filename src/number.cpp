@@ -7,26 +7,26 @@ Number::Number(){
 }
 
 Number::Number(mpz_class x){
-    this->value = x % CHARA;
+    this->value = x;
 }
 
 Number Number::operator + (const Number& y) const{
-    Number z(y.value + this->value);
+    Number z((y.value + this->value) % CHARA);
     return z;
 }
 
 Number Number::operator - (const Number& y) const{
-    Number z(this->value - y.value);
+    Number z((this->value - y.value) % CHARA);
     return z;
 }
 
 Number Number::operator * (const Number& y) const{
-    Number z(y.value * this->value);
+    Number z((y.value * this->value) % CHARA);
     return z;
 }
 
 Number Number::operator * (const mpz_class y) const{
-    Number z(y * this->value);
+    Number z((y * this->value) % CHARA);
     return z;
 }
 

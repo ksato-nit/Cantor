@@ -7,6 +7,8 @@
 #include "mumford_weighted_projective.hpp"
 
 int main(){
+    std::chrono::system_clock::time_point start, end;
+
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
 
@@ -35,8 +37,7 @@ int main(){
 
     mpz_class k;
     k.set_str("16613960161207197506610974848157905611744466278275346794947826509160636299164", 10);
-    k = k * k;
-    std::chrono::system_clock::time_point start, end;
+
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 100; ++i){
         Mumford Dk = D1 * k;

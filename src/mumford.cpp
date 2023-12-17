@@ -94,11 +94,11 @@ Mumford Mumford::operator * (const mpz_class& k_) const{
             }else if(now.isZero()){
                 // D = D;
             }else{
-                D = D.LangeAdd(now);
+                D = D.CostelloAdd(now);
             }
             //D.print();
         }
-        now = now.LangeDoubling();
+        now = now.CostelloDoubling();
     }
     return D;
 }
@@ -521,7 +521,9 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
 
     Number t4 = s1d * l3d - k4 * r * r;
     Number t3 = s1d * l2d + s0d * l3d - k3 * r * r;
-    Number t2 = s1d * (l1d + r * v21 * 2) + s0d * l2d - k2 * r * r;
+    Number t2 = r * v21;
+    t2 = t2 + t2;
+    t2 = s1d * (t2 + l1d) + s0d * l2d - k2 * r * r;
 
     Number u0d = t2 - t4 * u10 - (t3 - t4 * u11) * u11;
     Number u1d = t3 - t4 * u11;
@@ -571,18 +573,19 @@ Mumford Mumford::LangeDoubling() const{
 
     // 1. v~ (=2v) と u の終結式を計算．
     // 3M, 2S
-    Number v1t = v1 * 2;
-    Number v0t = v0 * 2;
+    Number v1t = v1 + v1;
+    Number v0t = v0 + v0;
 
     Number w0 = v1 * v1;
     Number u1s = u1 * u1;
     Number w1 = u1s;
-    Number w2 = w0 * 4;
+    Number w2 = w0 + w0;
+    w2 = w2 + w2;
     Number w3 = u1 * v1t;
     Number r = u0 * w2 + v0t * (v0t - w3);
 
     // 2. r の almost inverse を計算．
-    Number inv1d = v1t * (-1);
+    Number inv1d = -v1t;
     Number inv0d = v0t - w3;
 
     // 3. k を計算．
@@ -596,7 +599,7 @@ Mumford Mumford::LangeDoubling() const{
     Number k1 = f3 - k3u0 - k2 * u1;
     Number k0 = f2 - w0 - k2 * u0 - k1 * u1;
     Number u1kd = u1 * (k3 - k4u1);
-    Number k1d = k1 + w1 * (k3 - k4u1) - k3u0 + u1 * (k4u0 * 2 - k2);
+    Number k1d = k1 + w1 * (k3 - k4u1) - k3u0 + u1 * (k4u0 + k4u0 - k2);
     Number k0d = k0 + u0 * (u1kd + k4u0 - k2);
 
     // 4. s' を計算．
@@ -617,8 +620,10 @@ Mumford Mumford::LangeDoubling() const{
     // 8M, 3S
     Number rs = r * r;
     Number u2d = s1d * s1d - rs * f6;
-    Number u1d = s1d * s0d * 2 - rs * (f5 - k4u1 * 2);
-    Number u0d = s0d * s0d + v1 * s1d * r * 2 - rs * (f4 - (u0 * 2 + u1s) * f6 - u1 * (f5 - k4u1 * 2) * 2);
+    Number u1d = s1d * s0d;
+    u1d = u1d + u1d;
+    u1d = u1d - rs * (f5 - k4u1 - k4u1);
+    Number u0d = s0d * s0d + v1 * s1d * r * 2 - rs * (f4 - (u0 + u0 + u1s) * f6 - u1 * (f5 - k4u1 - k4u1) * 2);
 
     // 6. r と u2d の逆元を計算．
     // 3M, I
