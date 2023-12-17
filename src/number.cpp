@@ -68,6 +68,11 @@ Number Number::MINUS_ONE(){
 }
 
 Number Number::inv() const{
+    mpz_t inv;
+    mpz_init(inv);
+    mpz_invert(inv, this->value.get_mpz_t(), CHARA.get_mpz_t());
+
+    /*
     if(this->value < 0){
         Number mx(this->value * -1);
         mx = mx.inv();
@@ -89,7 +94,9 @@ Number Number::inv() const{
     if(x < 0){
         x = x + CHARA;
     }
-    return x;
+    */
+
+    return Number(mpz_class(inv));
 }
 
 bool Number::isZero() const{
