@@ -22,7 +22,7 @@ public:
     Number operator + () const;
     Number operator - () const;
     Number inv() const;
-    bool isZero();
+    bool isZero() const;
 
     static Number ZERO();
     static Number ONE();

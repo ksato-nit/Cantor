@@ -3,6 +3,8 @@
 #include "polynomial.hpp"
 #include "mumford.hpp"
 
+// fixme: Mumford の設計変更に伴い，回りくどくなっている．
+
 TEST(MumfordTest, SumOfDeg5MonicEquals) {
     int fc[6] = {-1, 3, 6, -2, -3, 1};
     int hc[3] = {0, 1, 1};
@@ -22,14 +24,16 @@ TEST(MumfordTest, SumOfDeg5MonicEquals) {
     Polynomial u12(2, u12c);
     Polynomial v12(1, v12c);
 
-    Mumford D1(f, h, u1, v1);
-    Mumford D2(f, h, u2, v2);
-    Mumford D12(f, h, u12, v12);
+    Mumford D1(f, h, u1.coeff[1], u1.coeff[0], v1.coeff[1], v1.coeff[0]);
+    Mumford D2(f, h, u2.coeff[1], u2.coeff[0], v2.coeff[1], v2.coeff[0]);
+    Mumford D12(f, h, u12.coeff[1], u12.coeff[0], v12.coeff[1], v12.coeff[0]);
 
     Mumford Sum = D1 + D2;
 
-    EXPECT_EQ(D12.u, Sum.u);
-    EXPECT_EQ(D12.v, Sum.v);
+    EXPECT_EQ(D12.u1, Sum.u1);
+    EXPECT_EQ(D12.u0, Sum.u0);
+    EXPECT_EQ(D12.v1, Sum.v1);
+    EXPECT_EQ(D12.v0, Sum.v0);
 }
 
 TEST(MumfordTest, SumOfDeg5MonicDegeneratedEquals) {
@@ -51,14 +55,16 @@ TEST(MumfordTest, SumOfDeg5MonicDegeneratedEquals) {
     Polynomial u12(1, u12c);
     Polynomial v12(0, v12c);
 
-    Mumford D1(f, h, u1, v1);
-    Mumford D2(f, h, u2, v2);
-    Mumford D12(f, h, u12, v12);
+    Mumford D1(f, h, u1.coeff[1], u1.coeff[0], v1.coeff[1], v1.coeff[0]);
+    Mumford D2(f, h, u2.coeff[1], u2.coeff[0], v2.coeff[1], v2.coeff[0]);
+    Mumford D12(f, h, u12.coeff[1], u12.coeff[0], v12.coeff[1], v12.coeff[0]);
 
     Mumford Sum = D1 + D2;
 
-    EXPECT_EQ(D12.u, Sum.u);
-    EXPECT_EQ(D12.v, Sum.v);
+    EXPECT_EQ(D12.u1, Sum.u1);
+    EXPECT_EQ(D12.u0, Sum.u0);
+    EXPECT_EQ(D12.v1, Sum.v1);
+    EXPECT_EQ(D12.v0, Sum.v0);
 }
 
 TEST(MumfordTest, CantorSumOfDeg6NonMonicEquals) {
@@ -81,15 +87,16 @@ TEST(MumfordTest, CantorSumOfDeg6NonMonicEquals) {
     Polynomial u12(2, u12c);
     Polynomial v12(1, v12c);
 
-    Mumford D1(f, h, u1, v1);
-    Mumford D2(f, h, u2, v2);    
-
-    Mumford D12(f, h, u12, v12);
+    Mumford D1(f, h, u1.coeff[1], u1.coeff[0], v1.coeff[1], v1.coeff[0]);
+    Mumford D2(f, h, u2.coeff[1], u2.coeff[0], v2.coeff[1], v2.coeff[0]);
+    Mumford D12(f, h, u12.coeff[1], u12.coeff[0], v12.coeff[1], v12.coeff[0]);
 
     Mumford Sum = D1.CantorAdd(D2);
 
-    EXPECT_EQ(D12.u, Sum.u);
-    EXPECT_EQ(D12.v, Sum.v);
+    EXPECT_EQ(D12.u1, Sum.u1);
+    EXPECT_EQ(D12.u0, Sum.u0);
+    EXPECT_EQ(D12.v1, Sum.v1);
+    EXPECT_EQ(D12.v0, Sum.v0);
 }
 
 TEST(MumfordTest, LangeSumOfDeg6NonMonicEquals) {
@@ -112,15 +119,16 @@ TEST(MumfordTest, LangeSumOfDeg6NonMonicEquals) {
     Polynomial u12(2, u12c);
     Polynomial v12(1, v12c);
 
-    Mumford D1(f, h, u1, v1);
-    Mumford D2(f, h, u2, v2);    
-
-    Mumford D12(f, h, u12, v12);
+    Mumford D1(f, h, u1.coeff[1], u1.coeff[0], v1.coeff[1], v1.coeff[0]);
+    Mumford D2(f, h, u2.coeff[1], u2.coeff[0], v2.coeff[1], v2.coeff[0]);
+    Mumford D12(f, h, u12.coeff[1], u12.coeff[0], v12.coeff[1], v12.coeff[0]);
 
     Mumford Sum = D1.LangeAdd(D2);
 
-    EXPECT_EQ(D12.u, Sum.u);
-    EXPECT_EQ(D12.v, Sum.v);
+    EXPECT_EQ(D12.u1, Sum.u1);
+    EXPECT_EQ(D12.u0, Sum.u0);
+    EXPECT_EQ(D12.v1, Sum.v1);
+    EXPECT_EQ(D12.v0, Sum.v0);
 }
 
 TEST(MumfordTest, CostelloSumOfDeg6NonMonicEquals) {
@@ -143,15 +151,16 @@ TEST(MumfordTest, CostelloSumOfDeg6NonMonicEquals) {
     Polynomial u12(2, u12c);
     Polynomial v12(1, v12c);
 
-    Mumford D1(f, h, u1, v1);
-    Mumford D2(f, h, u2, v2);    
-
-    Mumford D12(f, h, u12, v12);
+    Mumford D1(f, h, u1.coeff[1], u1.coeff[0], v1.coeff[1], v1.coeff[0]);
+    Mumford D2(f, h, u2.coeff[1], u2.coeff[0], v2.coeff[1], v2.coeff[0]);
+    Mumford D12(f, h, u12.coeff[1], u12.coeff[0], v12.coeff[1], v12.coeff[0]);
 
     Mumford Sum = D1.CostelloAdd(D2);
 
-    EXPECT_EQ(D12.u, Sum.u);
-    EXPECT_EQ(D12.v, Sum.v);
+    EXPECT_EQ(D12.u1, Sum.u1);
+    EXPECT_EQ(D12.u0, Sum.u0);
+    EXPECT_EQ(D12.v1, Sum.v1);
+    EXPECT_EQ(D12.v0, Sum.v0);
 }
 
 TEST(MumfordTest, DoublingDeg6NonMonicEquals) {
@@ -170,13 +179,15 @@ TEST(MumfordTest, DoublingDeg6NonMonicEquals) {
     Polynomial ud(2, udc);
     Polynomial vd(1, vdc);
 
-    Mumford D1(f, h, u, v);
-    Mumford Ret(f, h, ud, vd);
+    Mumford D1(f, h, u.coeff[1], u.coeff[0], v.coeff[1], v.coeff[0]);
+    Mumford D12(f, h, ud.coeff[1], ud.coeff[0], vd.coeff[1], vd.coeff[0]);
 
     Mumford Sum = D1.LangeDoubling();
 
-    EXPECT_EQ(Ret.u, Sum.u);
-    EXPECT_EQ(Ret.v, Sum.v);
+    EXPECT_EQ(D12.u1, Sum.u1);
+    EXPECT_EQ(D12.u0, Sum.u0);
+    EXPECT_EQ(D12.v1, Sum.v1);
+    EXPECT_EQ(D12.v0, Sum.v0);
 }
 
 TEST(MumfordTest, ScalarMultiplicationEquals) {
@@ -196,7 +207,7 @@ TEST(MumfordTest, ScalarMultiplicationEquals) {
     v1.coeff[1].value.set_str("-23", 10);
     v1.coeff[0].value.set_str("-2", 10);
 
-    Mumford D1(f, h, u1, v1);
+    Mumford D1(f, h, u1.coeff[1], u1.coeff[0], v1.coeff[1], v1.coeff[0]);
 
     mpz_class k = 200;
     Mumford Dk = D1 * k;
@@ -211,6 +222,8 @@ TEST(MumfordTest, ScalarMultiplicationEquals) {
     v2.coeff[1].value.set_str("-29", 10);
     v2.coeff[0].value.set_str("-21", 10);
 
-    EXPECT_EQ(Dk.u, u2);
-    EXPECT_EQ(Dk.v, v2);
+    EXPECT_EQ(Dk.u1, u2.coeff[1]);
+    EXPECT_EQ(Dk.u0, u2.coeff[0]);
+    EXPECT_EQ(Dk.v1, v2.coeff[1]);
+    EXPECT_EQ(Dk.v0, v2.coeff[0]);
 }

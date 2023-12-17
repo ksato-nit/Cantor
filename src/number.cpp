@@ -1,6 +1,6 @@
 #include "number.hpp"
 
-const mpz_class Number::CHARA("16613960161207197506610974848157905611744466278275346794947826509160636299163", 10);
+const mpz_class Number::CHARA("31", 10);
 
 Number::Number(){
     this->value = 0;
@@ -92,6 +92,6 @@ Number Number::inv() const{
     return x;
 }
 
-bool Number::isZero(){
+bool Number::isZero() const{
     return this->value == 0;
 }

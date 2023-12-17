@@ -6,15 +6,17 @@
 class Mumford {
     static const int GENUS = 2;
 public:
-    Polynomial u;
-    Polynomial v;
+    Number u2, u1, u0;
+    Number v1, v0;
+    //Polynomial u;
+    //Polynomial v;
 
     Polynomial f;
     Polynomial h;
 
     Mumford();
     Mumford(Polynomial f, Polynomial h);
-    Mumford(Polynomial f, Polynomial h, Polynomial u, Polynomial v);
+    Mumford(Polynomial f, Polynomial h, Number u1, Number u0, Number v1, Number v0);
     Mumford(Polynomial f, Polynomial h, Divisor d);
 
     Mumford operator + (const Mumford& q) const;
