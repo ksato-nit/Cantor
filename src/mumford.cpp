@@ -101,11 +101,11 @@ Mumford Mumford::operator * (const mpz_class& k_) const{
             }else if(now.isZero()){
                 // D = D;
             }else{
-                D = D.LangeAdd(now);
+                D = D.CostelloAdd(now);
             }
             //D.print();
         }
-        now = now.LangeDoubling();
+        now = now.CostelloDoubling();
     }
     return D;
 }
