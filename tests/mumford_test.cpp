@@ -6,6 +6,8 @@
 // fixme: Mumford の設計変更に伴い，回りくどくなっている．
 
 TEST(MumfordTest, SumOfDeg5MonicEquals) {
+    Number::CHARA.set_str("31", 10);
+    
     int fc[6] = {-1, 3, 6, -2, -3, 1};
     int hc[3] = {0, 1, 1};
     int u1c[3] = {5, 25, 1};
@@ -37,6 +39,8 @@ TEST(MumfordTest, SumOfDeg5MonicEquals) {
 }
 
 TEST(MumfordTest, SumOfDeg5MonicDegeneratedEquals) {
+    Number::CHARA.set_str("31", 10);
+
     int fc[6] = {-1, 3, 6, -2, -3, 1};
     int hc[3] = {0, 1, 1};
     int u1c[3] = {5, 25, 1};
@@ -68,6 +72,8 @@ TEST(MumfordTest, SumOfDeg5MonicDegeneratedEquals) {
 }
 
 TEST(MumfordTest, CantorSumOfDeg6NonMonicEquals) {
+    Number::CHARA.set_str("31", 10);
+
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
     int u1c[3] = {5, 25, 1};
@@ -100,6 +106,8 @@ TEST(MumfordTest, CantorSumOfDeg6NonMonicEquals) {
 }
 
 TEST(MumfordTest, LangeSumOfDeg6NonMonicEquals) {
+    Number::CHARA.set_str("31", 10);
+
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
     int u1c[3] = {5, 25, 1};
@@ -132,6 +140,8 @@ TEST(MumfordTest, LangeSumOfDeg6NonMonicEquals) {
 }
 
 TEST(MumfordTest, CostelloSumOfDeg6NonMonicEquals) {
+    Number::CHARA.set_str("31", 10);
+
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
     int u1c[3] = {5, 25, 1};
@@ -164,6 +174,8 @@ TEST(MumfordTest, CostelloSumOfDeg6NonMonicEquals) {
 }
 
 TEST(MumfordTest, DoublingDeg6NonMonicEquals) {
+    Number::CHARA.set_str("31", 10);
+
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
     int uc[3] = {6, 24, 1};
@@ -191,6 +203,8 @@ TEST(MumfordTest, DoublingDeg6NonMonicEquals) {
 }
 
 TEST(MumfordTest, ScalarMultiplicationEquals) {
+    Number::CHARA.set_str("31", 10);
+
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
 
