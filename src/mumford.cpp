@@ -69,11 +69,12 @@ Mumford::Mumford(Polynomial f, Polynomial h, Divisor d){
     }
 }
 
-Mumford Mumford::operator * (const mpz_class& k_) const{
+Mumford Mumford::CostelloScalarMultiple (const mpz_class& k_) const{
     Polynomial f = this->f;
     Polynomial h = this->h;
     mpz_class k = k_;
 
+    // operator * の，Costello による計算．
     // double-and-add method によりスカラー倍を計算する．
 
     // 連除法で 2 進数に変換．
@@ -106,6 +107,47 @@ Mumford Mumford::operator * (const mpz_class& k_) const{
             //D.print();
         }
         now = now.CostelloDoubling();
+    }
+    return D;
+}
+
+Mumford Mumford::operator * (const mpz_class& k_) const{
+    Polynomial f = this->f;
+    Polynomial h = this->h;
+    mpz_class k = k_;
+
+    // double-and-add method によりスカラー倍を計算する．
+
+    // 連除法で 2 進数に変換．
+    mpz_class two = 2;
+    int count = 0;
+    std::vector<int> bits;
+    while(true){
+        mpz_class rem = k % 2;
+        bits.push_back((int) rem.get_si());
+
+        k = k / 2;
+        ++count;
+
+        if(k < 1){
+            break;
+        }
+    }
+
+    Mumford D = Mumford::zero(f, h);
+    Mumford now = *this;
+    for(int i = 0; i < count; ++i){
+        if(bits[i] == 1){
+            if(D.isZero()){
+                D = now;
+            }else if(now.isZero()){
+                // D = D;
+            }else{
+                D = D.LangeAdd(now);
+            }
+            //D.print();
+        }
+        now = now.LangeDoubling();
     }
     return D;
 }

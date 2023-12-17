@@ -30,18 +30,35 @@ int main(){
     v1.value.set_str("-16356435725421449606272205061240827370228669314115845329141561788096218629065", 10);
     v0.value.set_str("-14070429986860860266841156334061046472731180035955518717936741632036392261964", 10);
 
-    ProjectiveMumford D1(f, h, u1, u0, v1, v0);
+    Mumford D1(f, h, u1, u0, v1, v0);
+    ProjectiveMumford D1P(f, h, u1, u0, v1, v0);
 
     mpz_class k;
     k.set_str("16613960161207197506610974848157905611744466278275346794947826509160636299164", 10);
 
+    std::cout << "射影 Lange" << std::endl;
     start = std::chrono::system_clock::now();
-    for(int i = 0; i < 5; ++i){
-        ProjectiveMumford Dk = D1 * k;
+    for(int i = 0; i < 10000; ++i){
+        ProjectiveMumford Dk = D1P * k;
     }
     end = std::chrono::system_clock::now();
-    //Dk.print();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
+
+    std::cout << "アフィン Lange" << std::endl;
+    start = std::chrono::system_clock::now();
+    for(int i = 0; i < 10000; ++i){
+        Mumford Dk = D1 * k;
+    }
+    end = std::chrono::system_clock::now();
+    std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
+
+    std::cout << "アフィン Costello" << std::endl;
+    start = std::chrono::system_clock::now();
+    for(int i = 0; i < 10000; ++i){
+        Mumford Dk = D1.CostelloScalarMultiple(k);
+    }
+    end = std::chrono::system_clock::now();
+    std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;         
 
     return 0;
 }

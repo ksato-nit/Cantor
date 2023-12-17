@@ -23,6 +23,8 @@ public:
 
     Mumford operator * (const mpz_class& k) const;
 
+    Mumford CostelloScalarMultiple(const mpz_class& k) const;
+
     Mumford CantorAdd(const Mumford& q) const;
     
     Mumford CostelloAdd(const Mumford& q) const;
