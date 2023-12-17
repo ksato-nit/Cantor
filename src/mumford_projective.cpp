@@ -96,7 +96,7 @@ ProjectiveMumford ProjectiveMumford::operator * (const mpz_class& k_) const{
             }else{
                 D = D.LangeAdd(now);
             }
-            D.print();
+            //D.print();
         }
         now = now.LangeDoubling();
     }
@@ -104,7 +104,7 @@ ProjectiveMumford ProjectiveMumford::operator * (const mpz_class& k_) const{
 }
 
 ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) const{
-    std::cout << "Projective Costello Addition." << std::endl;
+    //std::cout << "Projective Costello Addition." << std::endl;
 
     // Total: 76M, 9S
 
@@ -215,7 +215,7 @@ ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) con
 }
 
 ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
-    std::cout << "Projective Lange Addition." << std::endl;
+    //std::cout << "Projective Lange Addition." << std::endl;
 
     Number U11 = this->U1;
     Number U10 = this->U0;
@@ -305,7 +305,7 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
 }
 
 ProjectiveMumford ProjectiveMumford::LangeDoubling() const{
-    std::cout << "Projective Lange Doubling." << std::endl;
+    //std::cout << "Projective Lange Doubling." << std::endl;
 
     Number U1 = this->U1;
     Number U0 = this->U0;

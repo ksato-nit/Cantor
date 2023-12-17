@@ -196,7 +196,7 @@ Mumford Mumford::operator + (const Mumford& m) const{
 }
 
 Mumford Mumford::CostelloAdd(const Mumford& m) const{
-    //std::cout << "Costello Addition." << std::endl;
+    //std::cerr << "Costello Addition." << std::endl;
     Polynomial u1 = this->u;
     Polynomial v1 = this->v;
     Polynomial u2 = m.u;
@@ -285,7 +285,7 @@ Mumford Mumford::CostelloAdd(const Mumford& m) const{
 }
 
 Mumford Mumford::HarleyAdd(const Mumford& m) const{
-    std::cout << "Harley Addition." << std::endl;
+    std::cerr << "Harley Addition." << std::endl;
     Polynomial u1 = this->u;
     Polynomial v1 = this->v;
     Polynomial u2 = m.u;
@@ -364,7 +364,7 @@ Mumford Mumford::HarleyAdd(const Mumford& m) const{
         Mumford ret(f, h, u, v);
         return ret;
     }else{
-        std::cout << "Special case." << std::endl;
+        //std::cerr << "Special case." << std::endl;
         // サブルーチン
 
         // 4'. s を計算．
@@ -455,7 +455,7 @@ Mumford Mumford::HarleyAddDegenerated(const Mumford& m) const{
 }
 
 Mumford Mumford::LangeAdd(const Mumford& m) const{
-    //std::cout << "Lange Addition." << std::endl;
+    //std::cerr << "Lange Addition." << std::endl;
     Polynomial u1 = this->u;
     Polynomial v1 = this->v;
     Polynomial u2 = m.u;
@@ -497,7 +497,7 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
     Number s0d = w2 - u10 * w3;
 
     if(s1d.isZero()){
-        std::cout << "Special case." << std::endl;
+        //std::cerr << "Special case." << std::endl;
         // todo: ここの場合分けを厳密に書く．
         u.deg = 0;
         u.coeff[0] = Number::ONE();
@@ -552,7 +552,7 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
 }
 
 Mumford Mumford::LangeDoubling() const{
-    //std::cout << "Lange Doubling." << std::endl;
+    //std::cerr << "Lange Doubling." << std::endl;
     Polynomial u = this->u;
     Polynomial v = this->v;
 
@@ -607,7 +607,7 @@ Mumford Mumford::LangeDoubling() const{
     Number s0d = w0 - u0 * w1;
 
     if(s1d.isZero()){
-        std::cout << "Special case." << std::endl;
+        std::cerr << "Special case." << std::endl;
         // サブルーチン
         Mumford ret(f, h, u, v);
         return ret;
@@ -655,7 +655,7 @@ Mumford Mumford::LangeDoubling() const{
 }
 
 Mumford Mumford::CostelloDoubling() const{
-    std::cout << "Costello Doubling." << std::endl;
+    //std::cerr << "Costello Doubling." << std::endl;
     Polynomial u = this->u;
     Polynomial v = this->v;
 
@@ -753,7 +753,7 @@ Mumford Mumford::CostelloDoubling() const{
 }
 
 Mumford Mumford::CantorAdd(const Mumford& m) const{
-    std::cout << "Cantor Addition." << std::endl;
+    std::cerr << "Cantor Addition." << std::endl;
 
     Polynomial h = this->h;
 
@@ -823,7 +823,7 @@ Mumford Mumford::zero(const Polynomial& f, const Polynomial& h){
 }
 
 void Mumford::print() const{
-    std::cout << "[" << this->u << ", " << this->v << "]" << std::endl;
+    std::cerr << "[" << this->u << ", " << this->v << "]" << std::endl;
     return;
 }
 

@@ -1,44 +1,37 @@
 #include "number.hpp"
 
+const mpz_class Number::CHARA("16613960161207197506610974848157905611744466278275346794947826509160636299163", 10);
+
 Number::Number(){
     this->value = 0;
-    CHARA.set_str("16613960161207197506610974848157905611744466278275346794947826509160636299163", 10);
 }
 
 Number::Number(mpz_class x){
-    CHARA.set_str("16613960161207197506610974848157905611744466278275346794947826509160636299163", 10);
     this->value = x % CHARA;
 }
 
 Number Number::operator + (const Number& y) const{
-    mpz_class value = (y.value + this->value) % CHARA;
-    Number z(value);
+    Number z(y.value + this->value);
     return z;
 }
 
 Number Number::operator - (const Number& y) const{
-    mpz_class value = (this->value - y.value) % CHARA;
-    Number z(value);
+    Number z(this->value - y.value);
     return z;
 }
 
 Number Number::operator * (const Number& y) const{
-    mpz_class value = (y.value * this->value) % CHARA;
-    Number z(value);
+    Number z(y.value * this->value);
     return z;
 }
 
 Number Number::operator * (const mpz_class y) const{
-    mpz_class value = (y * this->value) % CHARA;
-    Number z(value);
+    Number z(y * this->value);
     return z;
 }
 
 Number Number::operator / (const Number& y) const{
-    Number yinv = y.inv();
-    mpz_class value = (this->value * yinv.value) % CHARA;
-    Number z(value);
-    return z;
+    return (*this) * y.inv();
 }
 
 bool Number::operator == (const Number& y) const{
@@ -54,7 +47,7 @@ Number Number::operator + () const{
 }
 
 Number Number::operator - () const{
-    mpz_class value = -this->value % CHARA;
+    mpz_class value = -this->value;
     Number z(value);
     return z;
 }

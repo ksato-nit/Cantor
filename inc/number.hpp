@@ -7,7 +7,7 @@
 // 抽象的な体の要素を実現する．
 class Number {
 public:
-    mpz_class CHARA;
+    static const mpz_class CHARA;
     mpz_class value;
 
     Number();
