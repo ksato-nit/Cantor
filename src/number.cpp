@@ -19,28 +19,24 @@ void Number::set_str(const char* str, const int base){
 Number Number::operator + (const Number& y) const{
     Number z;
     mpz_add(z.value, this->value, y.value);
-    mpz_mod(z.value, z.value, CHARA);
-    /*
-    if(z.value >= CHARA){
+    //mpz_mod(z.value, z.value, CHARA);
+    if(mpz_cmp(z.value, CHARA) >= 0){
         mpz_sub(z.value, z.value, CHARA);
-    }else if(z.value <= MCHARA){
+    }else if(mpz_cmp(z.value, MCHARA) <= 0){
         mpz_add(z.value, z.value, CHARA);
     }
-    */
     return z;
 }
 
 Number Number::operator - (const Number& y) const{
     Number z;
     mpz_sub(z.value, this->value, y.value);
-    mpz_mod(z.value, z.value, CHARA);
-    /*
-    if(z.value >= CHARA){
+    //mpz_mod(z.value, z.value, CHARA);
+    if(mpz_cmp(z.value, CHARA) >= 0){
         mpz_sub(z.value, z.value, CHARA);
-    }else if(z.value <= MCHARA){
+    }else if(mpz_cmp(z.value, MCHARA) <= 0){
         mpz_add(z.value, z.value, CHARA);
     }
-    */
     return z;
 }
 
