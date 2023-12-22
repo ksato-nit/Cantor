@@ -63,7 +63,7 @@ void Polynomial::resize(std::vector<Number> coeff){
 void Polynomial::normalize(){
     int deg = this->deg;
     for(auto i = this->coeff.rbegin(), e = this->coeff.rend(); i != e; ++i){
-        if(i->value == 0){
+        if(i->isZero()){
             --deg;
         }else{
             break;
@@ -80,7 +80,7 @@ void Polynomial::normalize(){
 
 bool Polynomial::isZero(){
     for(auto n : this->coeff){
-        if(n.value != 0){
+        if(!n.isZero()){
             return false;
         }
     }
@@ -257,7 +257,7 @@ void Polynomial::print() const{
 Number Polynomial::eval(Number x) const{
     Number ret(0);
     for(int i = this->deg; i >= 0; --i){
-        Number c = this->coeff[i].value;
+        Number c = this->coeff[i];
         for(int j = 1; j < i; ++j){
             c = c * x;
         }

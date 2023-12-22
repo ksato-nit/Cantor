@@ -1,21 +1,24 @@
 #pragma once
 #include "algorithm"
 #include "iostream"
+#include "string"
 #include <boost/multiprecision/cpp_int.hpp>
 #include <gmpxx.h>
 
 // 抽象的な体の要素を実現する．
 class Number {
 public:
-    static mpz_class CHARA;
-    mpz_class value;
+    static mpz_t CHARA;
+    static mpz_t MCHARA; // -CHARA
+    mpz_t value;
 
     Number();
-    Number(mpz_class value);
+    Number(int);
     Number operator + (const Number&) const;
     Number operator - (const Number&) const;
     Number operator * (const Number&) const;
-    Number operator * (const mpz_class) const;
+    Number operator * (const int) const;
+    Number operator * (const mpz_t) const;
     Number operator / (const Number&) const;
     bool operator == (const Number&) const;
     bool operator != (const Number&) const;
@@ -23,6 +26,7 @@ public:
     Number operator - () const;
     Number inv() const;
     bool isZero() const;
+    void set_str(const char*, const int);
 
     static Number ZERO();
     static Number ONE();

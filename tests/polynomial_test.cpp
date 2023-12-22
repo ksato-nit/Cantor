@@ -3,6 +3,9 @@
 #include "polynomial.hpp"
 
 TEST(PolynomialTest, InitDegreeEquals) {
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
+    
     Number f0(3);
     Number f1(1);
     int d = 1;
@@ -11,6 +14,9 @@ TEST(PolynomialTest, InitDegreeEquals) {
 }
 
 TEST(PolynomialTest, SumEquals) {
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
+
     // (4x^2 + x + 3) + (x + 2) = 4x^2 + 2x + 5.
     Number f0(3);
     Number f1(1);
@@ -35,6 +41,9 @@ TEST(PolynomialTest, SumEquals) {
 }
 
 TEST(PolynomialTest, DifferenceEquals) {
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
+
     // (4x^2 + x + 3) - (x + 2) = 4x^2 + 1.
     Number f0(3);
     Number f1(1);
@@ -59,6 +68,9 @@ TEST(PolynomialTest, DifferenceEquals) {
 }
 
 TEST(PolynomialTest, ProductEquals) {
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
+
     // (4x^2 + x + 3) * (x + 2) = 4x^3 + 9x^2 + 5x + 6.
     Number f0(3);
     Number f1(1);
@@ -84,6 +96,9 @@ TEST(PolynomialTest, ProductEquals) {
 }
 
 TEST(PolynomialTest, QuotientEquals) {
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
+
     // 4x^2 + x + 3 = (x + 2) * (4x - 7) + 17.
     Number f0(3);
     Number f1(1);
@@ -107,6 +122,9 @@ TEST(PolynomialTest, QuotientEquals) {
 }
 
 TEST(PolynomialTest, RemainderEquals) {
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
+
     // 4x^2 + x + 3 = (x + 2) * (4x - 7) + 17.
     Number f0(3);
     Number f1(1);
@@ -129,6 +147,9 @@ TEST(PolynomialTest, RemainderEquals) {
 }
 
 TEST(PolynomialTest, DerivativeEquals) {
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
+
     // (4x^2 + x + 3)' = 8x + 1.
     Number f0(3);
     Number f1(1);

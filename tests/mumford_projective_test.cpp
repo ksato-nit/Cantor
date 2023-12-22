@@ -4,7 +4,7 @@
 #include "mumford_projective.hpp"
 
 TEST(ProjectiveMumfordTest, LangeSumEquals) {
-    Number::CHARA.set_str("31", 10);
+    mpz_init_set_str(Number::CHARA, "31", 10);
 
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
@@ -42,7 +42,7 @@ TEST(ProjectiveMumfordTest, LangeSumEquals) {
 }
 
 TEST(ProjectiveMumfordTest, CostelloSumEquals) {
-    Number::CHARA.set_str("31", 10);
+    mpz_init_set_str(Number::CHARA, "31", 10);
 
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
@@ -80,7 +80,7 @@ TEST(ProjectiveMumfordTest, CostelloSumEquals) {
 }
 
 TEST(ProjectiveMumfordTest, DoublingEquals) {
-    Number::CHARA.set_str("31", 10);
+    mpz_init_set_str(Number::CHARA, "31", 10);
     
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};

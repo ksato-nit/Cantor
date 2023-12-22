@@ -2,18 +2,28 @@
 #include "number.hpp"
 
 TEST(NumberTest, ModValueEquals) {
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
     Number x(1);
-    Number y(1 - x.CHARA);
+    Number y(1);
+    Number C(31);
+    y = y - C;
     EXPECT_EQ(x, y);
 }
 
 TEST(NumberTest, ModValueNotEquals) {
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
     Number x(1);
-    Number y(2 - x.CHARA);
+    Number y(2);
+    Number C(31);
+    y = y - C;
     EXPECT_NE(x, y);
 }
 
 TEST(NumberTest, SumEquals) {
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
     Number x(1);
     Number y(2);
     Number z(3);
@@ -21,6 +31,8 @@ TEST(NumberTest, SumEquals) {
 }
 
 TEST(NumberTest, LargeSumEquals) {
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
     Number x(50);
     Number y(40);
     Number z(90);
@@ -28,6 +40,8 @@ TEST(NumberTest, LargeSumEquals) {
 }
 
 TEST(NumberTest, DifferenceEquals) {
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
     Number x(5);
     Number y(4);
     Number z(1);
@@ -35,6 +49,8 @@ TEST(NumberTest, DifferenceEquals) {
 }
 
 TEST(NumberTest, LargeDifferenceEquals) {
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
     Number x(200);
     Number y(40);
     Number z(160);
@@ -42,6 +58,8 @@ TEST(NumberTest, LargeDifferenceEquals) {
 }
 
 TEST(NumberTest, ProductEquals) {
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
     Number x(2);
     Number y(3);
     Number z(6);
@@ -49,6 +67,8 @@ TEST(NumberTest, ProductEquals) {
 }
 
 TEST(NumberTest, LargeProductEquals) {
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
     Number x(50);
     Number y(40);
     Number z(2000);
@@ -56,6 +76,8 @@ TEST(NumberTest, LargeProductEquals) {
 }
 
 TEST(NumberTest, ProductToIntEquals) {
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
     Number x(9);
     int y = 2;
     Number z(18);
@@ -63,6 +85,8 @@ TEST(NumberTest, ProductToIntEquals) {
 }
 
 TEST(NumberTest, QuotientEquals) {
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
     Number x(2);
     Number y(3);
     Number z = x / y;
