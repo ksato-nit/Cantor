@@ -24,10 +24,14 @@ public:
     ProjectiveMumford(Polynomial f, Polynomial h, Number, Number, Number, Number);
 
     ProjectiveMumford operator + (const ProjectiveMumford& q) const;
+    ProjectiveMumford operator * (const mpz_class& k) const;
+
     ProjectiveMumford CostelloAdd(const ProjectiveMumford& q) const;
     ProjectiveMumford LangeAdd(const ProjectiveMumford& q) const;
     ProjectiveMumford LangeDoubling() const;
     ProjectiveMumford inv();
     ProjectiveMumford zero() const;
-    void print();
+    static ProjectiveMumford zero(const Polynomial& f, const Polynomial& h);
+    void print() const;
+    bool isZero() const;
 };

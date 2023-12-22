@@ -4,6 +4,9 @@
 #include "mumford_weighted_projective.hpp"
 
 TEST(WeightedProjectiveMumfordTest, SumEquals) {
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
+    
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
     int u1c[3] = {5, 25, 1};

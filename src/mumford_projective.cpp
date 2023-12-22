@@ -7,7 +7,7 @@ ProjectiveMumford::ProjectiveMumford(){
     this->U0 = Number::ONE();
     this->V1 = Number::ZERO();
     this->V0 = Number::ZERO();
-    this->Z = Number::ZERO();
+    this->Z = Number::ONE();
 }
 
 ProjectiveMumford::ProjectiveMumford(Polynomial f, Polynomial h){
@@ -17,7 +17,7 @@ ProjectiveMumford::ProjectiveMumford(Polynomial f, Polynomial h){
     this->U0 = Number::ONE();
     this->V1 = Number::ZERO();
     this->V0 = Number::ZERO();
-    this->Z = Number::ZERO();
+    this->Z = Number::ONE();
 }
 
 ProjectiveMumford::ProjectiveMumford(Polynomial f, Polynomial h, Number U1, Number U0, Number V1, Number V0, Number Z, Number W1, Number W0){
@@ -62,8 +62,49 @@ ProjectiveMumford ProjectiveMumford::operator + (const ProjectiveMumford& m) con
     return ret;
 }
 
+ProjectiveMumford ProjectiveMumford::operator * (const mpz_class& k_) const{
+    Polynomial f = this->f;
+    Polynomial h = this->h;
+    mpz_class k = k_;
+
+    // double-and-add method によりスカラー倍を計算する．
+
+    // 連除法で 2 進数に変換．
+    mpz_class two = 2;
+    int count = 0;
+    std::vector<int> bits;
+    while(true){
+        mpz_class rem = k % 2;
+        bits.push_back((int) rem.get_si());
+
+        k = k / 2;
+        ++count;
+
+        if(k < 1){
+            break;
+        }
+    }
+
+    ProjectiveMumford D = ProjectiveMumford::zero(f, h);
+    ProjectiveMumford now = *this;
+    for(int i = 0; i < count; ++i){
+        if(bits[i] == 1){
+            if(D.isZero()){
+                D = now;
+            }else if(now.isZero()){
+                // D = D;
+            }else{
+                D = D.LangeAdd(now);
+            }
+            //D.print();
+        }
+        now = now.LangeDoubling();
+    }
+    return D;
+}
+
 ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) const{
-    std::cout << "Projective Costello Addition." << std::endl;
+    //std::cout << "Projective Costello Addition." << std::endl;
 
     // Total: 76M, 9S
 
@@ -174,7 +215,7 @@ ProjectiveMumford ProjectiveMumford::CostelloAdd(const ProjectiveMumford& m) con
 }
 
 ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
-    std::cout << "Projective Lange Addition." << std::endl;
+    //std::cout << "Projective Lange Addition." << std::endl;
 
     Number U11 = this->U1;
     Number U10 = this->U0;
@@ -264,7 +305,7 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
 }
 
 ProjectiveMumford ProjectiveMumford::LangeDoubling() const{
-    std::cout << "Projective Lange Doubling." << std::endl;
+    //std::cout << "Projective Lange Doubling." << std::endl;
 
     Number U1 = this->U1;
     Number U0 = this->U0;
@@ -403,7 +444,12 @@ ProjectiveMumford ProjectiveMumford::zero() const{
     return zero;
 }
 
-void ProjectiveMumford::print(){
+ProjectiveMumford ProjectiveMumford::zero(const Polynomial& f, const Polynomial& h){
+    ProjectiveMumford zero(f, h);
+    return zero;
+}
+
+void ProjectiveMumford::print() const{
     std::cout << "[";
     std::cout << this->U1.value << " " << this->U0.value;
     std::cout << ", ";
@@ -419,4 +465,19 @@ void ProjectiveMumford::print(){
     std::cout << "[" << u << ", " << v << "]" << std::endl;
     
     return;
+}
+
+bool ProjectiveMumford::isZero() const{
+    Number U1 = this->U1;
+    Number U0 = this->U0;
+    Number V1 = this->V1;
+    Number V0 = this->V0;
+    Number Z = this->Z;
+
+    if(V1.isZero() && V0.isZero()){
+        if(U1.isZero() && U0 == Z){
+            return true;
+        }
+    }
+    return false;
 }
