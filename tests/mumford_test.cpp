@@ -6,7 +6,8 @@
 // fixme: Mumford の設計変更に伴い，回りくどくなっている．
 
 TEST(MumfordTest, SumOfDeg5MonicEquals) {
-    mpz_init_set_str(Number::CHARA, "31", 10);
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
     
     int fc[6] = {-1, 3, 6, -2, -3, 1};
     int hc[3] = {0, 1, 1};
@@ -39,7 +40,8 @@ TEST(MumfordTest, SumOfDeg5MonicEquals) {
 }
 
 TEST(MumfordTest, SumOfDeg5MonicDegeneratedEquals) {
-    mpz_init_set_str(Number::CHARA, "31", 10);
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
 
     int fc[6] = {-1, 3, 6, -2, -3, 1};
     int hc[3] = {0, 1, 1};
@@ -72,7 +74,8 @@ TEST(MumfordTest, SumOfDeg5MonicDegeneratedEquals) {
 }
 
 TEST(MumfordTest, CantorSumOfDeg6NonMonicEquals) {
-    mpz_init_set_str(Number::CHARA, "31", 10);
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
 
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
@@ -106,7 +109,8 @@ TEST(MumfordTest, CantorSumOfDeg6NonMonicEquals) {
 }
 
 TEST(MumfordTest, LangeSumOfDeg6NonMonicEquals) {
-    mpz_init_set_str(Number::CHARA, "31", 10);
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
 
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
@@ -140,7 +144,8 @@ TEST(MumfordTest, LangeSumOfDeg6NonMonicEquals) {
 }
 
 TEST(MumfordTest, CostelloSumOfDeg6NonMonicEquals) {
-    mpz_init_set_str(Number::CHARA, "31", 10);
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
 
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
@@ -174,7 +179,8 @@ TEST(MumfordTest, CostelloSumOfDeg6NonMonicEquals) {
 }
 
 TEST(MumfordTest, DoublingDeg6NonMonicEquals) {
-    mpz_init_set_str(Number::CHARA, "31", 10);
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
 
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
@@ -203,7 +209,8 @@ TEST(MumfordTest, DoublingDeg6NonMonicEquals) {
 }
 
 TEST(MumfordTest, ScalarMultiplicationEquals) {
-    mpz_init_set_str(Number::CHARA, "31", 10);
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
 
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
