@@ -8,6 +8,7 @@ class Mumford {
 public:
     Number u2, u1, u0;
     Number v1, v0;
+    Number U1, U0;
     //Polynomial u;
     //Polynomial v;
 
@@ -17,6 +18,7 @@ public:
     Mumford();
     Mumford(Polynomial f, Polynomial h);
     Mumford(Polynomial f, Polynomial h, Number u1, Number u0, Number v1, Number v0);
+    Mumford(Polynomial f, Polynomial h, Number u1, Number u0, Number v1, Number v0, Number U1, Number U0);
     Mumford(Polynomial f, Polynomial h, Divisor d);
 
     Mumford operator + (const Mumford& q) const;

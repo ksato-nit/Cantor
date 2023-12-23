@@ -11,12 +11,43 @@ Number::Number(int x){
     mpz_init_set_si(this->value, x);
 }
 
+Number::Number(const Number& num){
+    mpz_init_set(this->value, num.value);
+}
+
 void Number::set_str(const char* str, const int base){
     mpz_set_str(this->value, str, base);
     return;
 }
 
+void Number::operator += (const Number& y){
+    mpz_add(this->value, this->value, y.value);
+    if(mpz_cmp(this->value, CHARA) >= 0){
+        mpz_sub(this->value, this->value, CHARA);
+    }else if(mpz_cmp(this->value, MCHARA) <= 0){
+        mpz_add(this->value, this->value, CHARA);
+    }
+    return;
+}
+
+void Number::operator -= (const Number& y){
+    mpz_sub(this->value, this->value, y.value);
+    if(mpz_cmp(this->value, CHARA) >= 0){
+        mpz_sub(this->value, this->value, CHARA);
+    }else if(mpz_cmp(this->value, MCHARA) <= 0){
+        mpz_add(this->value, this->value, CHARA);
+    }
+    return;
+}
+
+void Number::operator *= (const Number& y){
+    mpz_mul(this->value, this->value, y.value);
+    mpz_mod(this->value, this->value, CHARA);
+    return;
+}
+
 Number Number::operator + (const Number& y) const{
+    // todo: 高速化
     Number z;
     mpz_add(z.value, this->value, y.value);
     //mpz_mod(z.value, z.value, CHARA);

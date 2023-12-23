@@ -10,16 +10,21 @@ class Number {
 public:
     static mpz_t CHARA;
     static mpz_t MCHARA; // -CHARA
+
     mpz_t value;
 
     Number();
     Number(int);
+    Number(const Number&);
     Number operator + (const Number&) const;
     Number operator - (const Number&) const;
     Number operator * (const Number&) const;
     Number operator * (const int) const;
     Number operator * (const mpz_t) const;
     Number operator / (const Number&) const;
+    void operator += (const Number&);
+    void operator -= (const Number&);
+    void operator *= (const Number&);
     bool operator == (const Number&) const;
     bool operator != (const Number&) const;
     Number operator + () const;
