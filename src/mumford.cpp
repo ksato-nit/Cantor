@@ -8,6 +8,8 @@ Mumford::Mumford(){
     this->u0 = Number::ONE();
     this->v1 = Number::ZERO();
     this->v0 = Number::ZERO();
+    this->U1 = Number::ZERO();
+    this->U0 = Number::ZERO();
 }
 
 Mumford::Mumford(Polynomial f, Polynomial h){
@@ -18,6 +20,8 @@ Mumford::Mumford(Polynomial f, Polynomial h){
     this->u0 = Number::ONE();
     this->v1 = Number::ZERO();
     this->v0 = Number::ZERO();
+    this->U1 = Number::ZERO();
+    this->U0 = Number::ZERO();    
 }
 
 Mumford::Mumford(Polynomial f, Polynomial h, Number u1, Number u0, Number v1, Number v0){
@@ -28,6 +32,20 @@ Mumford::Mumford(Polynomial f, Polynomial h, Number u1, Number u0, Number v1, Nu
     this->u0 = u0;
     this->v1 = v1;
     this->v0 = v0;
+    this->U1 = u1 * u1;
+    this->U0 = u0 * u0;
+}
+
+Mumford::Mumford(Polynomial f, Polynomial h, Number u1, Number u0, Number v1, Number v0, Number U1, Number U0){
+    this->f = f;
+    this->h = h;
+    this->u2 = Number::ONE();
+    this->u1 = u1;
+    this->u0 = u0;
+    this->v1 = v1;
+    this->v0 = v0;
+    this->U1 = U1;
+    this->U0 = U0;
 }
 
 // 被約因子 D を受け取り，対応する Mumford 表現を返す．
@@ -181,11 +199,10 @@ Mumford Mumford::CostelloAdd(const Mumford& m) const{
     Number f5 = this->f.coeff[5];
     Number f4 = this->f.coeff[4];
 
-    // TODO: U1, U0 を座標に含めて保持するようにする．
-    Number U11 = u11 * u11;
-    Number U21 = u21 * u21;
-    Number U10 = u11 * u10;
-    Number U20 = u21 * u20;
+    Number U11 = this->U1;
+    Number U21 = m.U1;
+    Number U10 = this->U0;
+    Number U20 = m.U0;
 
     Number u1S = u11 + u21;
     Number v0D = v10 - v20;
@@ -204,12 +221,14 @@ Mumford Mumford::CostelloAdd(const Mumford& m) const{
     Number l2_num = t1 - t2;
     Number l3_num = t3 - t4;
 
-    Number d = (M4 - M2) * (M1 + M3);
+    Number d = (M4 - M2);
+    d *= (M1 + M3);
     d = d + d;
-    d = d + t3 + t4 - t1 - t2;
+    d += t3 + t4 - t1 - t2;
 
     Number A = d * d;
-    Number B = l3_num * l3_num - f6 * A;
+    Number B = l3_num * l3_num;
+    B -= f6 * A;
     Number C = (d * B).inv();
     Number d_inv = B * C;
     Number d_shifted_inv = d * A * C;
@@ -217,16 +236,13 @@ Mumford Mumford::CostelloAdd(const Mumford& m) const{
     Number l2 = l2_num * d_inv;
     Number l3 = l3_num * d_inv;
 
-    Number l0 = v10 + l2 * u10 - l3 * U10;
-    Number l1 = v11 + l2 * u11 - l3 * (U11 - u10);
-
     Number u1dd = -(u1S + (f5 - l2 * l3 - l2 * l3) * d_shifted_inv);
 
     Number u0dd = l3 * (l3 * (u10 - U11) + l2 * u11 + v11);
     u0dd = u0dd + u0dd;
-    u0dd = u0dd + l2 * l2 - f4;
-    u0dd = u0dd * d_shifted_inv;
-    u0dd = u0dd - u11 * u21 - u10 - u20 - u1S * u1dd;
+    u0dd += l2 * l2 - f4;
+    u0dd *= d_shifted_inv;
+    u0dd -= u11 * u21 - u10 - u20 - u1S * u1dd;
 
     Number U1dd = u1dd * u1dd;
     Number U0dd = u1dd * u0dd;
@@ -234,7 +250,7 @@ Mumford Mumford::CostelloAdd(const Mumford& m) const{
     Number v1dd = l3 * (u0dd - U1dd + U11 - u10) + l2 * (u1dd - u11) - v11;
     Number v0dd = l3 * (U10 - U0dd) + l2 * (u0dd - u10) - v10;
 
-    return Mumford(f, h, u1dd, u0dd, v1dd, v0dd);
+    return Mumford(f, h, u1dd, u0dd, v1dd, v0dd, U1dd, U0dd);
 }
 
 Mumford Mumford::HarleyAdd(const Mumford& m) const{
@@ -549,8 +565,8 @@ Mumford Mumford::CostelloDoubling() const{
     Number v1 = this->v1;
     Number v0 = this->v0;
 
-    Number U1 = u1 * u1;
-    Number U0 = u1 * u0;
+    Number U1 = this->U1;
+    Number U0 = this->U0;
 
     Number f2 = this->f.coeff[2];
     Number f3 = this->f.coeff[3];
@@ -561,58 +577,106 @@ Mumford Mumford::CostelloDoubling() const{
     // 32M, 6S, I
 
     Number vv = v1 * v1;
-    Number va = (v1 + u1) * (v1 + u1) - vv - U1;
+    Number va = (v1 + u1) * (v1 + u1);
+    va -= vv;
+    va -= U1;
 
     Number M1 = (v0 - va) * 2;
-    Number M2 = (U1 * 2 + u0) * v1 * 2;
+    Number M2 = (U1 * 2 + u0);
+    M2 *= v1;
+    M2 += M2;
     Number M3 = -v1 * 2;
-    Number M4 = va + v0 * 2;
+    Number M4 = va;
+    M4 += v0 * 2;
 
     Number f6u0 = f6 * u0;
     Number f6U1 = f6 * U1;
     Number f5u0 = f5 * u0;
     Number f5u1 = f5 * u1;
 
-    Number z11 = f5u1 * 2 - f6U1 * 3 - f4;
+    Number z11 = f5u1 * 2;
+    z11 -= f6U1 * 3;
+    z11 -= f4;
     z11 = z11 * U1;
-    Number z12 = f5u1 * 2 + f6u0 * 3 - f4 * 2;
+    Number z12 = f5u1 * 2;
+    z12 += f6u0 * 3;
+    z12 -= f4 * 2;
     z12 = z12 * u0;
 
-    Number z1 = z11 + z12 - vv + f2;
-    Number z2 = (f6u0 * 6 - f6U1 * 4 + f5u1 * 3 - f4 * 2) * u1 - f5u0 * 2 + f3;
+    Number z1 = z11;
+    z1 += z12;
+    z1 -= vv;
+    z1 += f2;
+    Number z2 = f6u0 * 6;
+    z2 -= f6U1 * 4;
+    z2 += f5u1 * 3;
+    z2 -= f4 * 2;
+    z2 *= u1;
+    z2 -= f5u0 * 2;
+    z2 += f3;
 
-    Number t11 = M2 - z1;
-    Number t12 = z2 - M1;
-    Number t21 = -(z1 + M2);
-    Number t22 = z2 + M1;
-    Number t31 = -z1 + M4;
-    Number t32 = z2 - M3;
-    Number t41 = -(z1 + M4);
-    Number t42 = z2 + M3;
+    Number t11 = M2;
+    t11 -= z1;
+    Number t12 = z2;
+    t12 -= M1;
+    Number t21 = -z1;
+    t21 -= M2;
+    Number t22 = z2;
+    t22 += M1;
+    Number t31 = -z1;
+    t31 += M4;
+    Number t32 = z2;
+    t32 -= M3;
+    Number t41 = -z1;
+    t41 -= M4;
+    Number t42 = z2;
+    t42 += M3;
 
-    Number t1 = t11 * t12;
-    Number t2 = t21 * t22;
-    Number t3 = t31 * t32;
-    Number t4 = t41 * t42;
+    Number t1 = t11;
+    t1 *= t12;
+    Number t2 = t21;
+    t2 *= t22;
+    Number t3 = t31;
+    t3 *= t32;
+    Number t4 = t41;
+    t4 *= t42;
 
-    Number l2_num = t1 - t2;
-    Number l3_num = t3 - t4;
+    Number l2_num = t1;
+    l2_num -= t2;
+    Number l3_num = t3;
+    l3_num -= t4;
 
-    Number d11 = M4 - M2;
-    Number d12 = M1 + M3;
-    Number d = d11 * d12 * 2 + t3 + t4 - t1 - t2;
+    Number d11 = M4;
+    d11 -= M2;
+    Number d12 = M1;
+    d12 += M3;
+    Number d = d11 * d12;
+    d += d;
+    d += t3;
+    d += t4;
+    d -= t1;
+    d -= t2;
 
-    Number A = d * d;
-    Number B1 = l3_num * l3_num;
-    Number B2 = f6 * A;
-    Number B = B1 - B2;
+    Number A = d;
+    A *= d;
+    Number B1 = l3_num;
+    B1 *= l3_num;
+    Number B2 = f6;
+    B2 *= A;
+    Number B = B1;
+    B -= B2;
     Number C = (d * B).inv();
 
-    Number d_inv = B * C;
-    Number d_shifted_inv = A * C * d;
+    Number d_inv = B;
+    d_inv *= C;
+    Number d_shifted_inv = A;
+    d_shifted_inv *= C;
+    d_shifted_inv *= d;
 
-    Number l2 = l2_num * d_inv;
-    Number l3 = l3_num * d_inv;
+    Number l2 = l2_num;
+    l2 *= d_inv;
+    Number l3 = l3_num;
+    l3 *= d_inv;
 
     Number u1d = (l2 * l3 * 2 - f5) * d_shifted_inv - u1 * 2;
     Number u0d = (((u0 - U1) * l3 + l2 * u1 + v1) * l3 * 2 + l2 * l2 - f4) * d_shifted_inv;
@@ -623,7 +687,7 @@ Mumford Mumford::CostelloDoubling() const{
     Number v1d = (u0d - U1d + U1 - u0) * l3 + (u1d - u1) * l2 - v1;
     Number v0d = (U0 - U0d) * l3 + (u0d - u0) * l2 - v0;
 
-    Mumford ret(f, h, u1d, u0d, v1d, v0d);
+    Mumford ret(f, h, u1d, u0d, v1d, v0d, U1d, U0d);
     return ret;
 }
 
