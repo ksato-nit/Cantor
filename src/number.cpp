@@ -19,7 +19,6 @@ Number::Number(Number&& y) noexcept{
     this->value->_mp_alloc = y.value->_mp_alloc;
     this->value->_mp_size = y.value->_mp_size;
     this->value->_mp_d = y.value->_mp_d;
-    mpz_clear(y.value);
 }
 
 void Number::set_str(const char* str, const int base){
@@ -110,7 +109,6 @@ Number& Number::operator = (Number&& y) noexcept{
     this->value->_mp_alloc = y.value->_mp_alloc;
     this->value->_mp_size = y.value->_mp_size;
     this->value->_mp_d = y.value->_mp_d;
-    mpz_clear(y.value);
     return *this;
 }
 

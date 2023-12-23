@@ -33,7 +33,7 @@ Mumford::Mumford(Polynomial f, Polynomial h, Number u1, Number u0, Number v1, Nu
     this->v1 = v1;
     this->v0 = v0;
     this->U1 = u1 * u1;
-    this->U0 = u0 * u0;
+    this->U0 = u1 * u0;
 }
 
 Mumford::Mumford(Polynomial f, Polynomial h, Number u1, Number u0, Number v1, Number v0, Number U1, Number U0){

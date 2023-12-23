@@ -36,6 +36,7 @@ int main(){
     Mumford D1(f, h, u1, u0, v1, v0);
     ProjectiveMumford D1P(f, h, u1, u0, v1, v0);
 
+    /*
     Number num;
     mpz_set_str(num.value, "7713960161207197506610974848157905611744466278275346794947826509160636299563", 10);
     Number num2;
@@ -66,6 +67,7 @@ int main(){
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
     return 0;
+    */
 
     // 超楕円曲線上のスカラー倍算
     mpz_class k;
