@@ -234,9 +234,6 @@ Mumford Mumford::CostelloAdd(const Mumford& m) const{
     Number l2 = l2_num * d_inv;
     Number l3 = l3_num * d_inv;
 
-    Number l0 = v10 + l2 * u10 - l3 * U10;
-    Number l1 = v11 + l2 * u11 - l3 * (U11 - u10);
-
     Number u1dd = -(u1S + (f5 - l2 * l3 - l2 * l3) * d_shifted_inv);
 
     Number u0dd = l3 * (l3 * (u10 - U11) + l2 * u11 + v11);
