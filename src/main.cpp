@@ -42,13 +42,10 @@ int main(){
     mpz_set_str(num.value, "6613960161207197506610974848157905611744466278275346794947826509160636299164", 10);
 
     // 有限体上の基本演算
-    /*
     std::cout << "加算" << std::endl;
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 1000000; ++i){
-        num2 += num;
-        //mpz_init_set(num2.value, num.value);
-        //mpz_mod(num2.value, num2.value, Number::CHARA);
+        num2 = num2 + num;
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
@@ -56,15 +53,11 @@ int main(){
     std::cout << "乗算" << std::endl;
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 1000000; ++i){
-        num2 *= num;
-        //mpz_mul(num2.value, num2.value, num.value);
-        //mpz_mod(num2.value, num2.value, Number::CHARA);
+        num2 = num2 * num;
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
-    */
 
-    /*
     std::cout << "逆元" << std::endl;
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 1000000; ++i){
@@ -72,14 +65,12 @@ int main(){
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
-    */
-    //return 0;
+    return 0;
 
     // 超楕円曲線上のスカラー倍算
     mpz_class k;
     k.set_str("16613960161207197506610974848157905611744466278275346794947826509160636299164", 10);
 
-    /*
     std::cout << "射影 Lange" << std::endl;
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 1000; ++i){
@@ -88,19 +79,18 @@ int main(){
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
 
-    */
     std::cout << "アフィン Lange" << std::endl;
     start = std::chrono::system_clock::now();
-    for(int i = 0; i < 10000; ++i){
-        Mumford Dk = D1.LangeDoubling();
+    for(int i = 0; i < 1000; ++i){
+        Mumford Dk = D1 * k;
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
 
     std::cout << "アフィン Costello" << std::endl;
     start = std::chrono::system_clock::now();
-    for(int i = 0; i < 10000; ++i){
-        Mumford Dk = D1.CostelloDoubling();
+    for(int i = 0; i < 1000; ++i){
+        Mumford Dk = D1.CostelloScalarMultiple(k);
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
