@@ -12,6 +12,7 @@ int main(){
     mpz_init_set_str(Number::CHARA, "16613960161207197506610974848157905611744466278275346794947826509160636299163", 10);
     mpz_init_set_str(Number::MCHARA, "-16613960161207197506610974848157905611744466278275346794947826509160636299163", 10);
 
+    /*
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
 
@@ -35,47 +36,66 @@ int main(){
 
     Mumford D1(f, h, u1, u0, v1, v0);
     ProjectiveMumford D1P(f, h, u1, u0, v1, v0);
+    */
 
-    /*
     Number num;
     mpz_set_str(num.value, "7713960161207197506610974848157905611744466278275346794947826509160636299563", 10);
     Number num2;
     mpz_set_str(num.value, "6613960161207197506610974848157905611744466278275346794947826509160636299164", 10);
 
     // 有限体上の基本演算
-    std::cout << "加算" << std::endl;
+    /*
+    std::cout << "コピーコンストラクタ" << std::endl;
     start = std::chrono::system_clock::now();
-    for(int i = 0; i < 1000000; ++i){
-        num2 = num2 + num;
+    for(int i = 0; i < 10000; ++i){
+        Number num3 = num2;
+    }
+    end = std::chrono::system_clock::now();
+    std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
+
+    std::cout << "ムーブコンストラクタ" << std::endl;
+    start = std::chrono::system_clock::now();
+    for(int i = 0; i < 10000; ++i){
+        Number num3 = std::move(num2);
+    }
+    end = std::chrono::system_clock::now();
+    std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
+    */
+
+    std::cout << "加算" << std::endl;
+    Number num3;
+    start = std::chrono::system_clock::now();
+    for(int i = 0; i < 10000; ++i){
+        num3 = num2 + num;
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
 
     std::cout << "乗算" << std::endl;
     start = std::chrono::system_clock::now();
-    for(int i = 0; i < 1000000; ++i){
-        num2 = num2 * num;
+    for(int i = 0; i < 10000; ++i){
+        num3 = num2 * num;
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
 
     std::cout << "逆元" << std::endl;
     start = std::chrono::system_clock::now();
-    for(int i = 0; i < 1000000; ++i){
+    for(int i = 0; i < 10; ++i){
         num2.inv();
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
     return 0;
-    */
 
+    /*
     // 超楕円曲線上のスカラー倍算
     mpz_class k;
     k.set_str("16613960161207197506610974848157905611744466278275346794947826509160636299164", 10);
 
     std::cout << "射影 Lange" << std::endl;
     start = std::chrono::system_clock::now();
-    for(int i = 0; i < 1000; ++i){
+    for(int i = 0; i < 100; ++i){
         ProjectiveMumford Dk = D1P * k;
     }
     end = std::chrono::system_clock::now();
@@ -83,7 +103,7 @@ int main(){
 
     std::cout << "アフィン Lange" << std::endl;
     start = std::chrono::system_clock::now();
-    for(int i = 0; i < 1000; ++i){
+    for(int i = 0; i < 100; ++i){
         Mumford Dk = D1 * k;
     }
     end = std::chrono::system_clock::now();
@@ -91,11 +111,12 @@ int main(){
 
     std::cout << "アフィン Costello" << std::endl;
     start = std::chrono::system_clock::now();
-    for(int i = 0; i < 1000; ++i){
+    for(int i = 0; i < 100; ++i){
         Mumford Dk = D1.CostelloScalarMultiple(k);
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
-
+    */
+    
     return 0;
 }
