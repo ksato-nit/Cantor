@@ -4,12 +4,7 @@ mpz_t Number::CHARA;
 mpz_t Number::MCHARA;
 
 Number::Number(){
-    //std::cout  << "default constructor" << std::endl;
     mpz_init(this->value);
-}
-
-Number::~Number(){
-    //std::cout << "destructor" << std::endl;
 }
 
 Number::Number(int x){
@@ -17,17 +12,13 @@ Number::Number(int x){
 }
 
 Number::Number(const Number& num){
-    //std::cout << "copy constructor" << std::endl;
     mpz_init_set(this->value, num.value);
-    return;
 }
 
 Number::Number(Number&& y) noexcept{
-    //std::cout << "move constructor" << std::endl;
     this->value->_mp_alloc = y.value->_mp_alloc;
     this->value->_mp_size = y.value->_mp_size;
     this->value->_mp_d = y.value->_mp_d;
-    return; 
 }
 
 void Number::set_str(const char* str, const int base){
@@ -37,7 +28,6 @@ void Number::set_str(const char* str, const int base){
 
 Number Number::operator + (const Number& y) const{
     // todo: 高速化
-    //std::cout << "add" << std::endl;
     Number z;
     mpz_add(z.value, this->value, y.value);
     //mpz_mod(z.value, z.value, CHARA);
@@ -46,7 +36,6 @@ Number Number::operator + (const Number& y) const{
     }else if(mpz_cmp(z.value, MCHARA) <= 0){
         mpz_add(z.value, z.value, CHARA);
     }
-    //std::cout << "add end" << std::endl;
     return z;
 }
 
@@ -112,13 +101,11 @@ Number Number::operator - () const{
 }
 
 Number& Number::operator = (const Number& y) {
-    //std::cout << "copy assignment" << std::endl;
     mpz_set(this->value, y.value);
     return *this;
 }
 
 Number& Number::operator = (Number&& y) noexcept{
-    //std::cout << "move assignment" << std::endl;
     this->value->_mp_alloc = y.value->_mp_alloc;
     this->value->_mp_size = y.value->_mp_size;
     this->value->_mp_d = y.value->_mp_d;

@@ -14,7 +14,6 @@ public:
     mpz_t value;
 
     Number();
-    ~Number();
     Number(int);
     Number(const Number&);
     Number(Number&&) noexcept;
