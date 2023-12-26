@@ -16,9 +16,7 @@ Number::Number(const Number& num){
 }
 
 Number::Number(Number&& y) noexcept{
-    this->value->_mp_alloc = y.value->_mp_alloc;
-    this->value->_mp_size = y.value->_mp_size;
-    this->value->_mp_d = y.value->_mp_d;
+    *(this->value) = *(y.value);
 }
 
 void Number::set_str(const char* str, const int base){
@@ -27,7 +25,6 @@ void Number::set_str(const char* str, const int base){
 }
 
 Number Number::operator + (const Number& y) const{
-    // todo: 高速化
     Number z;
     mpz_add(z.value, this->value, y.value);
     //mpz_mod(z.value, z.value, CHARA);
@@ -106,9 +103,7 @@ Number& Number::operator = (const Number& y) {
 }
 
 Number& Number::operator = (Number&& y) noexcept{
-    this->value->_mp_alloc = y.value->_mp_alloc;
-    this->value->_mp_size = y.value->_mp_size;
-    this->value->_mp_d = y.value->_mp_d;
+    *(this->value) = *(y.value);
     return *this;
 }
 

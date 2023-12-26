@@ -36,11 +36,10 @@ int main(){
     Mumford D1(f, h, u1, u0, v1, v0);
     ProjectiveMumford D1P(f, h, u1, u0, v1, v0);
 
-    /*
     Number num;
     mpz_set_str(num.value, "7713960161207197506610974848157905611744466278275346794947826509160636299563", 10);
     Number num2;
-    mpz_set_str(num.value, "6613960161207197506610974848157905611744466278275346794947826509160636299164", 10);
+    mpz_set_str(num.value, "10613960161207197506610974848157905611744466278275346794947826509160636299164", 10);
 
     // 有限体上の基本演算
     std::cout << "加算" << std::endl;
@@ -59,6 +58,14 @@ int main(){
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
 
+    std::cout << "2乗算" << std::endl;
+    start = std::chrono::system_clock::now();
+    for(int i = 0; i < 1000000; ++i){
+        num2 = num2 * num2;
+    }
+    end = std::chrono::system_clock::now();
+    std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
+
     std::cout << "逆元" << std::endl;
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 1000000; ++i){
@@ -66,8 +73,7 @@ int main(){
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
-    return 0;
-    */
+    //return 0;
 
     // 超楕円曲線上のスカラー倍算
     mpz_class k;

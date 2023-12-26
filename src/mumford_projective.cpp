@@ -275,7 +275,7 @@ ProjectiveMumford ProjectiveMumford::LangeAdd(const ProjectiveMumford& m) const{
 
     Number t4 = (s1 * l3 - rs * Z2 * f6) * Z2;
     Number t3 = ((l2 * s1 + l3 * s0) - rs * (f5Z2 - f6U21)) * Z2;
-    Number t2 = Z2 * (s0 * l2 + s1 * (l1 + rV21 * 2)) - rs * ( (f4 * Z2 - f6 * U20) * Z2 - (f5Z2 - f6U21) * U21 );
+    Number t2 = Z2 * (s0 * l2 + s1 * (l1 + rV21 + rV21)) - rs * ( (f4 * Z2 - f6 * U20) * Z2 - (f5Z2 - f6U21) * U21 );
  
     // 8M, 2S
     Number t4U11 = t4 * U11;
@@ -334,13 +334,14 @@ ProjectiveMumford ProjectiveMumford::LangeDoubling() const{
 
     // 2. v~ と u の終結式を計算．
     // 4M, 2S
-    Number V1t = V1 * 2;
-    Number V0t = V0 * 2;
+    Number V1t = V1 + V1;
+    Number V0t = V0 + V0;
 
     Number W0 = V1 * V1;
     Number U1s = U1 * U1;
     Number W1 = U1s;
-    Number W2 = W0 * 4;
+    Number W2 = W0 + W0;
+    W2 = W2 + W2;
     Number W3 = U1 * V1t;
     // Z^3 がかかっている．
     Number V0tZ = V0t * Z;
@@ -364,7 +365,7 @@ ProjectiveMumford ProjectiveMumford::LangeDoubling() const{
     Number k1 = f3 * Z3 - k3U0Z - k2 * U1;
     Number k0 = f2 * Z4 - W0 * Z2 - k2 * U0Z - k1 * U1;
     // Z^3 がかかっている．
-    Number k1d = k1 + W1 * (k3 - k4U1) - k3U0Z + U1 * (k4U0Z * 2 - k2);
+    Number k1d = k1 + W1 * (k3 - k4U1) - k3U0Z + U1 * (k4U0Z + k4U0Z - k2);
     // Z^4 がかかっている．
     Number k0d = k0 + U0Z * (U1 * (k3 - k4U1) + k4U0Z - k2);
 
@@ -380,16 +381,18 @@ ProjectiveMumford ProjectiveMumford::LangeDoubling() const{
     // 6. U' を計算．
     // 12M, 4S
     Number rs = r * r;
-    Number f5Zk = f5Z - k4U1 * 2;
+    Number f5Zk = f5Z - k4U1 - k4U1;
     Number Z3r = Z3 * r;
     Number rsZ4 = rs * Z4;
     // Z^10 がかかっている．
     Number Ud2 = s1d * s1d - rsZ4 * f6;
     // Z^11 がかかっている．
-    Number Ud1 = s1d * s0d * 2 - rsZ4 * f5Zk;
+    Number Ud1 = s1d * s0d;
+    Ud1 = Ud1 + Ud1;
+    Ud1 = Ud1 - rsZ4 * f5Zk;
     // Z^12 がかかっている．
     Number V1Z3r = V1 * Z3r;
-    Number Ud0 = s0d * s0d + s1d * V1Z3r * 2 - rsZ4 * (f4Z2 - (U0Z * 2 + U1s) * f6 - U1 * f5Zk * 2);
+    Number Ud0 = s0d * s0d + s1d * V1Z3r * 2 - rsZ4 * (f4Z2 - (U0Z + U0Z + U1s) * f6 - U1 * f5Zk * 2);
     Ud1 = Ud1 * Z;
     Number Zd = Ud2 * Z2;
     Number Zd2 = Zd * Zd;

@@ -530,7 +530,14 @@ Mumford Mumford::LangeDoubling() const{
     Number u1d = s1d * s0d;
     u1d = u1d + u1d;
     u1d = u1d - rs * (f5 - k4u1 - k4u1);
-    Number u0d = s0d * s0d + v1 * s1d * r * 2 - rs * (f4 - (u0 + u0 + u1s) * f6 - u1 * (f5 - k4u1 - k4u1) * 2);
+    Number v1s1dr_2 = v1 * s1d * r;
+    v1s1dr_2 = v1s1dr_2 + v1s1dr_2;
+    Number u0d = v1 * s1d * r;
+    u0d = u0d + u0d;
+    u0d = u0d + s0d * s0d;
+    Number ft = (f5 - k4u1 - k4u1);
+    ft = ft + ft;
+    u0d = u0d - rs * (f4 - (u0 + u0 + u1s) * f6 - u1 * ft);
 
     // 6. r と u2d の逆元を計算．
     // 3M, I
@@ -577,23 +584,31 @@ Mumford Mumford::CostelloDoubling() const{
     Number vv = v1 * v1;
     Number va = (v1 + u1) * (v1 + u1) - vv - U1;
 
-    Number M1 = (v0 - va) * 2;
-    Number M2 = (U1 * 2 + u0) * v1 * 2;
-    Number M3 = -v1 * 2;
-    Number M4 = va + v0 * 2;
+    Number M1 = (v0 - va);
+    M1 = M1 + M1;
+    Number M2 = (U1 + U1 + u0) * v1;
+    M2 = M2 + M2;
+    Number M3 = -(v1 + v1);
+    Number M4 = va + v0 + v0;
 
+    Number f4_2 = f4 + f4;
     Number f6u0 = f6 * u0;
     Number f6U1 = f6 * U1;
     Number f5u0 = f5 * u0;
     Number f5u1 = f5 * u1;
+    Number f5u1_2 = f5u1 + f5u1;
+    Number f6u0_3 = f6u0 + f6u0 + f6u0;
+    Number f6u0_6 = f6u0_3 + f6u0_3;
+    Number f6U1_2 = f6U1 + f6U1;
+    Number f6U1_4 = f6U1_2 + f6U1_2;
 
-    Number z11 = f5u1 * 2 - f6U1 * 3 - f4;
+    Number z11 = f5u1_2 - f6U1_2 - f6U1 - f4;
     z11 = z11 * U1;
-    Number z12 = f5u1 * 2 + f6u0 * 3 - f4 * 2;
+    Number z12 = f5u1_2 + f6u0_3 - f4_2;
     z12 = z12 * u0;
 
     Number z1 = z11 + z12 - vv + f2;
-    Number z2 = (f6u0 * 6 - f6U1 * 4 + f5u1 * 3 - f4 * 2) * u1 - f5u0 * 2 + f3;
+    Number z2 = (f6u0_6 - f6U1_4 + f5u1_2 + f5u1 - f4_2) * u1 - f5u0 - f5u0 + f3;
 
     Number t11 = M2 - z1;
     Number t12 = z2 - M1;
@@ -614,7 +629,9 @@ Mumford Mumford::CostelloDoubling() const{
 
     Number d11 = M4 - M2;
     Number d12 = M1 + M3;
-    Number d = d11 * d12 * 2 + t3 + t4 - t1 - t2;
+    Number d = d11 * d12;
+    d = d + d;
+    d = d + t3 + t4 - t1 - t2;
 
     Number A = d * d;
     Number B1 = l3_num * l3_num;
@@ -628,9 +645,15 @@ Mumford Mumford::CostelloDoubling() const{
     Number l2 = l2_num * d_inv;
     Number l3 = l3_num * d_inv;
 
-    Number u1d = (l2 * l3 * 2 - f5) * d_shifted_inv - u1 * 2;
-    Number u0d = (((u0 - U1) * l3 + l2 * u1 + v1) * l3 * 2 + l2 * l2 - f4) * d_shifted_inv;
-    u0d = u0d - u0 * 2 - u1d * u1 * 2 - U1;
+    Number l2l3 = l2 * l3;
+    Number u1d = (l2l3 + l2l3 - f5) * d_shifted_inv - u1 - u1;
+    Number u0d = ((u0 - U1) * l3 + l2 * u1 + v1) * l3;
+    u0d = u0d + u0d;
+    u0d = u0d + l2 * l2 - f4;
+    u0d = u0d * d_shifted_inv;
+    Number u1u1d_2 = u1 * u1d;
+    u1u1d_2 = u1u1d_2 + u1u1d_2;
+    u0d = u0d - u0 - u0 - u1u1d_2 - U1;
     Number U1d = u1d * u1d;
     Number U0d = u1d * u0d;
 
