@@ -9,8 +9,8 @@
 int main(){
     std::chrono::system_clock::time_point start, end;
 
-    mpz_init_set_str(Number::CHARA, "16613960161207197506610974848157905611744466278275346794947826509160636299163", 10);
-    mpz_init_set_str(Number::MCHARA, "-16613960161207197506610974848157905611744466278275346794947826509160636299163", 10);
+    mpz_init_set_str(Number::CHARA, "13291570262456491945649919417472694507895082458159858770373081004488760440120711808381934639404900616533965155060575198692817091309491374216571938755587637", 10);
+    mpz_init_set_str(Number::MCHARA, "-13291570262456491945649919417472694507895082458159858770373081004488760440120711808381934639404900616533965155060575198692817091309491374216571938755587637", 10);
 
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
@@ -37,15 +37,49 @@ int main(){
     ProjectiveMumford D1P(f, h, u1, u0, v1, v0);
 
     Number num;
-    mpz_set_str(num.value, "7713960161207197506610974848157905611744466278275346794947826509160636299563", 10);
+    mpz_set_str(num.value, "7291570262456491945649919417472694507895082458159858770373081004488760440120711808381934639404900616533965155060575198692817091309491374216571938755587637", 10);
     Number num2;
-    mpz_set_str(num.value, "10613960161207197506610974848157905611744466278275346794947826509160636299164", 10);
+    mpz_set_str(num2.value, "11291570262456491945649919417472694507895082458159858770373081004488760440120711808381934639404900616533965155060575198692817091309491374216571938755587637", 10);
+    Number num3;
+
+    mpz_class t1("7291570262456491945649919417472694507895082458159858770373081004488760440120711808381934639404900616533965155060575198692817091309491374216571938755587637");
+    mpz_class t2("11291570262456491945649919417472694507895082458159858770373081004488760440120711808381934639404900616533965155060575198692817091309491374216571938755587637");
+    mpz_class p("13291570262456491945649919417472694507895082458159858770373081004488760440120711808381934639404900616533965155060575198692817091309491374216571938755587637");
+    
+    std::cout << "加算" << std::endl;
+    start = std::chrono::system_clock::now();
+    for(int i = 0; i < 1000000; ++i){
+        mpz_class t3;
+        t3 = t1 + t2;
+        t3 = t3 - p;
+    }
+    end = std::chrono::system_clock::now();
+    std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;    
+
+    std::cout << "乗算" << std::endl;
+    start = std::chrono::system_clock::now();
+    for(int i = 0; i < 1000000; ++i){
+        mpz_class t3;
+        t3 = t1 * t2;
+        t3 = t3 % p;
+    }
+    end = std::chrono::system_clock::now();
+    std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;   
+
+    mpz_t m1, m2;
+    mpz_init_set(m1, num.value); mpz_init_set(m2, num2.value);
 
     // 有限体上の基本演算
     std::cout << "加算" << std::endl;
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 1000000; ++i){
-        num2 = num2 + num;
+        mpz_t m3;
+        mpz_init(m3);
+        mpz_add(m3, m1, m2);
+        if(mpz_cmp(m3, Number::CHARA) > 0){
+            mpz_sub(m3, m3, Number::CHARA);
+        }
+        //num3 = num + num2;
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
@@ -53,7 +87,11 @@ int main(){
     std::cout << "乗算" << std::endl;
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 1000000; ++i){
-        num2 = num2 * num;
+        mpz_t m3;
+        mpz_init(m3);        
+        mpz_mul(m3, m1, m2);
+        mpz_mod(m3, m3, Number::CHARA);
+        //num3 = num * num2;
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
@@ -61,7 +99,10 @@ int main(){
     std::cout << "2乗算" << std::endl;
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 1000000; ++i){
-        num2 = num2 * num2;
+        mpz_t m3;
+        mpz_init(m3);        
+        mpz_mul(m3, m1, m2);
+        mpz_mod(m3, m3, Number::CHARA);
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
@@ -69,11 +110,13 @@ int main(){
     std::cout << "逆元" << std::endl;
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 1000000; ++i){
-        num2.inv();
+        mpz_t m3;
+        mpz_init(m3);        
+        mpz_invert(m3, m2, Number::CHARA);
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
-    //return 0;
+    return 0;
 
     // 超楕円曲線上のスカラー倍算
     mpz_class k;
