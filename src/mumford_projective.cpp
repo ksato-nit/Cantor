@@ -62,25 +62,26 @@ ProjectiveMumford ProjectiveMumford::operator + (const ProjectiveMumford& m) con
     return ret;
 }
 
-ProjectiveMumford ProjectiveMumford::operator * (const mpz_class& k_) const{
+ProjectiveMumford ProjectiveMumford::operator * (const NTL::ZZ& k_) const{
     Polynomial f = this->f;
     Polynomial h = this->h;
-    mpz_class k = k_;
+    NTL::ZZ k = k_;
 
     // double-and-add method によりスカラー倍を計算する．
 
     // 連除法で 2 進数に変換．
-    mpz_class two = 2;
+    NTL::ZZ two = NTL::conv<NTL::ZZ>(2);
+    NTL::ZZ one = NTL::conv<NTL::ZZ>(1);
     int count = 0;
     std::vector<int> bits;
     while(true){
-        mpz_class rem = k % 2;
-        bits.push_back((int) rem.get_si());
+        NTL::ZZ rem = k % two;
+        bits.push_back(NTL::conv<int>(rem));
 
-        k = k / 2;
+        k = k / two;
         ++count;
 
-        if(k < 1){
+        if(k < one){
             break;
         }
     }

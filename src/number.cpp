@@ -1,16 +1,11 @@
 #include "number.hpp"
 
-mpz_class Number::CHARA;
-mpz_class Number::MCHARA;
-
-const mpz_class Number::zero = 0;
-const mpz_class Number::one = 1;
-const mpz_class Number::minus_one = -1;
+NTL::ZZ Number::CHARA;
 
 Number::Number(){
 }
 
-Number::Number(mpz_class x){
+Number::Number(NTL::ZZ_p x){
     this->value = x;
 }
 
@@ -27,36 +22,25 @@ Number::Number(Number&& y) noexcept{
 }
 
 void Number::set_str(const char* str, const int base){
-    this->value.set_str(str, base);
+    this->value = NTL::conv<NTL::ZZ_p>(str);
     return;
 }
 
 Number Number::operator + (const Number& y) const{
     Number z;
     z.value = this->value + y.value;
-    if(z.value > CHARA){
-        z.value -= CHARA;
-    }else if(z.value < MCHARA){
-        z.value += CHARA;
-    }
     return z;
 }
 
 Number Number::operator - (const Number& y) const{
     Number z;
     z.value = this->value - y.value;
-    if(z.value > CHARA){
-        z.value -= CHARA;
-    }else if(z.value < MCHARA){
-        z.value += CHARA;
-    }
     return z;
 }
 
 Number Number::operator * (const Number& y) const{
     Number z;
     z.value = this->value * y.value;
-    z.value %= CHARA;
     return z;
 }
 
@@ -66,7 +50,7 @@ Number Number::operator * (const int y) const{
     return z;
 }
 
-Number Number::operator * (const mpz_class y) const{
+Number Number::operator * (const NTL::ZZ_p y) const{
     Number z;
     z.value = this->value * y;
     return z;
@@ -77,9 +61,8 @@ Number Number::operator / (const Number& y) const{
 }
 
 bool Number::operator == (const Number& y) const{
-    mpz_class ev;
+    NTL::ZZ_p ev;
     ev = this->value - y.value;
-    ev = ev % CHARA;
     return (ev == 0);
 }
 
@@ -123,14 +106,11 @@ Number Number::MINUS_ONE(){
 }
 
 Number Number::inv() const{
-    mpz_t inv;
-    mpz_init(inv);
-    mpz_invert(inv, this->value.get_mpz_t(), CHARA.get_mpz_t());
     Number ret;
-    ret.value = mpz_class(inv);
+    ret.value = NTL::inv(this->value);
     return ret;
 }
 
 bool Number::isZero() const{
-    return (this->value % CHARA == 0);
+    return (this->value == 0);
 }

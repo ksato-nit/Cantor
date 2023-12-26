@@ -2,6 +2,8 @@
 #include "number.hpp"
 #include "polynomial.hpp"
 #include "divisor.hpp"
+#include <NTL/ZZ.h>
+#include <NTL/ZZ_p.h>
 
 class Mumford {
     static const int GENUS = 2;
@@ -23,9 +25,9 @@ public:
 
     Mumford operator + (const Mumford& q) const;
 
-    Mumford operator * (const mpz_class& k) const;
+    Mumford operator * (const NTL::ZZ& k) const;
 
-    Mumford CostelloScalarMultiple(const mpz_class& k) const;
+    Mumford CostelloScalarMultiple(const NTL::ZZ& k) const;
 
     Mumford CantorAdd(const Mumford& q) const;
     

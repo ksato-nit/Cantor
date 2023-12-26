@@ -32,7 +32,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 # コンパイルオプション設定
-set(CMAKE_CXX_FLAGS "-O3 -std=c++14 -Wall -lgmpxx -lgmp -pg")
+set(CMAKE_CXX_FLAGS "-O3 -std=c++14 -Wall -pg -pthread")
 
 # ワイルドカード指定の設定
 file(GLOB SRC ${SRC_DIR}/*.cpp)
@@ -50,8 +50,9 @@ add_executable(
 
 target_link_libraries(
     Cantor
+    ntl
     gmp
-    gmpxx
+    m
 )
 
 # テストの設定
@@ -67,6 +68,7 @@ target_link_libraries(
     GTest::gtest_main
     gmp
     gmpxx
+    ntl
 )
 target_include_directories(
     CantorTest

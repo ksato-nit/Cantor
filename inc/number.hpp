@@ -2,31 +2,26 @@
 #include "algorithm"
 #include "iostream"
 #include "string"
-#include <boost/multiprecision/cpp_int.hpp>
-#include <gmpxx.h>
+#include <NTL/ZZ.h>
+#include <NTL/ZZ_p.h>
 
 // 抽象的な体の要素を実現する．
 class Number {
 public:
-    static mpz_class CHARA;
-    static mpz_class MCHARA; // -CHARA
+    static NTL::ZZ CHARA;
 
-    static const mpz_class zero;
-    static const mpz_class one;
-    static const mpz_class minus_one;
-
-    mpz_class value;
+    NTL::ZZ_p value;
 
     Number();
     Number(int);
-    Number(mpz_class);
+    Number(NTL::ZZ_p);
     Number(const Number&);
     Number(Number&&) noexcept;
     Number operator + (const Number&) const;
     Number operator - (const Number&) const;
     Number operator * (const Number&) const;
     Number operator * (const int) const;
-    Number operator * (const mpz_class) const;
+    Number operator * (const NTL::ZZ_p) const;
     Number operator / (const Number&) const;
     bool operator == (const Number&) const;
     bool operator != (const Number&) const;
