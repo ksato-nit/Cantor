@@ -4,8 +4,8 @@
 #include "mumford_projective.hpp"
 
 TEST(ProjectiveMumfordTest, LangeSumEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
+    Number::CHARA = 31;
+    Number::MCHARA = -31;
 
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
@@ -43,8 +43,8 @@ TEST(ProjectiveMumfordTest, LangeSumEquals) {
 }
 
 TEST(ProjectiveMumfordTest, CostelloSumEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
+    Number::CHARA = 31;
+    Number::MCHARA = -31;
 
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
@@ -82,8 +82,8 @@ TEST(ProjectiveMumfordTest, CostelloSumEquals) {
 }
 
 TEST(ProjectiveMumfordTest, DoublingEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
+    Number::CHARA = 31;
+    Number::MCHARA = -31;
     
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};

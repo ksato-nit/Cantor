@@ -4,8 +4,8 @@
 #include <gmpxx.h>
 
 TEST(ExtendedNumberTest, ModValueEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
+    Number::CHARA = 31;
+    Number::MCHARA = -31;
 
     Polynomial f(2);
     f.coeff[0] = Number::ONE(); f.coeff[1] = Number::ONE(); f.coeff[2] = Number::ONE();
@@ -15,8 +15,8 @@ TEST(ExtendedNumberTest, ModValueEquals) {
 }
 
 TEST(ExtendedNumberTest, SumEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
+    Number::CHARA = 31;
+    Number::MCHARA = -31;
 
     Polynomial f(2);
     f.coeff[0] = Number::ONE(); f.coeff[1] = Number::ONE(); f.coeff[2] = Number::ONE();
@@ -31,8 +31,8 @@ TEST(ExtendedNumberTest, SumEquals) {
 }
 
 TEST(ExtendedNumberTest, ProductEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
+    Number::CHARA = 31;
+    Number::MCHARA = -31;
 
     Polynomial f(2);
     f.coeff[0] = Number::ONE(); f.coeff[1] = Number::ZERO(); f.coeff[2] = Number::ONE();
@@ -47,8 +47,8 @@ TEST(ExtendedNumberTest, ProductEquals) {
 }
 
 TEST(ExtendedNumberTest, InverseEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
+    Number::CHARA = 31;
+    Number::MCHARA = -31;
 
     Polynomial f(2);
     f.coeff[0] = Number::ONE(); f.coeff[1] = Number::ZERO(); f.coeff[2] = Number::ONE();

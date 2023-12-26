@@ -8,20 +8,25 @@
 // 抽象的な体の要素を実現する．
 class Number {
 public:
-    static mpz_t CHARA;
-    static mpz_t MCHARA; // -CHARA
+    static mpz_class CHARA;
+    static mpz_class MCHARA; // -CHARA
 
-    mpz_t value;
+    static const mpz_class zero;
+    static const mpz_class one;
+    static const mpz_class minus_one;
+
+    mpz_class value;
 
     Number();
     Number(int);
+    Number(mpz_class);
     Number(const Number&);
     Number(Number&&) noexcept;
     Number operator + (const Number&) const;
     Number operator - (const Number&) const;
     Number operator * (const Number&) const;
     Number operator * (const int) const;
-    Number operator * (const mpz_t) const;
+    Number operator * (const mpz_class) const;
     Number operator / (const Number&) const;
     bool operator == (const Number&) const;
     bool operator != (const Number&) const;

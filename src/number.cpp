@@ -1,73 +1,74 @@
 #include "number.hpp"
 
-mpz_t Number::CHARA;
-mpz_t Number::MCHARA;
+mpz_class Number::CHARA;
+mpz_class Number::MCHARA;
+
+const mpz_class Number::zero = 0;
+const mpz_class Number::one = 1;
+const mpz_class Number::minus_one = -1;
 
 Number::Number(){
-    mpz_init(this->value);
+}
+
+Number::Number(mpz_class x){
+    this->value = x;
 }
 
 Number::Number(int x){
-    mpz_init_set_si(this->value, x);
+    this->value = x;
 }
 
 Number::Number(const Number& num){
-    mpz_init_set(this->value, num.value);
+    this->value = num.value;
 }
 
 Number::Number(Number&& y) noexcept{
-    *(this->value) = *(y.value);
+    this->value = std::move(y.value);
 }
 
 void Number::set_str(const char* str, const int base){
-    mpz_set_str(this->value, str, base);
+    this->value.set_str(str, base);
     return;
 }
 
 Number Number::operator + (const Number& y) const{
     Number z;
-    mpz_add(z.value, this->value, y.value);
-    //mpz_mod(z.value, z.value, CHARA);
-    if(mpz_cmp(z.value, CHARA) >= 0){
-        mpz_sub(z.value, z.value, CHARA);
-    }else if(mpz_cmp(z.value, MCHARA) <= 0){
-        mpz_add(z.value, z.value, CHARA);
+    z.value = this->value + y.value;
+    if(z.value > CHARA){
+        z.value -= CHARA;
+    }else if(z.value < MCHARA){
+        z.value += CHARA;
     }
     return z;
 }
 
 Number Number::operator - (const Number& y) const{
     Number z;
-    mpz_sub(z.value, this->value, y.value);
-    //mpz_mod(z.value, z.value, CHARA);
-    if(mpz_cmp(z.value, CHARA) >= 0){
-        mpz_sub(z.value, z.value, CHARA);
-    }else if(mpz_cmp(z.value, MCHARA) <= 0){
-        mpz_add(z.value, z.value, CHARA);
+    z.value = this->value - y.value;
+    if(z.value > CHARA){
+        z.value -= CHARA;
+    }else if(z.value < MCHARA){
+        z.value += CHARA;
     }
     return z;
 }
 
 Number Number::operator * (const Number& y) const{
     Number z;
-    mpz_mul(z.value, this->value, y.value);
-    mpz_mod(z.value, z.value, CHARA);
+    z.value = this->value * y.value;
+    z.value %= CHARA;
     return z;
 }
 
 Number Number::operator * (const int y) const{
     Number z;
-    mpz_t ym;
-    mpz_init_set_ui(ym, y);
-    mpz_mul(z.value, this->value, ym);
-    mpz_mod(z.value, z.value, CHARA);
+    z.value = this->value * y;
     return z;
 }
 
-Number Number::operator * (const mpz_t y) const{
+Number Number::operator * (const mpz_class y) const{
     Number z;
-    mpz_mul(z.value, this->value, y);
-    mpz_mod(z.value, z.value, CHARA);
+    z.value = this->value * y;
     return z;
 }
 
@@ -76,11 +77,10 @@ Number Number::operator / (const Number& y) const{
 }
 
 bool Number::operator == (const Number& y) const{
-    mpz_t ev;
-    mpz_init(ev);
-    mpz_sub(ev, this->value, y.value);
-    mpz_mod(ev, ev, CHARA);
-    return (mpz_sgn(ev) == 0);
+    mpz_class ev;
+    ev = this->value - y.value;
+    ev = ev % CHARA;
+    return (ev == 0);
 }
 
 bool Number::operator != (const Number& y) const{
@@ -93,44 +93,44 @@ Number Number::operator + () const{
 
 Number Number::operator - () const{
     Number z;
-    mpz_neg(z.value, this->value);
+    z.value = -this->value;
     return z;
 }
 
 Number& Number::operator = (const Number& y) {
-    mpz_set(this->value, y.value);
+    this->value = y.value;
     return *this;
 }
 
 Number& Number::operator = (Number&& y) noexcept{
-    *(this->value) = *(y.value);
+    this->value = std::move(y.value);
     return *this;
 }
 
 Number Number::ZERO(){
-    Number zero(0);
-    return zero;
+    Number ret(0);
+    return ret;
 }
 
 Number Number::ONE(){
-    Number one(1);
-    return one;
+    Number ret(1);
+    return ret;
 }
 
 Number Number::MINUS_ONE(){
-    Number minus_one(-1);
-    return minus_one;
+    Number ret(-1);
+    return ret;
 }
 
 Number Number::inv() const{
+    mpz_t inv;
+    mpz_init(inv);
+    mpz_invert(inv, this->value.get_mpz_t(), CHARA.get_mpz_t());
     Number ret;
-    mpz_invert(ret.value, this->value, CHARA);
-
-    mpz_mod(ret.value, ret.value, CHARA);
-
+    ret.value = mpz_class(inv);
     return ret;
 }
 
 bool Number::isZero() const{
-    return (mpz_sgn(this->value) == 0);
+    return (this->value % CHARA == 0);
 }
