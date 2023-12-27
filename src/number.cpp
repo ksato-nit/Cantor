@@ -40,7 +40,7 @@ Number Number::operator - (const Number& y) const{
 
 Number Number::operator * (const Number& y) const{
     Number z;
-    z.value = this->value * y.value;
+    z.value = (this->value) * (y.value);
     return z;
 }
 

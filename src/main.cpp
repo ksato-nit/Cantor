@@ -39,15 +39,46 @@ int main(){
     ProjectiveMumford D1P(f, h, u1, u0, v1, v0);
 
     Number num;
-    num.value = NTL::conv<NTL::ZZ_p>("106032509583933056829073411341080509916695444781843190281436838500774011631843644521706667298863907454077624083474972757016101982590047184567811979877299804627575859440070530297919737504772537542984827651623100281300498695268416048516481825853425612212381809485673206382258496996410230458686986871205061771101");
+    num.value = NTL::conv<NTL::ZZ_p>("583933056106032509829073411341080509916695444781843190281436838500774011631843644521706667298863907454077624083474972982590047184567811979877299804627575859440070530297919737504772537542984827651623100281300498695268416048516481825853425612212381809485673206382258496996410230458686986871205061771105757016101");
     Number num2;
     num2.value = NTL::conv<NTL::ZZ_p>("86032509583933056829073411341080509916695444781843190281436838500774011631843644521706667298863907454077624083474972757016101982590047184567811979877299804627575859440070530297919737504772537542984827651623100281300498695268416048516481825853425612212381809485673206382258496996410230458686986871205061771101");
 
+    NTL::ZZ_p x1, x2, x2_b;
+    x1 = num.value;
+    x2 = num2.value;
+    x2_b = num2.value;
+
     // 有限体上の基本演算
+    /*
+    std::cout << "イニシャライズ" << std::endl;
+    start = std::chrono::system_clock::now();
+    for(int i = 0; i < 1000000; ++i){
+        NTL::ZZ_p x3;
+    }
+    end = std::chrono::system_clock::now();
+    std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
+
+    std::cout << "コピー代入" << std::endl;
+    start = std::chrono::system_clock::now();
+    for(int i = 0; i < 1000000; ++i){
+        NTL::ZZ_p x3 = x2;
+    }
+    end = std::chrono::system_clock::now();
+    std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
+
+    std::cout << "ムーブ代入" << std::endl;
+    start = std::chrono::system_clock::now();
+    for(int i = 0; i < 1000000; ++i){
+        NTL::ZZ_p x3 = std::move(x2_b);
+    }
+    end = std::chrono::system_clock::now();
+    std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
+    */
+
     std::cout << "加算" << std::endl;
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 1000000; ++i){
-        Number num3 = num + num2;
+        x1 + x2;
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
@@ -55,10 +86,12 @@ int main(){
     std::cout << "乗算" << std::endl;
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 1000000; ++i){
-        Number num3 = num * num2;
+        x1 * x2;
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
+
+    return 0;
 
     std::cout << "2乗算" << std::endl;
     start = std::chrono::system_clock::now();
@@ -71,7 +104,7 @@ int main(){
     std::cout << "逆元" << std::endl;
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 1000000; ++i){
-        Number num3 = num.inv();
+        Number num3 = num2.inv();
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
