@@ -24,7 +24,7 @@ public:
     ProjectiveMumford(Polynomial f, Polynomial h, Number, Number, Number, Number);
 
     ProjectiveMumford operator + (const ProjectiveMumford& q) const;
-    ProjectiveMumford operator * (const NTL::ZZ& k) const;
+    ProjectiveMumford operator * (const boost::multiprecision::int1024_t& k) const;
 
     ProjectiveMumford CostelloAdd(const ProjectiveMumford& q) const;
     ProjectiveMumford LangeAdd(const ProjectiveMumford& q) const;

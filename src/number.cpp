@@ -1,11 +1,11 @@
 #include "number.hpp"
 
-NTL::ZZ Number::CHARA;
+boost::multiprecision::int1024_t Number::CHARA;
 
 Number::Number(){
 }
 
-Number::Number(NTL::ZZ_p x){
+Number::Number(boost::multiprecision::int1024_t x){
     this->value = x;
 }
 
@@ -22,7 +22,7 @@ Number::Number(Number&& y) noexcept{
 }
 
 void Number::set_str(const char* str, const int base){
-    this->value = NTL::conv<NTL::ZZ_p>(str);
+    this->value.assign(str);
     return;
 }
 
@@ -50,7 +50,7 @@ Number Number::operator * (const int y) const{
     return z;
 }
 
-Number Number::operator * (const NTL::ZZ_p y) const{
+Number Number::operator * (const boost::multiprecision::int1024_t y) const{
     Number z;
     z.value = this->value * y;
     return z;
@@ -61,7 +61,7 @@ Number Number::operator / (const Number& y) const{
 }
 
 bool Number::operator == (const Number& y) const{
-    NTL::ZZ_p ev;
+    boost::multiprecision::int1024_t ev;
     ev = this->value - y.value;
     return (ev == 0);
 }
@@ -106,9 +106,28 @@ Number Number::MINUS_ONE(){
 }
 
 Number Number::inv() const{
-    Number ret;
-    ret.value = NTL::inv(this->value);
-    return ret;
+    if(this->value < 0){
+        Number mx(this->value * -1);
+        mx = mx.inv();
+        mx.value *= -1;
+        return mx;
+    }
+
+    boost::multiprecision::int1024_t s = this->value, t = CHARA;
+    boost::multiprecision::int1024_t x = 1, u = 0;
+    boost::multiprecision::int1024_t k;
+    while(t > 0) {
+        k = s / t;
+        s = s - (k * t);
+        std::swap(s, t);
+        x = x - (k * u);
+        std::swap(x, u);
+    }
+    x = x % CHARA;
+    if(x < 0){
+        x = x + CHARA;
+    }
+    return x;
 }
 
 bool Number::isZero() const{

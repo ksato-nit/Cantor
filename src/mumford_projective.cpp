@@ -62,21 +62,21 @@ ProjectiveMumford ProjectiveMumford::operator + (const ProjectiveMumford& m) con
     return ret;
 }
 
-ProjectiveMumford ProjectiveMumford::operator * (const NTL::ZZ& k_) const{
+ProjectiveMumford ProjectiveMumford::operator * (const boost::multiprecision::int1024_t& k_) const{
     Polynomial f = this->f;
     Polynomial h = this->h;
-    NTL::ZZ k = k_;
+    boost::multiprecision::int1024_t k = k_;
 
     // double-and-add method によりスカラー倍を計算する．
 
     // 連除法で 2 進数に変換．
-    NTL::ZZ two = NTL::conv<NTL::ZZ>(2);
-    NTL::ZZ one = NTL::conv<NTL::ZZ>(1);
+    boost::multiprecision::int1024_t two(2);
+    boost::multiprecision::int1024_t one(1);
     int count = 0;
     std::vector<int> bits;
     while(true){
-        NTL::ZZ rem = k % two;
-        bits.push_back(NTL::conv<int>(rem));
+        boost::multiprecision::int1024_t rem = k % two;
+        bits.push_back((int) (rem));
 
         k = k / two;
         ++count;

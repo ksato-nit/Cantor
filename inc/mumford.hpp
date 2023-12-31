@@ -25,9 +25,9 @@ public:
 
     Mumford operator + (const Mumford& q) const;
 
-    Mumford operator * (const NTL::ZZ& k) const;
+    Mumford operator * (const boost::multiprecision::int1024_t& k) const;
 
-    Mumford CostelloScalarMultiple(const NTL::ZZ& k) const;
+    Mumford CostelloScalarMultiple(const boost::multiprecision::int1024_t& k) const;
 
     Mumford CantorAdd(const Mumford& q) const;
     

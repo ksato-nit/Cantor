@@ -32,7 +32,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 # コンパイルオプション設定
-set(CMAKE_CXX_FLAGS "-O3 -std=c++14 -Wall -pthread -march=native -pg")
+set(CMAKE_CXX_FLAGS "-O0 -std=c++14 -Wall -pthread -march=native -pg")
 
 # ワイルドカード指定の設定
 file(GLOB SRC ${SRC_DIR}/*.cpp)
