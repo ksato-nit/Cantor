@@ -178,6 +178,36 @@ TEST(MumfordTest, CostelloSumOfDeg6NonMonicEquals) {
     EXPECT_EQ(D12.v0, Sum.v0);
 }
 
+TEST(MumfordTest, CostelloDoublingDeg6NonMonicEquals) {
+    mpz_init_set_si(Number::CHARA, 31);
+    mpz_init_set_si(Number::MCHARA, -31);
+
+    int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
+    int hc[1] = {0};
+    int uc[3] = {6, 24, 1};
+    int vc[2] = {-24, -1};
+    int udc[3] = {-28, -14, 1};
+    int vdc[2] = {10, 13};    
+
+    Polynomial f(6, fc);
+    Polynomial h(0, hc);
+
+    Polynomial u(2, uc);
+    Polynomial v(1, vc);
+    Polynomial ud(2, udc);
+    Polynomial vd(1, vdc);
+
+    Mumford D1(f, h, u.coeff[1], u.coeff[0], v.coeff[1], v.coeff[0]);
+    Mumford D12(f, h, ud.coeff[1], ud.coeff[0], vd.coeff[1], vd.coeff[0]);
+
+    Mumford Sum = D1.CostelloDoubling();
+
+    EXPECT_EQ(D12.u1, Sum.u1);
+    EXPECT_EQ(D12.u0, Sum.u0);
+    EXPECT_EQ(D12.v1, Sum.v1);
+    EXPECT_EQ(D12.v0, Sum.v0);
+}
+
 TEST(MumfordTest, DoublingDeg6NonMonicEquals) {
     mpz_init_set_si(Number::CHARA, 31);
     mpz_init_set_si(Number::MCHARA, -31);
