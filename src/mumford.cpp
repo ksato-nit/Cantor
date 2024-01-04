@@ -204,49 +204,148 @@ Mumford Mumford::CostelloAdd(const Mumford& m) const{
     Number U10 = this->U0;
     Number U20 = m.U0;
 
-    Number u1S = u11 + u21;
-    Number v0D = v10 - v20;
-    Number v1D = v11 - v21;
+    Number temp1;
 
-    Number M1 = U11 - U21 - u10 + u20;
-    Number M2 = U20 - U10;
-    Number M3 = u11 - u21;
-    Number M4 = u20 - u10;
+    Number u1S, v0D, v1D;
+    mpz_add(u1S.value, u11.value, u21.value);
+    mpz_sub(v0D.value, v10.value, v20.value);
+    mpz_sub(v1D.value, v11.value, v21.value);
 
-    Number t1 = (M2 - v0D) * (v1D - M1);
-    Number t2 = -(v0D + M2) * (v1D + M1);
-    Number t3 = (M4 - v0D) * (v1D - M3);
-    Number t4 = -(v0D + M4) * (v1D + M3);
+    Number M1, M2, M3, M4;
+    mpz_sub(M1.value, U11.value, U21.value);
+    mpz_sub(M1.value, M1.value, u10.value);
+    mpz_add(M1.value, M1.value, u20.value);
+    mpz_sub(M2.value, U20.value, U10.value);
+    mpz_sub(M3.value, u11.value, u21.value);
+    mpz_sub(M4.value, u20.value, u10.value);
 
-    Number l2_num = t1 - t2;
-    Number l3_num = t3 - t4;
+    Number t1, t2, t3, t4;
+    mpz_sub(t1.value, M2.value, v0D.value);
+    mpz_sub(temp1.value, v1D.value, M1.value);
+    mpz_mul(t1.value, t1.value, temp1.value);
+    mpz_mod(t1.value, t1.value, Number::CHARA);
 
-    Number d = (M4 - M2) * (M1 + M3);
-    d = d + d;
-    d = d + t3 + t4 - t1 - t2;
+    mpz_add(t2.value, M2.value, v0D.value);
+    mpz_add(temp1.value, v1D.value, M1.value);
+    mpz_mul(t2.value, t2.value, temp1.value);
+    mpz_mod(t2.value, t2.value, Number::CHARA);
+    mpz_neg(t2.value, t2.value);
 
-    Number A = d * d;
-    Number B = l3_num * l3_num - f6 * A;
-    Number C = (d * B).inv();
-    Number d_inv = B * C;
-    Number d_shifted_inv = d * A * C;
+    mpz_sub(t3.value, M4.value, v0D.value);
+    mpz_sub(temp1.value, v1D.value, M3.value);
+    mpz_mul(t3.value, t3.value, temp1.value);
+    mpz_mod(t3.value, t3.value, Number::CHARA);
 
-    Number l2 = l2_num * d_inv;
-    Number l3 = l3_num * d_inv;
+    mpz_add(t4.value, M4.value, v0D.value);
+    mpz_add(temp1.value, v1D.value, M3.value);
+    mpz_mul(t4.value, t4.value, temp1.value);
+    mpz_mod(t4.value, t4.value, Number::CHARA);
+    mpz_neg(t4.value, t4.value);
 
-    Number u1dd = -(u1S + (f5 - l2 * l3 - l2 * l3) * d_shifted_inv);
+    Number l2_num, l3_num;
+    mpz_sub(l2_num.value, t1.value, t2.value);
+    mpz_sub(l3_num.value, t3.value, t4.value);
 
-    Number u0dd = l3 * (l3 * (u10 - U11) + l2 * u11 + v11);
-    u0dd = u0dd + u0dd;
-    u0dd = u0dd + l2 * l2 - f4;
-    u0dd = u0dd * d_shifted_inv;
-    u0dd = u0dd - u11 * u21 - u10 - u20 - u1S * u1dd;
+    Number d;
+    mpz_sub(d.value, M4.value, M2.value);
+    mpz_add(temp1.value, M1.value, M3.value);
+    mpz_mul(d.value, d.value, temp1.value);
+    mpz_mod(d.value, d.value, Number::CHARA);
+    mpz_add(d.value, d.value, d.value);
+    mpz_add(d.value, d.value, t3.value);
+    mpz_add(d.value, d.value, t4.value);
+    mpz_sub(d.value, d.value, t1.value);
+    mpz_sub(d.value, d.value, t2.value);
 
-    Number U1dd = u1dd * u1dd;
-    Number U0dd = u1dd * u0dd;
+    Number A, B, C, d_inv, d_shifted_inv;
+    mpz_mul(A.value, d.value, d.value);
+    mpz_mod(A.value, A.value, Number::CHARA);
+    mpz_mul(temp1.value, f6.value, A.value);
+    mpz_mod(temp1.value, temp1.value, Number::CHARA);    
+    mpz_mul(B.value, l3_num.value, l3_num.value);
+    mpz_mod(B.value, B.value, Number::CHARA);
+    mpz_sub(B.value, B.value, temp1.value);
+    mpz_mul(C.value, d.value, B.value);
+    mpz_mod(C.value, C.value, Number::CHARA);
+    mpz_invert(C.value, C.value, Number::CHARA);
+    mpz_mul(d_inv.value, B.value, C.value);
+    mpz_mod(d_inv.value, d_inv.value, Number::CHARA);
+    mpz_mul(d_shifted_inv.value, d.value, A.value);
+    mpz_mod(d_shifted_inv.value, d_shifted_inv.value, Number::CHARA);
+    mpz_mul(d_shifted_inv.value, d_shifted_inv.value, C.value);
+    mpz_mod(d_shifted_inv.value, d_shifted_inv.value, Number::CHARA);
 
-    Number v1dd = l3 * (u0dd - U1dd + U11 - u10) + l2 * (u1dd - u11) - v11;
-    Number v0dd = l3 * (U10 - U0dd) + l2 * (u0dd - u10) - v10;
+    Number l2, l3;
+    mpz_mul(l2.value, l2_num.value, d_inv.value);
+    mpz_mod(l2.value, l2.value, Number::CHARA);
+    mpz_mul(l3.value, l3_num.value, d_inv.value);
+    mpz_mod(l3.value, l3.value, Number::CHARA);
+
+    mpz_mul(temp1.value, l2.value, l3.value);
+    mpz_mod(temp1.value, temp1.value, Number::CHARA);
+
+    Number u1dd;
+    mpz_sub(u1dd.value, f5.value, temp1.value);
+    mpz_sub(u1dd.value, u1dd.value, temp1.value);
+    mpz_mul(u1dd.value, u1dd.value, d_shifted_inv.value);
+    mpz_mod(u1dd.value, u1dd.value, Number::CHARA);
+    mpz_add(u1dd.value, u1dd.value, u1S.value);
+    mpz_neg(u1dd.value, u1dd.value);
+
+    Number u0dd;
+    mpz_sub(u0dd.value, u10.value, U11.value);
+    mpz_mul(u0dd.value, u0dd.value, l3.value);
+    mpz_mod(u0dd.value, u0dd.value, Number::CHARA);
+    mpz_mul(temp1.value, l2.value, u11.value);
+    mpz_mod(temp1.value, temp1.value, Number::CHARA);    
+    mpz_add(u0dd.value, u0dd.value, temp1.value);
+    mpz_add(u0dd.value, u0dd.value, v11.value);
+    mpz_mul(u0dd.value, u0dd.value, l3.value);
+    mpz_mod(u0dd.value, u0dd.value, Number::CHARA);
+    mpz_add(u0dd.value, u0dd.value, u0dd.value);
+    mpz_mul(temp1.value, l2.value, l2.value);
+    mpz_mod(temp1.value, temp1.value, Number::CHARA);    
+    mpz_add(u0dd.value, u0dd.value, temp1.value);
+    mpz_sub(u0dd.value, u0dd.value, f4.value);
+    mpz_mul(u0dd.value, u0dd.value, d_shifted_inv.value);
+    mpz_mod(u0dd.value, u0dd.value, Number::CHARA);
+    mpz_mul(temp1.value, u21.value, u11.value);
+    mpz_mod(temp1.value, temp1.value, Number::CHARA);    
+    mpz_sub(u0dd.value, u0dd.value, temp1.value);
+    mpz_sub(u0dd.value, u0dd.value, u10.value);
+    mpz_sub(u0dd.value, u0dd.value, u20.value);
+    mpz_mul(temp1.value, u1S.value, u1dd.value);
+    mpz_mod(temp1.value, temp1.value, Number::CHARA);    
+    mpz_sub(u0dd.value, u0dd.value, temp1.value);
+
+    Number U1dd, U0dd;
+    mpz_mul(U1dd.value, u1dd.value, u1dd.value);
+    mpz_mod(U1dd.value, U1dd.value, Number::CHARA);
+    mpz_mul(U0dd.value, u1dd.value, u0dd.value);
+    mpz_mod(U0dd.value, U0dd.value, Number::CHARA);
+
+    Number v1dd, v0dd;
+    mpz_sub(temp1.value, u1dd.value, u11.value);
+    mpz_mul(temp1.value, l2.value, temp1.value);
+    mpz_mod(temp1.value, temp1.value, Number::CHARA);
+
+    mpz_sub(v1dd.value, u0dd.value, U1dd.value);
+    mpz_add(v1dd.value, v1dd.value, U11.value);
+    mpz_sub(v1dd.value, v1dd.value, u10.value);
+    mpz_mul(v1dd.value, v1dd.value, l3.value);
+    mpz_mod(v1dd.value, v1dd.value, Number::CHARA);
+    mpz_add(v1dd.value, v1dd.value, temp1.value);
+    mpz_sub(v1dd.value, v1dd.value, v11.value);
+
+    mpz_sub(temp1.value, u0dd.value, u10.value);
+    mpz_mul(temp1.value, l2.value, temp1.value);
+    mpz_mod(temp1.value, temp1.value, Number::CHARA);
+
+    mpz_sub(v0dd.value, U10.value, U0dd.value);
+    mpz_mul(v0dd.value, v0dd.value, l3.value);
+    mpz_mod(v0dd.value, v0dd.value, Number::CHARA);
+    mpz_add(v0dd.value, v0dd.value, temp1.value);
+    mpz_sub(v0dd.value, v0dd.value, v10.value);
 
     return Mumford(f, h, u1dd, u0dd, v1dd, v0dd, U1dd, U0dd);
 }

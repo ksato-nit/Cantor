@@ -34,11 +34,13 @@ void Number::set_str(const char* str, const int base){
 
 void Number::operator += (const Number& y){
     mpz_add(this->value, this->value, y.value);
+    /*
     if(mpz_cmp(this->value, CHARA) >= 0){
         mpz_sub(this->value, this->value, CHARA);
     }else if(mpz_cmp(this->value, MCHARA) <= 0){
         mpz_add(this->value, this->value, CHARA);
     }
+    */
     return;
 }
 
@@ -62,11 +64,13 @@ Number Number::operator + (const Number& y) const{
     Number z;
     mpz_add(z.value, this->value, y.value);
     //mpz_mod(z.value, z.value, CHARA);
+    /*
     if(mpz_cmp(z.value, CHARA) >= 0){
         mpz_sub(z.value, z.value, CHARA);
     }else if(mpz_cmp(z.value, MCHARA) <= 0){
         mpz_add(z.value, z.value, CHARA);
     }
+    */
     return z;
 }
 

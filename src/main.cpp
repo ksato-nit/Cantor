@@ -66,7 +66,11 @@ int main(){
     std::cout << "加算" << std::endl;
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 1000000; ++i){
-        num += num2;
+        Number numt;
+        numt = num;
+        numt += num;
+        numt += num2;
+        numt += num2;
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
