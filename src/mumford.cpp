@@ -498,23 +498,49 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
     Number f5 = this->f.coeff[5];
     Number f4 = this->f.coeff[4];
 
+    Number temp1, temp2, temp3;
+
     // 1. u1, u2 の終結式を計算．
-    Number z1 = u11 - u21;
-    Number z2 = u20 - u10;
-    Number z3 = u11 * z1 + z2;
-    Number r = z2 * z3 + z1 * z1 * u10;
+    Number z1, z2, z3, r;
+    mpz_sub(z1.value, u11.value, u21.value);
+    mpz_sub(z2.value, u20.value, u10.value);
+    mpz_mul(z3.value, u11.value, z1.value);
+    mpz_mod(z3.value, z3.value, Number::CHARA);
+    mpz_add(z3.value, z3.value, z2.value);
+    mpz_mul(r.value, z1.value, z1.value);
+    mpz_mod(r.value, r.value, Number::CHARA);
+    mpz_mul(r.value, r.value, u10.value);
+    mpz_mod(r.value, r.value, Number::CHARA);
+    mpz_mul(temp1.value, z2.value, z3.value);
+    mpz_mod(temp1.value, temp1.value, Number::CHARA);
+    mpz_add(r.value, r.value, temp1.value);
 
     // 2. u2 の almost inverse (mod u1) を計算．
-    Number inv1 = z1;
-    Number inv0 = z3;
+    //Number inv1 = z1;
+    //Number inv0 = z3;
 
     // 3. s' を計算．
-    Number w0 = v10 - v20;
-    Number w1 = v11 - v21;
-    Number w2 = inv0 * w0;
-    Number w3 = inv1 * w1;
-    Number s1d = (inv0 + inv1) * (w0 + w1) - w2 - w3 * (Number::ONE() + u11);
-    Number s0d = w2 - u10 * w3;
+    Number w0, w1, w2, w3, s1d, s0d;
+    mpz_sub(w0.value, v10.value, v20.value);
+    mpz_sub(w1.value, v11.value, v21.value);
+    mpz_mul(w2.value, z3.value, w0.value);
+    mpz_mod(w2.value, w2.value, Number::CHARA);
+    mpz_mul(w3.value, z1.value, w1.value);
+    mpz_mod(w3.value, w3.value, Number::CHARA);
+
+    mpz_add(temp1.value, w0.value, w1.value);
+    mpz_add(s1d.value, z3.value, z1.value);
+    mpz_mul(s1d.value, temp1.value, s1d.value);
+    mpz_mod(s1d.value, s1d.value, Number::CHARA);
+    mpz_sub(s1d.value, s1d.value, w2.value);
+    mpz_add(temp1.value, Number::ONE().value, u11.value);
+    mpz_mul(temp1.value, w3.value, temp1.value);
+    mpz_mod(temp1.value, temp1.value, Number::CHARA);
+    mpz_sub(s1d.value, s1d.value, temp1.value);
+
+    mpz_mul(s0d.value, u10.value, w3.value);
+    mpz_mod(s0d.value, s0d.value, Number::CHARA);
+    mpz_sub(s0d.value, w2.value, s0d.value);
 
     if(s1d.isZero()){
         //std::cerr << "Special case." << std::endl;
@@ -524,38 +550,113 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
     }
 
     // 4. l' を計算．
-    Number l3d = s1d;
-    Number l2d = u21 * s1d;
-    Number l0d = u20 * s0d;
-    Number l1d = (s1d + s0d) * (u21 + u20) - l2d - l0d; //u21 * s0d + u20 * s1d; 
-    l2d = l2d + s0d;
+    //Number l3d = s1d;
+    Number l2d, l0d, l1d;
+    mpz_mul(l2d.value, u21.value, s1d.value);
+    mpz_mod(l2d.value, l2d.value, Number::CHARA);
+    mpz_mul(l0d.value, u20.value, s0d.value);
+    mpz_mod(l0d.value, l0d.value, Number::CHARA);
+    mpz_add(l1d.value, s1d.value, s0d.value);
+    mpz_add(temp1.value, u21.value, u20.value);
+    mpz_mul(l1d.value, l1d.value, temp1.value);
+    mpz_mod(l1d.value, l1d.value, Number::CHARA);
+    mpz_sub(l1d.value, l1d.value, l2d.value);
+    mpz_sub(l1d.value, l1d.value, l0d.value);
+    mpz_add(l2d.value, l2d.value, s0d.value);
 
     // 5. u' を計算．
-    Number k4 = f6;
-    Number k3 = f5 - f6 * u21;
-    Number k2 = f4 - f6 * u20 - (f5 - f6 * u21) * u21;
+    //Number k4 = f6;
+    Number k3, k2;
+    mpz_mul(k3.value, f6.value, u21.value);
+    mpz_mod(k3.value, k3.value, Number::CHARA);
+    mpz_sub(k3.value, f5.value, k3.value);
+    mpz_mul(k2.value, f6.value, u20.value);
+    mpz_mod(k2.value, k2.value, Number::CHARA);
+    mpz_mul(temp1.value, k3.value, u21.value);
+    mpz_sub(k2.value, f4.value, k2.value);
+    mpz_sub(k2.value, k2.value, temp1.value);
 
-    Number t4 = s1d * l3d - k4 * r * r;
-    Number t3 = s1d * l2d + s0d * l3d - k3 * r * r;
-    Number t2 = r * v21;
-    t2 = t2 + t2;
-    t2 = s1d * (t2 + l1d) + s0d * l2d - k2 * r * r;
+    Number t4, t3, t2;
+    mpz_mul(temp1.value, r.value, r.value);
+    mpz_mod(temp1.value, temp1.value, Number::CHARA);
+    mpz_mul(temp2.value, temp1.value, f6.value);
+    mpz_mod(temp2.value, temp2.value, Number::CHARA);
+    mpz_mul(t4.value, s1d.value, s1d.value);
+    mpz_mod(t4.value, t4.value, Number::CHARA);
+    mpz_sub(t4.value, t4.value, temp2.value);
+    mpz_mul(t3.value, s1d.value, l2d.value);
+    mpz_mod(t3.value, t3.value, Number::CHARA);
+    mpz_mul(temp2.value, s0d.value, s1d.value);
+    mpz_mod(temp2.value, temp2.value, Number::CHARA);
+    mpz_add(t3.value, t3.value, temp2.value);
+    mpz_mul(temp2.value, temp1.value, k3.value);
+    mpz_mod(temp2.value, temp2.value, Number::CHARA);
+    mpz_sub(t3.value, t3.value, temp2.value);
+    mpz_mul(t2.value, r.value, v21.value);
+    mpz_mod(t2.value, t2.value, Number::CHARA);
+    mpz_add(t2.value, t2.value, t2.value);
+    mpz_add(t2.value, t2.value, l1d.value);
+    mpz_mul(t2.value, t2.value, s1d.value);
+    mpz_mod(t2.value, t2.value, Number::CHARA);
+    mpz_mul(temp2.value, s0d.value, l2d.value);
+    mpz_mod(temp2.value, temp2.value, Number::CHARA);
+    mpz_add(t2.value, t2.value, temp2.value);
+    mpz_mul(temp2.value, temp1.value, k2.value);
+    mpz_mod(temp2.value, temp2.value, Number::CHARA);
+    mpz_sub(t2.value, t2.value, temp2.value);
 
-    Number u0d = t2 - t4 * u10 - (t3 - t4 * u11) * u11;
-    Number u1d = t3 - t4 * u11;
-    Number u2d = t4;
+    //Number u2d = t4;
+    Number u1d, u0d;
+    mpz_mul(u1d.value, t4.value, u11.value);
+    mpz_mod(u1d.value, u1d.value, Number::CHARA);
+    mpz_sub(u1d.value, t3.value, u1d.value);
+    mpz_mul(u0d.value, u1d.value, u11.value);
+    mpz_mod(u0d.value, u0d.value, Number::CHARA);
+    mpz_mul(temp1.value, t4.value, u10.value);
+    mpz_mod(temp1.value, temp1.value, Number::CHARA);
+    mpz_add(u0d.value, u0d.value, temp1.value);
+    mpz_sub(u0d.value, t2.value, u0d.value);
 
     // 6. u' をモニックにする．
-    w1 = (u2d * r).inv();
-    w2 = w1 * r;
-    w3 = w1 * u2d;
-    u1d = u1d * w2;
-    u0d = u0d * w2;
-    // ud の計算まで正しい．
+    mpz_mul(w1.value, t4.value, r.value);
+    mpz_mod(w1.value, w1.value, Number::CHARA);
+    mpz_invert(w1.value, w1.value, Number::CHARA);
+    mpz_mul(w2.value, w1.value, r.value);
+    mpz_mod(w2.value, w2.value, Number::CHARA);
+    mpz_mul(w3.value, w1.value, t4.value);
+    mpz_mod(w3.value, w3.value, Number::CHARA);
+    mpz_mul(u1d.value, u1d.value, w2.value);
+    mpz_mod(u1d.value, u1d.value, Number::CHARA);
+    mpz_mul(u0d.value, u0d.value, w2.value);
+    mpz_mod(u0d.value, u0d.value, Number::CHARA);
 
     // 7. v' を計算．
-    Number v1d = (-l1d + (u0d - u1d * u1d) * l3d + u1d * l2d) * w3 - v21;
-    Number v0d = (-l0d  - u1d * u0d * l3d + u0d * l2d) * w3 - v20;
+    Number v1d, v0d;
+
+    mpz_mul(v1d.value, u1d.value, u1d.value);
+    mpz_mod(v1d.value, v1d.value, Number::CHARA);
+    mpz_sub(v1d.value, u0d.value, v1d.value);
+    mpz_mul(v1d.value, v1d.value, s1d.value);
+    mpz_mod(v1d.value, v1d.value, Number::CHARA);
+    mpz_sub(v1d.value, v1d.value, l1d.value);
+    mpz_mul(temp1.value, u1d.value, l2d.value);
+    mpz_mod(temp1.value, temp1.value, Number::CHARA);
+    mpz_add(v1d.value, v1d.value, temp1.value);
+    mpz_mul(v1d.value, w3.value, v1d.value);
+    mpz_mod(v1d.value, v1d.value, Number::CHARA);
+    mpz_sub(v1d.value, v1d.value, v21.value);
+
+    mpz_mul(v0d.value, u1d.value, u0d.value);
+    mpz_mod(v0d.value, v0d.value, Number::CHARA);
+    mpz_mul(v0d.value, v0d.value, s1d.value);
+    mpz_mod(v0d.value, v0d.value, Number::CHARA);
+    mpz_add(v0d.value, v0d.value, l0d.value);
+    mpz_mul(temp1.value, u0d.value, l2d.value);
+    mpz_mod(temp1.value, temp1.value, Number::CHARA);
+    mpz_sub(v0d.value, temp1.value, v0d.value);
+    mpz_mul(v0d.value, v0d.value, w3.value);
+    mpz_mod(v0d.value, v0d.value, Number::CHARA);
+    mpz_sub(v0d.value, v0d.value, v20.value);
 
     Mumford ret(f, h, u1d, u0d, v1d, v0d);
 
