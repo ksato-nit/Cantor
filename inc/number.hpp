@@ -14,6 +14,7 @@ public:
     mpz_t value;
 
     Number();
+    ~Number();
     Number(int);
     Number(const Number&);
     Number(Number&&) noexcept;
@@ -23,6 +24,9 @@ public:
     Number operator * (const int) const;
     Number operator * (const mpz_t) const;
     Number operator / (const Number&) const;
+    void operator += (const Number&);
+    void operator -= (const Number&);
+    void operator *= (const Number&);
     bool operator == (const Number&) const;
     bool operator != (const Number&) const;
     Number operator + () const;
