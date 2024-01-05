@@ -1,6 +1,6 @@
 #include "extended_number.hpp"
 
-mpz_t Number::CHARA;
+mpz_t ExtendedNumber::CHARA;
 
 ExtendedNumber::ExtendedNumber(){
     mpz_init_set_ui(this->re, 0);
@@ -37,13 +37,13 @@ ExtendedNumber ExtendedNumber::operator * (const ExtendedNumber& y) const{
 bool ExtendedNumber::isZero(){
     mpz_t zero;
     mpz_init_set_ui(zero, 0);
-    int comp1 = mpz_comp(this->re, zero);
-    int comp2 = mpz_comp(this->re, zero);
+    int comp1 = mpz_cmp(this->re, zero);
+    int comp2 = mpz_cmp(this->re, zero);
     return (comp1 == 0) && (comp2 == 0);
 }
 
 ExtendedNumber ExtendedNumber::ZERO(){
-    ExtendedNumber one(0, 0);
+    ExtendedNumber zero(0, 0);
     return zero;
 }
 

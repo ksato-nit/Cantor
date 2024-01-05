@@ -215,7 +215,20 @@ ExtendedMumford ExtendedMumford::CostelloAdd(const ExtendedMumford& m) const{
     mpz_mod(temp, temp, ExtendedNumber::CHARA);
     mpz_add(C.im, C.im, temp);
 
-    mpz_invert(C.value, C.value, ExtendedNumber::CHARA);
+    mpz_t denom;
+    mpz_init(denom);
+    mpz_mul(temp, C.re, C.re);
+    mpz_mod(temp, temp, ExtendedNumber::CHARA);
+    mpz_mul(denom, C.im, C.im);
+    mpz_mod(denom, denom, ExtendedNumber::CHARA);
+    mpz_add(denom, denom, temp);
+    mpz_invert(denom, denom, ExtendedNumber::CHARA);
+    mpz_mul(C.re, C.re, denom);
+    mpz_mod(C.re, C.re, ExtendedNumber::CHARA);
+    mpz_mul(C.im, C.im, denom);
+    mpz_mod(C.im, C.im, ExtendedNumber::CHARA);
+    mpz_neg(C.im, C.im);
+
     mpz_mul(d_inv.re, B.re, C.re);
     mpz_mod(d_inv.re, d_inv.re, ExtendedNumber::CHARA);
     mpz_mul(temp, B.im, C.im);
@@ -920,7 +933,20 @@ ExtendedMumford ExtendedMumford::LangeAdd(const ExtendedMumford& m) const{
     mpz_mod(temp, temp, ExtendedNumber::CHARA);
     mpz_add(w1.im, w1.im, temp);
 
-    mpz_invert(w1.value, w1.value, ExtendedNumber::CHARA);
+    mpz_t denom;
+    mpz_init(denom);
+    mpz_mul(temp, w1.re, w1.re);
+    mpz_mod(temp, temp, ExtendedNumber::CHARA);
+    mpz_mul(denom, w1.im, w1.im);
+    mpz_mod(denom, denom, ExtendedNumber::CHARA);
+    mpz_add(denom, denom, temp);
+    mpz_invert(denom, denom, ExtendedNumber::CHARA);
+    mpz_mul(w1.re, w1.re, denom);
+    mpz_mod(w1.re, w1.re, ExtendedNumber::CHARA);
+    mpz_mul(w1.im, w1.im, denom);
+    mpz_mod(w1.im, w1.im, ExtendedNumber::CHARA);
+    mpz_neg(w1.im, w1.im);
+
     mpz_mul(w2.re, w1.re, r.re);
     mpz_mod(w2.re, w2.re, ExtendedNumber::CHARA);
     mpz_mul(temp, w1.im, r.im);
@@ -1581,7 +1607,20 @@ ExtendedMumford ExtendedMumford::LangeDoubling() const{
     mpz_mod(temp, temp, ExtendedNumber::CHARA);
     mpz_add(w0.im, w0.im, temp);
 
-    mpz_invert(w0.value, w0.value, ExtendedNumber::CHARA);
+    mpz_t denom;
+    mpz_init(denom);
+    mpz_mul(temp, w0.re, w0.re);
+    mpz_mod(temp, temp, ExtendedNumber::CHARA);
+    mpz_mul(denom, w0.im, w0.im);
+    mpz_mod(denom, denom, ExtendedNumber::CHARA);
+    mpz_add(denom, denom, temp);
+    mpz_invert(denom, denom, ExtendedNumber::CHARA);
+    mpz_mul(w0.re, w0.re, denom);
+    mpz_mod(w0.re, w0.re, ExtendedNumber::CHARA);
+    mpz_mul(w0.im, w0.im, denom);
+    mpz_mod(w0.im, w0.im, ExtendedNumber::CHARA);
+    mpz_neg(w0.im, w0.im);
+
     mpz_mul(w1.re, w0.re, r.re);
     mpz_mod(w1.re, w1.re, ExtendedNumber::CHARA);
     mpz_mul(temp, w0.im, r.im);
@@ -2158,7 +2197,20 @@ ExtendedMumford ExtendedMumford::CostelloDoubling() const{
     mpz_mod(temp, temp, ExtendedNumber::CHARA);
     mpz_add(C.im, C.im, temp);
 
-    mpz_invert(C.value, C.value, ExtendedNumber::CHARA);
+    mpz_t denom;
+    mpz_init(denom);
+    mpz_mul(temp, C.re, C.re);
+    mpz_mod(temp, temp, ExtendedNumber::CHARA);
+    mpz_mul(denom, C.im, C.im);
+    mpz_mod(denom, denom, ExtendedNumber::CHARA);
+    mpz_add(denom, denom, temp);
+    mpz_invert(denom, denom, ExtendedNumber::CHARA);
+    mpz_mul(C.re, C.re, denom);
+    mpz_mod(C.re, C.re, ExtendedNumber::CHARA);
+    mpz_mul(C.im, C.im, denom);
+    mpz_mod(C.im, C.im, ExtendedNumber::CHARA);
+    mpz_neg(C.im, C.im);
+
     mpz_mul(d_inv.re, B.re, C.re);
     mpz_mod(d_inv.re, d_inv.re, ExtendedNumber::CHARA);
     mpz_mul(temp, B.im, C.im);

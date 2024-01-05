@@ -14,9 +14,9 @@ public:
     ExtendedPolynomial(int deg, int c0);
     // TODO : テンプレートにしたい……．
     ExtendedPolynomial(int deg, int* coeff);
-    ExtendedPolynomial(std::vector<Number> coeff);
-    ExtendedPolynomial(int deg, Number c0);
-    ExtendedPolynomial(int deg, Number c0, Number c1);
+    ExtendedPolynomial(std::vector<ExtendedNumber> coeff);
+    ExtendedPolynomial(int deg, ExtendedNumber c0);
+    ExtendedPolynomial(int deg, ExtendedNumber c0, ExtendedNumber c1);
 
 
 };
