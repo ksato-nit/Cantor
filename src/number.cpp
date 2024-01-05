@@ -4,7 +4,7 @@ mpz_t Number::CHARA;
 mpz_t Number::MCHARA;
 
 Number::Number(){
-    mpz_init2(this->value, 512);
+    mpz_init2(this->value, 2048);
 }
 
 Number::~Number(){
@@ -16,7 +16,7 @@ Number::Number(int x){
 }
 
 Number::Number(const Number& num){
-    mpz_init2(this->value, 512);
+    mpz_init2(this->value, 2048);
     mpz_set(this->value, num.value);
 }
 
