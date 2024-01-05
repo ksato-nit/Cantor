@@ -66,11 +66,7 @@ int main(){
     std::cout << "加算" << std::endl;
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 1000000; ++i){
-        Number numt;
-        numt = num;
-        numt += num;
-        numt += num2;
-        numt += num2;
+        num += num2;
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
@@ -97,7 +93,7 @@ int main(){
 
     std::cout << "射影 Lange" << std::endl;
     start = std::chrono::system_clock::now();
-    for(int i = 0; i < 1000; ++i){
+    for(int i = 0; i < 10; ++i){
         ProjectiveMumford Dk = D1P * k;
     }
     end = std::chrono::system_clock::now();
@@ -105,7 +101,7 @@ int main(){
 
     std::cout << "アフィン Lange" << std::endl;
     start = std::chrono::system_clock::now();
-    for(int i = 0; i < 1000; ++i){
+    for(int i = 0; i < 10; ++i){
         Mumford Dk = D1 * k;
     }
     end = std::chrono::system_clock::now();
@@ -113,7 +109,7 @@ int main(){
 
     std::cout << "アフィン Costello" << std::endl;
     start = std::chrono::system_clock::now();
-    for(int i = 0; i < 1000; ++i){
+    for(int i = 0; i < 10; ++i){
         Mumford Dk = D1.CostelloScalarMultiple(k);
     }
     end = std::chrono::system_clock::now();
