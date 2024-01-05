@@ -49,3 +49,11 @@ ExtendedPolynomial::ExtendedPolynomial(int deg, ExtendedNumber c0, ExtendedNumbe
     this->coeff[1] = c1;
 }
 
+bool ExtendedPolynomial::isZero() const{
+    for(auto n : this->coeff){
+        if(!n.isZero()){
+            return false;
+        }
+    }
+    return true;
+}

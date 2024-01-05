@@ -1,6 +1,7 @@
 #include "extended_number.hpp"
 
 mpz_t ExtendedNumber::CHARA;
+mpz_t ExtendedNumber::MCHARA;
 
 ExtendedNumber::ExtendedNumber(){
     mpz_init_set_ui(this->re, 0);
@@ -34,12 +35,30 @@ ExtendedNumber ExtendedNumber::operator * (const ExtendedNumber& y) const{
     return z;
 }
 
-bool ExtendedNumber::isZero(){
-    mpz_t zero;
-    mpz_init_set_ui(zero, 0);
-    int comp1 = mpz_cmp(this->re, zero);
-    int comp2 = mpz_cmp(this->re, zero);
-    return (comp1 == 0) && (comp2 == 0);
+bool ExtendedNumber::operator == (const ExtendedNumber& y) const{
+    mpz_t ev;
+    mpz_init(ev);
+    mpz_sub(ev, this->re, y.re);
+    mpz_mod(ev, ev, CHARA);
+    if(mpz_sgn(ev) != 0) return false;
+
+    mpz_sub(ev, this->im, y.im);
+    mpz_mod(ev, ev, CHARA);
+    return (mpz_sgn(ev) == 0);
+}
+
+bool ExtendedNumber::operator != (const ExtendedNumber& y) const{
+    return !(*this == y);
+}
+
+bool ExtendedNumber::isZero() const{
+    mpz_t ev;
+    mpz_init_set(ev, this->re);
+    mpz_mod(ev, ev, CHARA);
+    if(mpz_sgn(ev) != 0) return false;
+    mpz_set(ev, this->im);
+    mpz_mod(ev, ev, CHARA);
+    return (mpz_sgn(ev) == 0);
 }
 
 ExtendedNumber ExtendedNumber::ZERO(){

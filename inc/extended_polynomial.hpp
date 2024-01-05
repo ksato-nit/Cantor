@@ -18,5 +18,5 @@ public:
     ExtendedPolynomial(int deg, ExtendedNumber c0);
     ExtendedPolynomial(int deg, ExtendedNumber c0, ExtendedNumber c1);
 
-
+    bool isZero() const;
 };

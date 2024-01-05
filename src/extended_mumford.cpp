@@ -36,6 +36,89 @@ ExtendedMumford::ExtendedMumford(ExtendedPolynomial f, ExtendedPolynomial h, Ext
     this->U0 = U0;
 }
 
+ExtendedMumford ExtendedMumford::CostelloScalarMultiple (const mpz_class& k_) const{
+    ExtendedPolynomial f = this->f;
+    ExtendedPolynomial h = this->h;
+    mpz_class k = k_;
+
+    // operator * の，Costello による計算．
+    // double-and-add method によりスカラー倍を計算する．
+
+    // 連除法で 2 進数に変換．
+    mpz_class two = 2;
+    int count = 0;
+    std::vector<int> bits;
+    while(true){
+        mpz_class rem = k % 2;
+        bits.push_back((int) rem.get_si());
+
+        k = k / 2;
+        ++count;
+
+        if(k < 1){
+            break;
+        }
+    }
+
+    ExtendedMumford D = ExtendedMumford::zero(f, h);
+    ExtendedMumford now = *this;
+    for(int i = 0; i < count; ++i){
+        if(bits[i] == 1){
+            if(D.isZero()){
+                D = now;
+            }else if(now.isZero()){
+                // D = D;
+            }else{
+                D = D.CostelloAdd(now);
+            }
+            //D.print();
+        }
+        now = now.CostelloDoubling();
+    }
+    return D;
+}
+
+ExtendedMumford ExtendedMumford::operator * (const mpz_class& k_) const{
+    ExtendedPolynomial f = this->f;
+    ExtendedPolynomial h = this->h;
+    mpz_class k = k_;
+
+    // double-and-add method によりスカラー倍を計算する．
+
+    // 連除法で 2 進数に変換．
+    mpz_class two = 2;
+    int count = 0;
+    std::vector<int> bits;
+    while(true){
+        mpz_class rem = k % 2;
+        bits.push_back((int) rem.get_si());
+
+        k = k / 2;
+        ++count;
+
+        if(k < 1){
+            break;
+        }
+    }
+
+    ExtendedMumford D = ExtendedMumford::zero(f, h);
+    ExtendedMumford now = *this;
+    for(int i = 0; i < count; ++i){
+        if(bits[i] == 1){
+            if(D.isZero()){
+                D = now;
+            }else if(now.isZero()){
+                // D = D;
+            }else{
+                D = D.LangeAdd(now);
+            }
+            //D.print();
+        }
+        now = now.LangeDoubling();
+    }
+    return D;
+}
+
 ExtendedMumford ExtendedMumford::CostelloAdd(const ExtendedMumford& m) const{
     //std::cerr << "Costello Addition." << std::endl;
 
@@ -2491,3 +2574,16 @@ ExtendedMumford ExtendedMumford::CostelloDoubling() const{
     return ret;
 }
 
+ExtendedMumford ExtendedMumford::zero(const ExtendedPolynomial& f, const ExtendedPolynomial& h){
+    ExtendedMumford zero(f, h);
+    return zero;
+}
+
+bool ExtendedMumford::isZero() const{
+    if(v1.isZero() && v0.isZero()){
+        if(u1.isZero() && u0 == ExtendedNumber::ONE()){
+            return true;
+        }
+    }
+    return false;
+}
