@@ -180,44 +180,21 @@ Mumford Mumford::operator + (const Mumford& m) const{
 
 Mumford Mumford::CostelloAdd(const Mumford& m) const{
     //std::cerr << "Costello Addition." << std::endl;
-    Number u11 = this->u1;
-    Number u10 = this->u0;
-    Number u21 = m.u1;
-    Number u20 = m.u0;
-
-    Number v11 = this->v1;
-    Number v10 = this->v0;
-    Number v21 = m.v1;
-    Number v20 = m.v0;
-
-    Number f6;
-    if(this->f.deg == 6){
-        f6 = this->f.coeff[6];
-    }else{
-        f6 = Number::ZERO();
-    }
-    Number f5 = this->f.coeff[5];
-    Number f4 = this->f.coeff[4];
-
-    Number U11 = this->U1;
-    Number U21 = m.U1;
-    Number U10 = this->U0;
-    Number U20 = m.U0;
 
     Number temp1;
 
     Number u1S, v0D, v1D;
-    mpz_add(u1S.value, u11.value, u21.value);
-    mpz_sub(v0D.value, v10.value, v20.value);
-    mpz_sub(v1D.value, v11.value, v21.value);
+    mpz_add(u1S.value, this->u1.value, m.u1.value);
+    mpz_sub(v0D.value, this->v0.value, m.v0.value);
+    mpz_sub(v1D.value, this->v1.value, m.v1.value);
 
     Number M1, M2, M3, M4;
-    mpz_sub(M1.value, U11.value, U21.value);
-    mpz_sub(M1.value, M1.value, u10.value);
-    mpz_add(M1.value, M1.value, u20.value);
-    mpz_sub(M2.value, U20.value, U10.value);
-    mpz_sub(M3.value, u11.value, u21.value);
-    mpz_sub(M4.value, u20.value, u10.value);
+    mpz_sub(M1.value, this->U1.value, m.U1.value);
+    mpz_sub(M1.value, M1.value, this->u0.value);
+    mpz_add(M1.value, M1.value, m.u0.value);
+    mpz_sub(M2.value, m.U0.value, this->U0.value);
+    mpz_sub(M3.value, this->u1.value, m.u1.value);
+    mpz_sub(M4.value, m.u0.value, this->u0.value);
 
     Number t1, t2, t3, t4;
     mpz_sub(t1.value, M2.value, v0D.value);
@@ -260,7 +237,7 @@ Mumford Mumford::CostelloAdd(const Mumford& m) const{
     Number A, B, C, d_inv, d_shifted_inv;
     mpz_mul(A.value, d.value, d.value);
     mpz_mod(A.value, A.value, Number::CHARA);
-    mpz_mul(temp1.value, f6.value, A.value);
+    mpz_mul(temp1.value, this->f.coeff[6].value, A.value);
     mpz_mod(temp1.value, temp1.value, Number::CHARA);    
     mpz_mul(B.value, l3_num.value, l3_num.value);
     mpz_mod(B.value, B.value, Number::CHARA);
@@ -285,7 +262,7 @@ Mumford Mumford::CostelloAdd(const Mumford& m) const{
     mpz_mod(temp1.value, temp1.value, Number::CHARA);
 
     Number u1dd;
-    mpz_sub(u1dd.value, f5.value, temp1.value);
+    mpz_sub(u1dd.value, this->f.coeff[5].value, temp1.value);
     mpz_sub(u1dd.value, u1dd.value, temp1.value);
     mpz_mul(u1dd.value, u1dd.value, d_shifted_inv.value);
     mpz_mod(u1dd.value, u1dd.value, Number::CHARA);
@@ -293,27 +270,27 @@ Mumford Mumford::CostelloAdd(const Mumford& m) const{
     mpz_neg(u1dd.value, u1dd.value);
 
     Number u0dd;
-    mpz_sub(u0dd.value, u10.value, U11.value);
+    mpz_sub(u0dd.value, this->u0.value, this->U1.value);
     mpz_mul(u0dd.value, u0dd.value, l3.value);
     mpz_mod(u0dd.value, u0dd.value, Number::CHARA);
-    mpz_mul(temp1.value, l2.value, u11.value);
+    mpz_mul(temp1.value, l2.value, this->u1.value);
     mpz_mod(temp1.value, temp1.value, Number::CHARA);    
     mpz_add(u0dd.value, u0dd.value, temp1.value);
-    mpz_add(u0dd.value, u0dd.value, v11.value);
+    mpz_add(u0dd.value, u0dd.value, this->v1.value);
     mpz_mul(u0dd.value, u0dd.value, l3.value);
     mpz_mod(u0dd.value, u0dd.value, Number::CHARA);
     mpz_add(u0dd.value, u0dd.value, u0dd.value);
     mpz_mul(temp1.value, l2.value, l2.value);
     mpz_mod(temp1.value, temp1.value, Number::CHARA);    
     mpz_add(u0dd.value, u0dd.value, temp1.value);
-    mpz_sub(u0dd.value, u0dd.value, f4.value);
+    mpz_sub(u0dd.value, u0dd.value, this->f.coeff[4].value);
     mpz_mul(u0dd.value, u0dd.value, d_shifted_inv.value);
     mpz_mod(u0dd.value, u0dd.value, Number::CHARA);
-    mpz_mul(temp1.value, u21.value, u11.value);
+    mpz_mul(temp1.value, m.u1.value, this->u1.value);
     mpz_mod(temp1.value, temp1.value, Number::CHARA);    
     mpz_sub(u0dd.value, u0dd.value, temp1.value);
-    mpz_sub(u0dd.value, u0dd.value, u10.value);
-    mpz_sub(u0dd.value, u0dd.value, u20.value);
+    mpz_sub(u0dd.value, u0dd.value, this->u0.value);
+    mpz_sub(u0dd.value, u0dd.value, m.u0.value);
     mpz_mul(temp1.value, u1S.value, u1dd.value);
     mpz_mod(temp1.value, temp1.value, Number::CHARA);    
     mpz_sub(u0dd.value, u0dd.value, temp1.value);
@@ -325,27 +302,27 @@ Mumford Mumford::CostelloAdd(const Mumford& m) const{
     mpz_mod(U0dd.value, U0dd.value, Number::CHARA);
 
     Number v1dd, v0dd;
-    mpz_sub(temp1.value, u1dd.value, u11.value);
+    mpz_sub(temp1.value, u1dd.value, this->u1.value);
     mpz_mul(temp1.value, l2.value, temp1.value);
     mpz_mod(temp1.value, temp1.value, Number::CHARA);
 
     mpz_sub(v1dd.value, u0dd.value, U1dd.value);
-    mpz_add(v1dd.value, v1dd.value, U11.value);
-    mpz_sub(v1dd.value, v1dd.value, u10.value);
+    mpz_add(v1dd.value, v1dd.value, this->U1.value);
+    mpz_sub(v1dd.value, v1dd.value, this->u0.value);
     mpz_mul(v1dd.value, v1dd.value, l3.value);
     mpz_mod(v1dd.value, v1dd.value, Number::CHARA);
     mpz_add(v1dd.value, v1dd.value, temp1.value);
-    mpz_sub(v1dd.value, v1dd.value, v11.value);
+    mpz_sub(v1dd.value, v1dd.value, this->v1.value);
 
-    mpz_sub(temp1.value, u0dd.value, u10.value);
+    mpz_sub(temp1.value, u0dd.value, this->u0.value);
     mpz_mul(temp1.value, l2.value, temp1.value);
     mpz_mod(temp1.value, temp1.value, Number::CHARA);
 
-    mpz_sub(v0dd.value, U10.value, U0dd.value);
+    mpz_sub(v0dd.value, this->U0.value, U0dd.value);
     mpz_mul(v0dd.value, v0dd.value, l3.value);
     mpz_mod(v0dd.value, v0dd.value, Number::CHARA);
     mpz_add(v0dd.value, v0dd.value, temp1.value);
-    mpz_sub(v0dd.value, v0dd.value, v10.value);
+    mpz_sub(v0dd.value, v0dd.value, this->v0.value);
 
     return Mumford(f, h, u1dd, u0dd, v1dd, v0dd, U1dd, U0dd);
 }
@@ -484,32 +461,19 @@ Mumford Mumford::HarleyAddDegenerated(const Mumford& m) const{
 
 Mumford Mumford::LangeAdd(const Mumford& m) const{
     //std::cerr << "Lange Addition." << std::endl;
-    Number u11 = this->u1;
-    Number u10 = this->u0;
-    Number u21 = m.u1;
-    Number u20 = m.u0;
-
-    Number v11 = this->v1;
-    Number v10 = this->v0;
-    Number v21 = m.v1;
-    Number v20 = m.v0;
-
-    Number f6 = this->f.coeff[6];
-    Number f5 = this->f.coeff[5];
-    Number f4 = this->f.coeff[4];
 
     Number temp1, temp2, temp3;
 
     // 1. u1, u2 の終結式を計算．
     Number z1, z2, z3, r;
-    mpz_sub(z1.value, u11.value, u21.value);
-    mpz_sub(z2.value, u20.value, u10.value);
-    mpz_mul(z3.value, u11.value, z1.value);
+    mpz_sub(z1.value, this->u1.value, m.u1.value);
+    mpz_sub(z2.value, m.u0.value, this->u0.value);
+    mpz_mul(z3.value, this->u1.value, z1.value);
     mpz_mod(z3.value, z3.value, Number::CHARA);
     mpz_add(z3.value, z3.value, z2.value);
     mpz_mul(r.value, z1.value, z1.value);
     mpz_mod(r.value, r.value, Number::CHARA);
-    mpz_mul(r.value, r.value, u10.value);
+    mpz_mul(r.value, r.value, this->u0.value);
     mpz_mod(r.value, r.value, Number::CHARA);
     mpz_mul(temp1.value, z2.value, z3.value);
     mpz_mod(temp1.value, temp1.value, Number::CHARA);
@@ -521,8 +485,8 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
 
     // 3. s' を計算．
     Number w0, w1, w2, w3, s1d, s0d;
-    mpz_sub(w0.value, v10.value, v20.value);
-    mpz_sub(w1.value, v11.value, v21.value);
+    mpz_sub(w0.value, this->v0.value, m.v0.value);
+    mpz_sub(w1.value, this->v1.value, m.v1.value);
     mpz_mul(w2.value, z3.value, w0.value);
     mpz_mod(w2.value, w2.value, Number::CHARA);
     mpz_mul(w3.value, z1.value, w1.value);
@@ -533,12 +497,12 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
     mpz_mul(s1d.value, temp1.value, s1d.value);
     mpz_mod(s1d.value, s1d.value, Number::CHARA);
     mpz_sub(s1d.value, s1d.value, w2.value);
-    mpz_add(temp1.value, Number::ONE().value, u11.value);
+    mpz_add(temp1.value, Number::ONE().value, this->u1.value);
     mpz_mul(temp1.value, w3.value, temp1.value);
     mpz_mod(temp1.value, temp1.value, Number::CHARA);
     mpz_sub(s1d.value, s1d.value, temp1.value);
 
-    mpz_mul(s0d.value, u10.value, w3.value);
+    mpz_mul(s0d.value, this->u0.value, w3.value);
     mpz_mod(s0d.value, s0d.value, Number::CHARA);
     mpz_sub(s0d.value, w2.value, s0d.value);
 
@@ -552,12 +516,12 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
     // 4. l' を計算．
     //Number l3d = s1d;
     Number l2d, l0d, l1d;
-    mpz_mul(l2d.value, u21.value, s1d.value);
+    mpz_mul(l2d.value, m.u1.value, s1d.value);
     mpz_mod(l2d.value, l2d.value, Number::CHARA);
-    mpz_mul(l0d.value, u20.value, s0d.value);
+    mpz_mul(l0d.value, m.u0.value, s0d.value);
     mpz_mod(l0d.value, l0d.value, Number::CHARA);
     mpz_add(l1d.value, s1d.value, s0d.value);
-    mpz_add(temp1.value, u21.value, u20.value);
+    mpz_add(temp1.value, m.u1.value, m.u0.value);
     mpz_mul(l1d.value, l1d.value, temp1.value);
     mpz_mod(l1d.value, l1d.value, Number::CHARA);
     mpz_sub(l1d.value, l1d.value, l2d.value);
@@ -567,19 +531,19 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
     // 5. u' を計算．
     //Number k4 = f6;
     Number k3, k2;
-    mpz_mul(k3.value, f6.value, u21.value);
+    mpz_mul(k3.value, this->f.coeff[6].value, m.u1.value);
     mpz_mod(k3.value, k3.value, Number::CHARA);
-    mpz_sub(k3.value, f5.value, k3.value);
-    mpz_mul(k2.value, f6.value, u20.value);
+    mpz_sub(k3.value, this->f.coeff[5].value, k3.value);
+    mpz_mul(k2.value, this->f.coeff[6].value, m.u0.value);
     mpz_mod(k2.value, k2.value, Number::CHARA);
-    mpz_mul(temp1.value, k3.value, u21.value);
-    mpz_sub(k2.value, f4.value, k2.value);
+    mpz_mul(temp1.value, k3.value, m.u1.value);
+    mpz_sub(k2.value, this->f.coeff[4].value, k2.value);
     mpz_sub(k2.value, k2.value, temp1.value);
 
     Number t4, t3, t2;
     mpz_mul(temp1.value, r.value, r.value);
     mpz_mod(temp1.value, temp1.value, Number::CHARA);
-    mpz_mul(temp2.value, temp1.value, f6.value);
+    mpz_mul(temp2.value, temp1.value, this->f.coeff[6].value);
     mpz_mod(temp2.value, temp2.value, Number::CHARA);
     mpz_mul(t4.value, s1d.value, s1d.value);
     mpz_mod(t4.value, t4.value, Number::CHARA);
@@ -592,7 +556,7 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
     mpz_mul(temp2.value, temp1.value, k3.value);
     mpz_mod(temp2.value, temp2.value, Number::CHARA);
     mpz_sub(t3.value, t3.value, temp2.value);
-    mpz_mul(t2.value, r.value, v21.value);
+    mpz_mul(t2.value, r.value, m.v1.value);
     mpz_mod(t2.value, t2.value, Number::CHARA);
     mpz_add(t2.value, t2.value, t2.value);
     mpz_add(t2.value, t2.value, l1d.value);
@@ -607,12 +571,12 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
 
     //Number u2d = t4;
     Number u1d, u0d;
-    mpz_mul(u1d.value, t4.value, u11.value);
+    mpz_mul(u1d.value, t4.value, this->u1.value);
     mpz_mod(u1d.value, u1d.value, Number::CHARA);
     mpz_sub(u1d.value, t3.value, u1d.value);
-    mpz_mul(u0d.value, u1d.value, u11.value);
+    mpz_mul(u0d.value, u1d.value, this->u1.value);
     mpz_mod(u0d.value, u0d.value, Number::CHARA);
-    mpz_mul(temp1.value, t4.value, u10.value);
+    mpz_mul(temp1.value, t4.value, this->u0.value);
     mpz_mod(temp1.value, temp1.value, Number::CHARA);
     mpz_add(u0d.value, u0d.value, temp1.value);
     mpz_sub(u0d.value, t2.value, u0d.value);
@@ -644,7 +608,7 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
     mpz_add(v1d.value, v1d.value, temp1.value);
     mpz_mul(v1d.value, w3.value, v1d.value);
     mpz_mod(v1d.value, v1d.value, Number::CHARA);
-    mpz_sub(v1d.value, v1d.value, v21.value);
+    mpz_sub(v1d.value, v1d.value, m.v1.value);
 
     mpz_mul(v0d.value, u1d.value, u0d.value);
     mpz_mod(v0d.value, v0d.value, Number::CHARA);
@@ -656,7 +620,7 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
     mpz_sub(v0d.value, temp1.value, v0d.value);
     mpz_mul(v0d.value, v0d.value, w3.value);
     mpz_mod(v0d.value, v0d.value, Number::CHARA);
-    mpz_sub(v0d.value, v0d.value, v20.value);
+    mpz_sub(v0d.value, v0d.value, m.v0.value);
 
     Mumford ret(f, h, u1d, u0d, v1d, v0d);
 
@@ -665,17 +629,6 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
 
 Mumford Mumford::LangeDoubling() const{
     //std::cerr << "Lange Doubling." << std::endl;
-    Number u1 = this->u1;
-    Number u0 = this->u0;
-    Number v1 = this->v1;
-    Number v0 = this->v0;
-
-    Number f2 = this->f.coeff[2];
-    Number f3 = this->f.coeff[3];
-    Number f4 = this->f.coeff[4];
-    Number f5 = this->f.coeff[5];
-    Number f6 = this->f.coeff[6];
-
     // 44M, 6S, I
 
     Number temp1, temp2;
@@ -713,27 +666,27 @@ Mumford Mumford::LangeDoubling() const{
     // 11M
     //Number k4 = f6;
     Number k4u0, k4u1, k3, k3u0, k2, k1, k0, u1kd, k1d, k0d;
-    mpz_mul(k4u0.value, f6.value, u0.value);
+    mpz_mul(k4u0.value, this->f.coeff[6].value, u0.value);
     mpz_mod(k4u0.value, k4u0.value, Number::CHARA);
-    mpz_mul(k4u1.value, f6.value, u1.value);
+    mpz_mul(k4u1.value, this->f.coeff[6].value, u1.value);
     mpz_mod(k4u1.value, k4u1.value, Number::CHARA);
-    mpz_sub(k3.value, f5.value, k4u1.value);
+    mpz_sub(k3.value, this->f.coeff[5].value, k4u1.value);
     mpz_mul(k3u0.value, k3.value, u0.value);
     mpz_mod(k3u0.value, k3u0.value, Number::CHARA);
     mpz_mul(k2.value, k3.value, u1.value);
     mpz_mod(k2.value, k2.value, Number::CHARA);
-    mpz_sub(k2.value, f4.value, k2.value);
+    mpz_sub(k2.value, this->f.coeff[4].value, k2.value);
     mpz_sub(k2.value, k2.value, k4u0.value);
     mpz_mul(k1.value, k2.value, u1.value);
     mpz_mod(k1.value, k1.value, Number::CHARA);
-    mpz_sub(k1.value, f3.value, k1.value);
+    mpz_sub(k1.value, this->f.coeff[3].value, k1.value);
     mpz_sub(k1.value, k1.value, k3u0.value);
     mpz_mul(k0.value, k1.value, u1.value);
     mpz_mod(k0.value, k0.value, Number::CHARA);
     mpz_mul(temp1.value, k2.value, u0.value);
     mpz_mod(temp1.value, temp1.value, Number::CHARA);
     mpz_add(k0.value, k0.value, temp1.value);
-    mpz_sub(k0.value, f2.value, k0.value);
+    mpz_sub(k0.value, this->f.coeff[2].value, k0.value);
     mpz_sub(k0.value, k0.value, w0.value);
     mpz_sub(u1kd.value, k3.value, k4u1.value);
     mpz_mul(u1kd.value, u1.value, u1kd.value);
@@ -791,13 +744,13 @@ Mumford Mumford::LangeDoubling() const{
     mpz_mod(rs.value, rs.value, Number::CHARA);
     mpz_mul(u2d.value, s1d.value, s1d.value);
     mpz_mod(u2d.value, u2d.value, Number::CHARA);
-    mpz_mul(temp1.value, rs.value, f6.value);
+    mpz_mul(temp1.value, rs.value, this->f.coeff[6].value);
     mpz_mod(temp1.value, temp1.value, Number::CHARA);
     mpz_sub(u2d.value, u2d.value, temp1.value);
     mpz_mul(u1d.value, s1d.value, s0d.value);
     mpz_mod(u1d.value, u1d.value, Number::CHARA);
     mpz_add(u1d.value, u1d.value, u1d.value);
-    mpz_sub(temp1.value, f5.value, k4u1.value);
+    mpz_sub(temp1.value, this->f.coeff[5].value, k4u1.value);
     mpz_sub(temp1.value, temp1.value, k4u1.value);
     mpz_mul(temp1.value, rs.value, temp1.value);
     mpz_mod(temp1.value, temp1.value, Number::CHARA);
@@ -812,16 +765,16 @@ Mumford Mumford::LangeDoubling() const{
     mpz_mod(temp1.value, temp1.value, Number::CHARA);
     mpz_add(u0d.value, u0d.value, temp1.value);
 
-    mpz_sub(temp1.value, f5.value, k4u1.value);
+    mpz_sub(temp1.value, this->f.coeff[5].value, k4u1.value);
     mpz_sub(temp1.value, temp1.value, k4u1.value);
     mpz_add(temp1.value, temp1.value, temp1.value);
     mpz_mul(temp1.value, u1.value, temp1.value);
     mpz_mod(temp1.value, temp1.value, Number::CHARA);
     mpz_add(temp2.value, u0.value, u0.value);
     mpz_add(temp2.value, temp2.value, u1s.value);
-    mpz_mul(temp2.value, temp2.value, f6.value);
+    mpz_mul(temp2.value, temp2.value, this->f.coeff[6].value);
     mpz_mod(temp2.value, temp2.value, Number::CHARA);
-    mpz_sub(temp2.value, f4.value, temp2.value);
+    mpz_sub(temp2.value, this->f.coeff[4].value, temp2.value);
     mpz_sub(temp2.value, temp2.value, temp1.value);
     mpz_mul(temp2.value, temp2.value, rs.value);
     mpz_mod(temp2.value, temp2.value, Number::CHARA);
@@ -893,78 +846,64 @@ Mumford Mumford::LangeDoubling() const{
 
 Mumford Mumford::CostelloDoubling() const{
     //std::cerr << "Costello Doubling." << std::endl;
-    Number u1 = this->u1;
-    Number u0 = this->u0;
-    Number v1 = this->v1;
-    Number v0 = this->v0;
-
-    Number U1 = this->U1;
-    Number U0 = this->U0;
-
-    Number f2 = this->f.coeff[2];
-    Number f3 = this->f.coeff[3];
-    Number f4 = this->f.coeff[4];
-    Number f5 = this->f.coeff[5];
-    Number f6 = this->f.coeff[6];
-
     // 32M, 6S, I
 
     Number temp1, temp2, temp3, temp4, temp5;
 
     Number vv, va;
-    mpz_mul(vv.value, v1.value, v1.value);
+    mpz_mul(vv.value, this->v1.value, this->v1.value);
     mpz_mod(vv.value, vv.value, Number::CHARA);
-    mpz_add(va.value, v1.value, u1.value);
+    mpz_add(va.value, this->v1.value, this->u1.value);
     mpz_mul(va.value, va.value, va.value);
     mpz_mod(va.value, va.value, Number::CHARA);
     mpz_sub(va.value, va.value, vv.value);
-    mpz_sub(va.value, va.value, U1.value);
+    mpz_sub(va.value, va.value, this->U1.value);
 
     Number M1, M2, M3, M4;
-    mpz_sub(M1.value, v0.value, va.value);
+    mpz_sub(M1.value, this->v0.value, va.value);
     mpz_add(M1.value, M1.value, M1.value);
-    mpz_add(M2.value, U1.value, U1.value);
-    mpz_add(M2.value, M2.value, u0.value);
-    mpz_mul(M2.value, M2.value, v1.value);
+    mpz_add(M2.value, this->U1.value, this->U1.value);
+    mpz_add(M2.value, M2.value, this->u0.value);
+    mpz_mul(M2.value, M2.value, this->v1.value);
     mpz_mod(M2.value, M2.value, Number::CHARA);
     mpz_add(M2.value, M2.value, M2.value);
-    mpz_add(M3.value, v1.value, v1.value);
+    mpz_add(M3.value, this->v1.value, this->v1.value);
     mpz_neg(M3.value, M3.value);
-    mpz_add(M4.value, va.value, v0.value);
-    mpz_add(M4.value, M4.value, v0.value);
+    mpz_add(M4.value, va.value, this->v0.value);
+    mpz_add(M4.value, M4.value, this->v0.value);
 
-    mpz_mul(temp2.value, f6.value, u0.value);
+    mpz_mul(temp2.value, this->f.coeff[6].value, this->u0.value);
     mpz_mod(temp2.value, temp2.value, Number::CHARA);
-    mpz_mul(temp3.value, f6.value, U1.value);
+    mpz_mul(temp3.value, this->f.coeff[6].value, this->U1.value);
     mpz_mod(temp3.value, temp3.value, Number::CHARA);
-    mpz_mul(temp4.value, f5.value, u0.value);
+    mpz_mul(temp4.value, this->f.coeff[5].value, this->u0.value);
     mpz_mod(temp4.value, temp4.value, Number::CHARA);
-    mpz_mul(temp5.value, f5.value, u1.value);
+    mpz_mul(temp5.value, this->f.coeff[5].value, this->u1.value);
     mpz_mod(temp5.value, temp5.value, Number::CHARA);
 
     Number z11, z12;
     mpz_sub(z11.value, temp5.value, temp3.value);
     mpz_add(z11.value, z11.value, z11.value);
     mpz_sub(z11.value, z11.value, temp3.value);
-    mpz_sub(z11.value, z11.value, f4.value);
-    mpz_mul(z11.value, z11.value, U1.value);
+    mpz_sub(z11.value, z11.value, this->f.coeff[4].value);
+    mpz_mul(z11.value, z11.value, this->U1.value);
     mpz_mod(z11.value, z11.value, Number::CHARA);
 
     mpz_add(z12.value, temp5.value, temp2.value);
     mpz_add(z12.value, z12.value, z12.value);
     mpz_add(z12.value, z12.value, temp2.value);
-    mpz_sub(z12.value, z12.value, f4.value);
-    mpz_sub(z12.value, z12.value, f4.value);
-    mpz_mul(z12.value, z12.value, u0.value);
+    mpz_sub(z12.value, z12.value, this->f.coeff[4].value);
+    mpz_sub(z12.value, z12.value, this->f.coeff[4].value);
+    mpz_mul(z12.value, z12.value, this->u0.value);
     mpz_mod(z12.value, z12.value, Number::CHARA);
 
     Number z1, z2;
     mpz_add(z1.value, z11.value, z12.value);
     mpz_sub(z1.value, z1.value, vv.value);
-    mpz_add(z1.value, z1.value, f2.value);
+    mpz_add(z1.value, z1.value, this->f.coeff[2].value);
     mpz_sub(z2.value, temp2.value, temp3.value);
     mpz_add(z2.value, z2.value, temp5.value);
-    mpz_sub(z2.value, z2.value, f4.value);
+    mpz_sub(z2.value, z2.value, this->f.coeff[4].value);
     mpz_add(z2.value, z2.value, z2.value);
     mpz_add(z2.value, z2.value, temp2.value);
     mpz_add(z2.value, z2.value, temp2.value);
@@ -973,11 +912,11 @@ Mumford Mumford::CostelloDoubling() const{
     mpz_sub(z2.value, z2.value, temp3.value);
     mpz_sub(z2.value, z2.value, temp3.value);
     mpz_add(z2.value, z2.value, temp5.value);
-    mpz_mul(z2.value, z2.value, u1.value);
+    mpz_mul(z2.value, z2.value, this->u1.value);
     mpz_mod(z2.value, z2.value, Number::CHARA);
     mpz_sub(z2.value, z2.value, temp4.value);
     mpz_sub(z2.value, z2.value, temp4.value);
-    mpz_add(z2.value, z2.value, f3.value);
+    mpz_add(z2.value, z2.value, this->f.coeff[3].value);
 
     Number t1, t2, t3, t4;
     mpz_sub(t1.value, M2.value, z1.value);
@@ -1020,7 +959,7 @@ Mumford Mumford::CostelloDoubling() const{
     Number A, B, C, d_inv, d_shifted_inv;
     mpz_mul(A.value, d.value, d.value);
     mpz_mod(A.value, A.value, Number::CHARA);
-    mpz_mul(temp1.value, f6.value, A.value);
+    mpz_mul(temp1.value, this->f.coeff[6].value, A.value);
     mpz_mod(temp1.value, temp1.value, Number::CHARA);    
     mpz_mul(B.value, l3_num.value, l3_num.value);
     mpz_mod(B.value, B.value, Number::CHARA);
@@ -1045,38 +984,38 @@ Mumford Mumford::CostelloDoubling() const{
     mpz_mod(temp1.value, temp1.value, Number::CHARA);
 
     Number u1d;
-    mpz_sub(u1d.value, f5.value, temp1.value);
+    mpz_sub(u1d.value, this->f.coeff[5].value, temp1.value);
     mpz_sub(u1d.value, u1d.value, temp1.value);
     mpz_mul(u1d.value, u1d.value, d_shifted_inv.value);
     mpz_mod(u1d.value, u1d.value, Number::CHARA);
-    mpz_add(u1d.value, u1d.value, u1.value);
-    mpz_add(u1d.value, u1d.value, u1.value);
+    mpz_add(u1d.value, u1d.value, this->u1.value);
+    mpz_add(u1d.value, u1d.value, this->u1.value);
     mpz_neg(u1d.value, u1d.value);
 
     Number u0d;
-    mpz_sub(u0d.value, u0.value, U1.value);
+    mpz_sub(u0d.value, this->u0.value, this->U1.value);
     mpz_mul(u0d.value, u0d.value, l3.value);
     mpz_mod(u0d.value, u0d.value, Number::CHARA);
-    mpz_mul(temp1.value, l2.value, u1.value);
+    mpz_mul(temp1.value, l2.value, this->u1.value);
     mpz_mod(temp1.value, temp1.value, Number::CHARA);    
     mpz_add(u0d.value, u0d.value, temp1.value);
-    mpz_add(u0d.value, u0d.value, v1.value);
+    mpz_add(u0d.value, u0d.value, this->v1.value);
     mpz_mul(u0d.value, u0d.value, l3.value);
     mpz_mod(u0d.value, u0d.value, Number::CHARA);
     mpz_add(u0d.value, u0d.value, u0d.value);
     mpz_mul(temp1.value, l2.value, l2.value);
     mpz_mod(temp1.value, temp1.value, Number::CHARA);    
     mpz_add(u0d.value, u0d.value, temp1.value);
-    mpz_sub(u0d.value, u0d.value, f4.value);
+    mpz_sub(u0d.value, u0d.value, this->f.coeff[4].value);
     mpz_mul(u0d.value, u0d.value, d_shifted_inv.value);
     mpz_mod(u0d.value, u0d.value, Number::CHARA);
-    mpz_mul(temp1.value, u1d.value, u1.value);
+    mpz_mul(temp1.value, u1d.value, this->u1.value);
     mpz_mod(temp1.value, temp1.value, Number::CHARA);    
     mpz_sub(u0d.value, u0d.value, temp1.value);
     mpz_sub(u0d.value, u0d.value, temp1.value);
-    mpz_sub(u0d.value, u0d.value, u0.value);
-    mpz_sub(u0d.value, u0d.value, u0.value);  
-    mpz_sub(u0d.value, u0d.value, U1.value);
+    mpz_sub(u0d.value, u0d.value, this->u0.value);
+    mpz_sub(u0d.value, u0d.value, this->u0.value);  
+    mpz_sub(u0d.value, u0d.value, this->U1.value);
 
     Number U1d, U0d;
     mpz_mul(U1d.value, u1d.value, u1d.value);
@@ -1085,27 +1024,27 @@ Mumford Mumford::CostelloDoubling() const{
     mpz_mod(U0d.value, U0d.value, Number::CHARA);
 
     Number v1d, v0d;
-    mpz_sub(temp1.value, u1d.value, u1.value);
+    mpz_sub(temp1.value, u1d.value, this->u1.value);
     mpz_mul(temp1.value, l2.value, temp1.value);
     mpz_mod(temp1.value, temp1.value, Number::CHARA);
 
     mpz_sub(v1d.value, u0d.value, U1d.value);
-    mpz_add(v1d.value, v1d.value, U1.value);
-    mpz_sub(v1d.value, v1d.value, u0.value);
+    mpz_add(v1d.value, v1d.value, this->U1.value);
+    mpz_sub(v1d.value, v1d.value, this->u0.value);
     mpz_mul(v1d.value, v1d.value, l3.value);
     mpz_mod(v1d.value, v1d.value, Number::CHARA);
     mpz_add(v1d.value, v1d.value, temp1.value);
-    mpz_sub(v1d.value, v1d.value, v1.value);
+    mpz_sub(v1d.value, v1d.value, this->v1.value);
 
-    mpz_sub(temp1.value, u0d.value, u0.value);
+    mpz_sub(temp1.value, u0d.value, this->u0.value);
     mpz_mul(temp1.value, l2.value, temp1.value);
     mpz_mod(temp1.value, temp1.value, Number::CHARA);
 
-    mpz_sub(v0d.value, U0.value, U0d.value);
+    mpz_sub(v0d.value, this->U0.value, U0d.value);
     mpz_mul(v0d.value, v0d.value, l3.value);
     mpz_mod(v0d.value, v0d.value, Number::CHARA);
     mpz_add(v0d.value, v0d.value, temp1.value);
-    mpz_sub(v0d.value, v0d.value, v0.value);
+    mpz_sub(v0d.value, v0d.value, this->v0.value);
 
     Mumford ret(f, h, u1d, u0d, v1d, v0d, U1d, U0d);
     return ret;
