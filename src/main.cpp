@@ -93,7 +93,7 @@ int main(){
 
     std::cout << "射影 Lange" << std::endl;
     start = std::chrono::system_clock::now();
-    for(int i = 0; i < 10; ++i){
+    for(int i = 0; i < 1000; ++i){
         ProjectiveMumford Dk = D1P * k;
     }
     end = std::chrono::system_clock::now();
@@ -101,7 +101,7 @@ int main(){
 
     std::cout << "アフィン Lange" << std::endl;
     start = std::chrono::system_clock::now();
-    for(int i = 0; i < 10; ++i){
+    for(int i = 0; i < 1000; ++i){
         Mumford Dk = D1 * k;
     }
     end = std::chrono::system_clock::now();
@@ -109,7 +109,7 @@ int main(){
 
     std::cout << "アフィン Costello" << std::endl;
     start = std::chrono::system_clock::now();
-    for(int i = 0; i < 10; ++i){
+    for(int i = 0; i < 1000; ++i){
         Mumford Dk = D1.CostelloScalarMultiple(k);
     }
     end = std::chrono::system_clock::now();
