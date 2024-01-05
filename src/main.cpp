@@ -36,29 +36,25 @@ int main(){
     Mumford D1(f, h, u1, u0, v1, v0);
     ProjectiveMumford D1P(f, h, u1, u0, v1, v0);
 
-    Number num;
-    mpz_set_str(num.value, "8613960161207197506610974848157905611744466278275346794947826509160636299164", 10);
-    Number num2;
-    mpz_set_str(num2.value, "12613960161207197506610974848157905611744466278275346794947826509160636299164", 10);
-    Number num3;
-
-    mpz_t test;
-    mpz_init2(test, 256);
-
     // 有限体上の基本演算
+    mpz_t num, num2;
+    mpz_init_set_str(num, "8613960161207197506610974848157905611744466278275346794947826509160636299157", 10);
+    mpz_init_set_str(num2, "6613960161207197506610974848157905611744466278275346794947826509160636299157", 10);
+
     std::cout << "コンストラクタ" << std::endl;
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 1000000; ++i){
-        Number num3;
+        mpz_t numc;
+        mpz_init2(numc, 512);
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
 
     std::cout << "コピー" << std::endl;
-    Number num4;
+    mpz_t num3;
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 1000000; ++i){
-        num4 = num;
+        mpz_init_set(num3, num);
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
@@ -66,15 +62,26 @@ int main(){
     std::cout << "加算" << std::endl;
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 1000000; ++i){
-        num += num2;
+        mpz_add(num, num, num2);
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
+    mpz_mod(num, num, Number::CHARA);
 
     std::cout << "乗算" << std::endl;
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 1000000; ++i){
-        num *= num2;
+        mpz_mul(num, num, num2);
+        mpz_mod(num, num, Number::CHARA);
+    }
+    end = std::chrono::system_clock::now();
+    std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
+
+    std::cout << "2乗算" << std::endl;
+    start = std::chrono::system_clock::now();
+    for(int i = 0; i < 1000000; ++i){
+        mpz_mul(num, num, num);
+        mpz_mod(num, num, Number::CHARA);
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
@@ -82,7 +89,7 @@ int main(){
     std::cout << "逆元" << std::endl;
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 1000000; ++i){
-        num = num2.inv();
+        mpz_invert(num, num2, Number::CHARA);
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
