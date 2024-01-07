@@ -1519,10 +1519,6 @@ ExtendedMumford ExtendedMumford::LangeDoubling() const{
     mpz_add(k0.im, k0.im, temp);
 
 
-    std::cout << k3 << std::endl;
-    std::cout << k2 << std::endl;
-
-
     mpz_mul(temp1.re, k2.re, u0.re);
     mpz_mod(temp1.re, temp1.re, ExtendedNumber::CHARA);
     mpz_mul(temp, k2.im, u0.im);
