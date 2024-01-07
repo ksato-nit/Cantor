@@ -27,5 +27,6 @@ public:
     ExtendedMumford LangeDoubling() const;
 
     static ExtendedMumford zero(const ExtendedPolynomial& f, const ExtendedPolynomial& h);
-    bool isZero() const;    
+    bool isZero() const;
+    void print() const;
 };

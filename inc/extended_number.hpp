@@ -24,6 +24,6 @@ public:
 };
 
 inline std::ostream& operator << (std::ostream& os, const ExtendedNumber& n){
-    os << n.re << " + i" << n.im;
+    os << n.re << "+i" << n.im;
     return os;
 }

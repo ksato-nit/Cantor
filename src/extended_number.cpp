@@ -31,7 +31,7 @@ ExtendedNumber ExtendedNumber::operator * (const ExtendedNumber& y) const{
     mpz_mod(z.im, z.im, CHARA);
     mpz_mul(temp, this->im, y.re);
     mpz_mod(temp, temp, CHARA);
-    mpz_sub(z.im, z.im, temp);
+    mpz_add(z.im, z.im, temp);
     return z;
 }
 
