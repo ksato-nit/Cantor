@@ -29,4 +29,6 @@ public:
     static ExtendedMumford zero(const ExtendedPolynomial& f, const ExtendedPolynomial& h);
     bool isZero() const;
     void print() const;
+
+    static void constant_invert(mpz_t, mpz_t, mpz_t);
 };

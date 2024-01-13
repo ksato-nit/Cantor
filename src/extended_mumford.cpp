@@ -120,6 +120,39 @@ ExtendedMumford ExtendedMumford::operator * (const mpz_class& k_) const{
     return D;
 }
 
+// todo: Mumford にあるのはおかしい
+void ExtendedMumford::constant_invert(mpz_t op1, mpz_t op2, mpz_t p){
+    // Fermat 法で逆元を計算する．
+    // op1 = op2^(p-2) mod p;
+    mpz_set_ui(op1, 1);
+
+    mpz_t one;
+    mpz_init_set_si(one, 1);
+
+    mpz_t pow;
+    mpz_init_set_si(pow, -2);
+    mpz_add(pow, p, pow);
+
+    mpz_t a;
+    mpz_init_set(a, op2);
+
+    mpz_t eval;
+    mpz_init(eval);
+
+    int n = mpz_sizeinbase(pow, 2);
+    for(int i = 0; i <= n; ++i){
+        mpz_and(eval, pow, one);
+        if(mpz_sgn(eval) > 0){
+            mpz_mul(op1, op1, a);
+            mpz_mod(op1, op1, p);
+        }
+        mpz_mul(a, a, a);
+        mpz_mod(a, a, p);
+        mpz_fdiv_q_2exp(pow, pow, 1);        
+    }
+    return;
+}
+
 
 ExtendedMumford ExtendedMumford::CostelloAdd(const ExtendedMumford& m) const{
     //std::cerr << "Costello Addition." << std::endl;
@@ -324,7 +357,7 @@ ExtendedMumford ExtendedMumford::CostelloAdd(const ExtendedMumford& m) const{
     mpz_mul(denom, C.im, C.im);
     mpz_mod(denom, denom, ExtendedNumber::CHARA);
     mpz_add(denom, denom, temp);
-    mpz_invert(denom, denom, ExtendedNumber::CHARA);
+    constant_invert(denom, denom, ExtendedNumber::CHARA);
     mpz_mul(C.re, C.re, denom);
     mpz_mod(C.re, C.re, ExtendedNumber::CHARA);
     mpz_mul(C.im, C.im, denom);
@@ -1141,7 +1174,7 @@ ExtendedMumford ExtendedMumford::LangeAdd(const ExtendedMumford& m) const{
     mpz_mul(denom, w1.im, w1.im);
     mpz_mod(denom, denom, ExtendedNumber::CHARA);
     mpz_add(denom, denom, temp);
-    mpz_invert(denom, denom, ExtendedNumber::CHARA);
+    constant_invert(denom, denom, ExtendedNumber::CHARA);
     mpz_mul(w1.re, w1.re, denom);
     mpz_mod(w1.re, w1.re, ExtendedNumber::CHARA);
     mpz_mul(w1.im, w1.im, denom);
@@ -1904,7 +1937,7 @@ ExtendedMumford ExtendedMumford::LangeDoubling() const{
     mpz_mul(denom, w0.im, w0.im);
     mpz_mod(denom, denom, ExtendedNumber::CHARA);
     mpz_add(denom, denom, temp);
-    mpz_invert(denom, denom, ExtendedNumber::CHARA);
+    constant_invert(denom, denom, ExtendedNumber::CHARA);
     mpz_mul(w0.re, w0.re, denom);
     mpz_mod(w0.re, w0.re, ExtendedNumber::CHARA);
     mpz_mul(w0.im, w0.im, denom);
@@ -2566,7 +2599,7 @@ ExtendedMumford ExtendedMumford::CostelloDoubling() const{
     mpz_mul(denom, C.im, C.im);
     mpz_mod(denom, denom, ExtendedNumber::CHARA);
     mpz_add(denom, denom, temp);
-    mpz_invert(denom, denom, ExtendedNumber::CHARA);
+    constant_invert(denom, denom, ExtendedNumber::CHARA);
     mpz_mul(C.re, C.re, denom);
     mpz_mod(C.re, C.re, ExtendedNumber::CHARA);
     mpz_mul(C.im, C.im, denom);
