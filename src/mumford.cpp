@@ -87,6 +87,39 @@ Mumford::Mumford(Polynomial f, Polynomial h, Divisor d){
     }
 }
 
+// todo: Mumford にあるのはおかしい
+void Mumford::constant_invert(mpz_t op1, mpz_t op2, mpz_t p){
+    // Fermat 法で逆元を計算する．
+    // op1 = op2^(p-2) mod p;
+    mpz_set_ui(op1, 1);
+
+    mpz_t one;
+    mpz_init_set_si(one, 1);
+
+    mpz_t pow;
+    mpz_init_set_si(pow, -2);
+    mpz_add(pow, p, pow);
+
+    mpz_t a;
+    mpz_init_set(a, op2);
+
+    mpz_t eval;
+    mpz_init(eval);
+
+    int n = mpz_sizeinbase(pow, 2);
+    for(int i = 0; i <= n; ++i){
+        mpz_and(eval, pow, one);
+        if(mpz_sgn(eval) > 0){
+            mpz_mul(op1, op1, a);
+            mpz_mod(op1, op1, p);
+        }
+        mpz_mul(a, a, a);
+        mpz_mod(a, a, p);
+        mpz_fdiv_q_2exp(pow, pow, 1);        
+    }
+    return;
+}
+
 Mumford Mumford::CostelloScalarMultiple (const mpz_class& k_) const{
     Polynomial f = this->f;
     Polynomial h = this->h;
@@ -244,7 +277,8 @@ Mumford Mumford::CostelloAdd(const Mumford& m) const{
     mpz_sub(B.value, B.value, temp1.value);
     mpz_mul(C.value, d.value, B.value);
     mpz_mod(C.value, C.value, Number::CHARA);
-    mpz_invert(C.value, C.value, Number::CHARA);
+    constant_invert(C.value, C.value, Number::CHARA);
+    //mpz_invert(C.value, C.value, Number::CHARA);
     mpz_mul(d_inv.value, B.value, C.value);
     mpz_mod(d_inv.value, d_inv.value, Number::CHARA);
     mpz_mul(d_shifted_inv.value, d.value, A.value);
@@ -584,7 +618,8 @@ Mumford Mumford::LangeAdd(const Mumford& m) const{
     // 6. u' をモニックにする．
     mpz_mul(w1.value, t4.value, r.value);
     mpz_mod(w1.value, w1.value, Number::CHARA);
-    mpz_invert(w1.value, w1.value, Number::CHARA);
+    constant_invert(w1.value, w1.value, Number::CHARA);
+    //mpz_invert(w1.value, w1.value, Number::CHARA);
     mpz_mul(w2.value, w1.value, r.value);
     mpz_mod(w2.value, w2.value, Number::CHARA);
     mpz_mul(w3.value, w1.value, t4.value);
@@ -784,7 +819,8 @@ Mumford Mumford::LangeDoubling() const{
     // 3M, I
     mpz_mul(w0.value, r.value, u2d.value);
     mpz_mod(w0.value, w0.value, Number::CHARA);
-    mpz_invert(w0.value, w0.value, Number::CHARA);
+    constant_invert(w0.value, w0.value, Number::CHARA);
+    //mpz_invert(w0.value, w0.value, Number::CHARA);
     mpz_mul(w1.value, w0.value, r.value);
     mpz_mod(w1.value, w1.value, Number::CHARA);
     mpz_mul(w2.value, w0.value, u2d.value);
@@ -966,7 +1002,8 @@ Mumford Mumford::CostelloDoubling() const{
     mpz_sub(B.value, B.value, temp1.value);
     mpz_mul(C.value, d.value, B.value);
     mpz_mod(C.value, C.value, Number::CHARA);
-    mpz_invert(C.value, C.value, Number::CHARA);
+    constant_invert(C.value, C.value, Number::CHARA);
+    //mpz_invert(C.value, C.value, Number::CHARA);
     mpz_mul(d_inv.value, B.value, C.value);
     mpz_mod(d_inv.value, d_inv.value, Number::CHARA);
     mpz_mul(d_shifted_inv.value, d.value, A.value);

@@ -44,4 +44,6 @@ public:
     static Mumford zero(const Polynomial& f, const Polynomial& h);
     void print() const;
     bool isZero() const;
+
+    static void constant_invert(mpz_t, mpz_t, mpz_t);
 };
