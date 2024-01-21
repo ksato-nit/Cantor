@@ -122,6 +122,8 @@ ExtendedMumford ExtendedMumford::operator * (const mpz_class& k_) const{
 
 // todo: ExtendedMumford にあるのはおかしい
 void ExtendedMumford::constant_invert(mpz_t op1, mpz_t op2, mpz_t p){
+    mpz_invert(op1, op2, p);
+    /*
     // Fermat 法で逆元を計算する．
     // op1 = op2^(p-2) mod p;
 
@@ -152,6 +154,7 @@ void ExtendedMumford::constant_invert(mpz_t op1, mpz_t op2, mpz_t p){
         mpz_mod(a, a, p);
         mpz_fdiv_q_2exp(pow, pow, 1);
     }
+    */
     return;
 }
 
