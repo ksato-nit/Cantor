@@ -30,45 +30,7 @@ Mumford::Mumford(Polynomial f, Polynomial h, Number u1, Number u0, Number v1, Nu
     this->v0 = v0;
 }
 
-// 被約因子 D を受け取り，対応する Mumford 表現を返す．
-Mumford::Mumford(Polynomial f, Polynomial h, Divisor d){
-    this->f = f;
-    this->h = h;
-
-    int count = d.points.size();
-    if(count == 0){
-        this->u2 = Number::ZERO();
-        this->u1 = Number::ZERO();
-        this->u0 = Number::ONE();
-        this->v1 = Number::ZERO();
-        this->v0 = Number::ZERO();
-    }else if(count == 1){
-        auto p = d.points[0];
-        int multiplicity = p.second;
-        if(multiplicity == 1){
-            this->u1 = Number::ONE();
-            this->u0 = -p.first.x;
-            this->v1 = Number::ZERO();
-            this->v0 = p.first.y;
-        }else{
-            // TODO : 重複度が 2 の場合．
-        }
-    }else if(count == 2){
-        // 2 つの異なる点が含まれる場合．
-        Point p1 = d.points[0].first;
-        Point p2 = d.points[1].first;
-
-        this->u2 = Number::ONE();
-        this->u1 = (p1.x * p2.x);
-        this->u0 = -(p1.x + p2.x);
-
-        Number c1 = (p1.y - p2.y) / (p1.x - p2.x);
-        Number c0 = (p1.x * p2.y - p2.x * p1.y) / (p1.x - p2.x);
-        this->v1 = c1;
-        this->v0 = c0;
-    }
-}
-
+// todo: 書き換え
 Mumford Mumford::CostelloScalarMultiple (const mpz_class& k_) const{
     Polynomial f = this->f;
     Polynomial h = this->h;

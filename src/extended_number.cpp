@@ -1,45 +1,34 @@
 #include "extended_number.hpp"
 
-ExtendedNumber::ExtendedNumber(Polynomial f){
-    this->g.resize(1);
-    this->g.coeff[0] = Number::ZERO();
-    this->g.coeff[1] = Number::ZERO();
-    this->f = f;
+ExtendedNumber::ExtendedNumber(){
+    this->re = Number::ZERO();
+    this->im = Number::ZERO();
 }
 
-ExtendedNumber::ExtendedNumber(Polynomial f, Number x, Number y){
-    this->g.resize(1);
-    this->g.coeff[0] = x;
-    this->g.coeff[1] = y;
-    this->f = f;
-}
-
-ExtendedNumber::ExtendedNumber(Polynomial f, Polynomial g){
-    this->g = g % f;
-    this->f = f;
+ExtendedNumber::ExtendedNumber(Number re, Number im){
+    this->re = re;
+    this->im = im;
 }
 
 ExtendedNumber ExtendedNumber::operator + (const ExtendedNumber& c) const{
-    Polynomial h = (this->g + c.g) % this->f;
-    ExtendedNumber z(f, h);
+    ExtendedNumber z(this->re + c.re, this->im + c.im);
     return z;
 }
 
 ExtendedNumber ExtendedNumber::operator - (const ExtendedNumber& c) const{
-    Polynomial h = (this->g * c.g) % this->f;
-    ExtendedNumber z(f, h);
+    ExtendedNumber z(this->re - c.re, this->im - c.im);
     return z;
 }
 
 ExtendedNumber ExtendedNumber::operator * (const ExtendedNumber& c) const{
-    Polynomial h = (this->g * c.g) % this->f;
-    ExtendedNumber z(f, h);
+    Number x = this->re * c.re - this->im * c.im;
+    Number y = this->re * c.im + this->im * c.re;
+    ExtendedNumber z(x, y);
     return z;
 }
 
 ExtendedNumber ExtendedNumber::operator * (const Number m) const{
-    Polynomial h = (this->g * m) % this->f;
-    ExtendedNumber z(f, h);
+    ExtendedNumber z(this->re * m, this->im * m);
     return z;
 }
 
@@ -49,7 +38,7 @@ ExtendedNumber ExtendedNumber::operator / (const ExtendedNumber& c) const{
 }
 
 bool ExtendedNumber::operator == (const ExtendedNumber& c) const{
-    return (this->g - c.g).isZero();
+    return (this->re - c.re).isZero() && (this->im - c.im).isZero();
 }
 
 bool ExtendedNumber::operator != (const ExtendedNumber& c) const{
@@ -61,12 +50,12 @@ ExtendedNumber ExtendedNumber::operator + () const{
 }
 
 ExtendedNumber ExtendedNumber::operator - () const{
-    ExtendedNumber m(this->f, this->g * Number::MINUS_ONE());
+    ExtendedNumber m(this->re * Number::MINUS_ONE(), this->im * Number::MINUS_ONE());
     return m;
 }
 
 ExtendedNumber ExtendedNumber::ZERO(){
-    ExtendedNumber zero(1, 0);
+    ExtendedNumber zero(0, 0);
     return zero;
 }
 
@@ -81,12 +70,14 @@ ExtendedNumber ExtendedNumber::MINUS_ONE(){
 }
 
 ExtendedNumber ExtendedNumber::inv() const{
-    auto tup = Polynomial::extended_gcd(this->g, this->f);
-    Polynomial h = std::get<1>(tup);
-    ExtendedNumber z(this->f, h);
+    Number denom = this->re * this->re + this->im * this->im;
+    denom = denom.inv();
+    Number x = this->re * denom;
+    Number y = -this->im * denom;
+    ExtendedNumber z(x, y);
     return z;
 }
 
 bool ExtendedNumber::isZero(){
-    return this->g.isZero();
+    return this->re.isZero() && this->im.isZero();;
 }

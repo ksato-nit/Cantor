@@ -9,13 +9,10 @@
 // 2 次拡大体の要素．
 class ExtendedNumber{
 public:
-    Polynomial f; // 既約多項式
+    Number re, im;
 
-    Polynomial g;
-
-    ExtendedNumber(Polynomial);
-    ExtendedNumber(Polynomial, Polynomial);
-    ExtendedNumber(Polynomial, Number, Number);
+    ExtendedNumber();
+    ExtendedNumber(Number, Number);
 
     ExtendedNumber operator + (const ExtendedNumber&) const;
     ExtendedNumber operator - (const ExtendedNumber&) const;
@@ -37,6 +34,6 @@ public:
 };
 
 inline std::ostream& operator << (std::ostream& os, const ExtendedNumber& n){
-    os << n.g;
+    os << n.re << " " << n.im;
     return os;
 }
