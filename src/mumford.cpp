@@ -357,7 +357,10 @@ Mumford<T> Mumford<T>::LangeAdd(const Mumford<T>& m) const{
     T f5 = this->f.coeff[5];
     T f4 = this->f.coeff[4];
 
+    // 37M, 3S
+
     // 1. u1, u2 の終結式を計算．
+    // 3M, 1S
     T z1 = u11 - u21;
     T z2 = u20 - u10;
     T z3 = u11 * z1 + z2;
@@ -368,6 +371,7 @@ Mumford<T> Mumford<T>::LangeAdd(const Mumford<T>& m) const{
     T inv0 = z3;
 
     // 3. s' を計算．
+    // 5M
     T w0 = v10 - v20;
     T w1 = v11 - v21;
     T w2 = inv0 * w0;
@@ -383,38 +387,43 @@ Mumford<T> Mumford<T>::LangeAdd(const Mumford<T>& m) const{
     }
 
     // 4. l' を計算．
+    // 3M
     T l3d = s1d;
     T l2d = u21 * s1d;
     T l0d = u20 * s0d;
-    T l1d = (s1d + s0d) * (u21 + u20) - l2d - l0d; //u21 * s0d + u20 * s1d; 
+    T l1d = (s1d + s0d) * (u21 + u20) - l2d - l0d; // u21 * s0d + u20 * s1d; 
     l2d = l2d + s0d;
 
     // 5. u' を計算．
+    // 15M, 1S
+    T rs = r * r;
+
     T k4 = f6;
     T k3 = f5 - f6 * u21;
-    T k2 = f4 - f6 * u20 - (f5 - f6 * u21) * u21;
+    T k2 = f4 - f6 * u20 - k3 * u21;
 
-    T t4 = s1d * l3d - k4 * r * r;
-    T t3 = s1d * l2d + s0d * l3d - k3 * r * r;
+    T t4 = s1d * l3d - k4 * rs;
+    T t3 = s1d * l2d + s0d * l3d - k3 * rs;
     T t2 = r * v21;
     t2 = t2 + t2;
-    t2 = s1d * (t2 + l1d) + s0d * l2d - k2 * r * r;
+    t2 = s1d * (t2 + l1d) + s0d * l2d - k2 * rs;
 
-    T u0d = t2 - t4 * u10 - (t3 - t4 * u11) * u11;
-    T u1d = t3 - t4 * u11;
     T u2d = t4;
+    T u1d = t3 - t4 * u11;
+    T u0d = t2 - t4 * u10 - u1d * u11;
 
     // 6. u' をモニックにする．
+    // 5M
     w1 = (u2d * r).inv();
     w2 = w1 * r;
     w3 = w1 * u2d;
     u1d = u1d * w2;
     u0d = u0d * w2;
-    // ud の計算まで正しい．
 
     // 7. v' を計算．
+    // 6M, 1S
     T v1d = (-l1d + (u0d - u1d * u1d) * l3d + u1d * l2d) * w3 - v21;
-    T v0d = (-l0d  - u1d * u0d * l3d + u0d * l2d) * w3 - v20;
+    T v0d = (-l0d - (u1d * l3d - l2d) * u0d) * w3 - v20;
 
     Mumford<T> ret(f, h, u1d, u0d, v1d, v0d);
 
@@ -435,7 +444,7 @@ Mumford<T> Mumford<T>::LangeDoubling() const{
     T f5 = this->f.coeff[5];
     T f6 = this->f.coeff[6];
 
-    // 44M, 6S, I
+    // 42M, 6S, I
 
     // 1. v~ (=2v) と u の終結式を計算．
     // 3M, 2S
@@ -503,13 +512,13 @@ Mumford<T> Mumford<T>::LangeDoubling() const{
     u0d = u0d * w1;
 
     // 8. v' を計算．
-    // 12M, 1S
-    T l3 = s1d * w2;
-    T l2 = (s1d * u1 + s0d) * w2;
-    T l1 = (s1d * u0 + s0d * u1) * w2;
-    T l0 = s0d * u0 * w2;
-    T v1d = l3 * (u1d * u1d - u0d) - l2 * u1d + l1 + v1;
-    T v0d = (l3 * u1d - l2) * u0d + l0 + v0;
+    // 10M, 1S
+    T l3 = s1d;
+    T l2 = (s1d * u1 + s0d);
+    T l1 = (s1d * u0 + s0d * u1);
+    T l0 = s0d * u0;
+    T v1d = (l3 * (u1d * u1d - u0d) - l2 * u1d + l1) * w2 + v1;
+    T v0d = ((l3 * u1d - l2) * u0d + l0) * w2 + v0;
 
     Mumford<T> ret(f, h, u1d, u0d, -v1d, -v0d);
     return ret;
