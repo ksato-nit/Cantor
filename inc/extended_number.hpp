@@ -12,12 +12,14 @@ public:
     Number re, im;
 
     ExtendedNumber();
+    ExtendedNumber(int);
     ExtendedNumber(Number, Number);
 
     ExtendedNumber operator + (const ExtendedNumber&) const;
     ExtendedNumber operator - (const ExtendedNumber&) const;
     ExtendedNumber operator * (const ExtendedNumber&) const;
     ExtendedNumber operator * (const Number) const;
+    ExtendedNumber operator * (const int) const;
     ExtendedNumber operator / (const ExtendedNumber&) const;
     ExtendedNumber inv() const;
 
@@ -30,10 +32,10 @@ public:
     static ExtendedNumber ONE();
     static ExtendedNumber MINUS_ONE();
 
-    bool isZero();
+    bool isZero() const;
 };
 
 inline std::ostream& operator << (std::ostream& os, const ExtendedNumber& n){
-    os << n.re << " " << n.im;
+    os << n.re << " + i" << n.im;
     return os;
 }

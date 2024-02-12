@@ -688,7 +688,7 @@ void Mumford<T>::print() const{
     Polynomial<T> u(2);
     u.coeff[0] = u0;
     u.coeff[1] = u1;
-    u.coeff[2] = Number::ONE();
+    u.coeff[2] = T::ONE();
     Polynomial<T> v(1, v1, v0);
     std::cerr << "[" << u << ", " << v << "]" << std::endl;
     return;
@@ -697,7 +697,7 @@ void Mumford<T>::print() const{
 template <class T>
 bool Mumford<T>::isZero() const{
     if(v1.isZero() && v0.isZero()){
-        if(u1.isZero() && u0 == Number::ONE()){
+        if(u1.isZero() && u0 == T::ONE()){
             return true;
         }
     }
@@ -705,3 +705,4 @@ bool Mumford<T>::isZero() const{
 }
 
 template class Mumford<Number>;
+template class Mumford<ExtendedNumber>;

@@ -302,3 +302,4 @@ Polynomial<T> Polynomial<T>::derivative() const{
 }
 
 template class Polynomial<Number>;
+template class Polynomial<ExtendedNumber>;

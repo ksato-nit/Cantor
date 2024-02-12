@@ -5,6 +5,11 @@ ExtendedNumber::ExtendedNumber(){
     this->im = Number::ZERO();
 }
 
+ExtendedNumber::ExtendedNumber(int c){
+    this->re = Number(c);
+    this->im = Number::ZERO();
+}
+
 ExtendedNumber::ExtendedNumber(Number re, Number im){
     this->re = re;
     this->im = im;
@@ -28,6 +33,11 @@ ExtendedNumber ExtendedNumber::operator * (const ExtendedNumber& c) const{
 }
 
 ExtendedNumber ExtendedNumber::operator * (const Number m) const{
+    ExtendedNumber z(this->re * m, this->im * m);
+    return z;
+}
+
+ExtendedNumber ExtendedNumber::operator * (int m) const{
     ExtendedNumber z(this->re * m, this->im * m);
     return z;
 }
@@ -78,6 +88,6 @@ ExtendedNumber ExtendedNumber::inv() const{
     return z;
 }
 
-bool ExtendedNumber::isZero(){
+bool ExtendedNumber::isZero() const{
     return this->re.isZero() && this->im.isZero();;
 }

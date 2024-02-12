@@ -220,3 +220,4 @@ void WeightedProjectiveMumford<T>::print(){
 }
 
 template class WeightedProjectiveMumford<Number>;
+template class WeightedProjectiveMumford<ExtendedNumber>;

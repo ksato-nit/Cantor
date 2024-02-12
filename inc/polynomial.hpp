@@ -1,5 +1,6 @@
 #pragma once
 #include "number.hpp"
+#include "extended_number.hpp"
 #include "vector"
 #include "iostream"
 #include "tuple"

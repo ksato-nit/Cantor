@@ -465,11 +465,11 @@ ProjectiveMumford<T> ProjectiveMumford<T>::zero(const Polynomial<T>& f, const Po
 template <class T>
 void ProjectiveMumford<T>::print() const{
     std::cout << "[";
-    std::cout << this->U1.value << " " << this->U0.value;
+    std::cout << this->U1 << " " << this->U0;
     std::cout << ", ";
-    std::cout << this->V1.value << " " << this->V0.value;
+    std::cout << this->V1 << " " << this->V0;
     std::cout << ", ";
-    std::cout << this->Z.value;
+    std::cout << this->Z;
     std::cout << "]" << std::endl;
 
     Polynomial<T> u(2); Polynomial<T> v(1);
@@ -498,3 +498,4 @@ bool ProjectiveMumford<T>::isZero() const{
 }
 
 template class ProjectiveMumford<Number>;
+template class ProjectiveMumford<ExtendedNumber>;
