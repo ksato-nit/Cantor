@@ -1,29 +1,31 @@
 #pragma once
 #include "number.hpp"
+#include "extended_number.hpp"
 #include "polynomial.hpp"
 #include "divisor.hpp"
 
+template <class T>
 class WeightedProjectiveMumford {
     static const int GENUS = 2;
 public:
-    Number U1;
-    Number U0;
-    Number V1;
-    Number V0;
-    Number Z1;
-    Number Z2;
+    T U1;
+    T U0;
+    T V1;
+    T V0;
+    T Z1;
+    T Z2;
 
-    Polynomial f;
-    Polynomial h;
+    Polynomial<T> f;
+    Polynomial<T> h;
 
-    WeightedProjectiveMumford();
-    WeightedProjectiveMumford(Polynomial f, Polynomial h);
-    WeightedProjectiveMumford(Polynomial f, Polynomial h, Number, Number, Number, Number, Number, Number);
-    WeightedProjectiveMumford(Polynomial f, Polynomial h, Number, Number, Number, Number);
+    WeightedProjectiveMumford<T>();
+    WeightedProjectiveMumford<T>(Polynomial<T> f, Polynomial<T> h);
+    WeightedProjectiveMumford<T>(Polynomial<T> f, Polynomial<T> h, T, T, T, T, T, T);
+    WeightedProjectiveMumford<T>(Polynomial<T> f, Polynomial<T> h, T, T, T, T);
 
-    WeightedProjectiveMumford operator + (const WeightedProjectiveMumford& q) const;
-    WeightedProjectiveMumford CostelloAdd(const WeightedProjectiveMumford& q) const;
-    WeightedProjectiveMumford inv();
-    WeightedProjectiveMumford zero();
+    WeightedProjectiveMumford<T> operator + (const WeightedProjectiveMumford<T>& q) const;
+    WeightedProjectiveMumford<T> CostelloAdd(const WeightedProjectiveMumford<T>& q) const;
+    WeightedProjectiveMumford<T> inv();
+    WeightedProjectiveMumford<T> zero();
     void print();
 };

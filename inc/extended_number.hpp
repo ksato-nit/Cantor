@@ -9,18 +9,17 @@
 // 2 次拡大体の要素．
 class ExtendedNumber{
 public:
-    Polynomial f; // 既約多項式
+    Number re, im;
 
-    Polynomial g;
-
-    ExtendedNumber(Polynomial);
-    ExtendedNumber(Polynomial, Polynomial);
-    ExtendedNumber(Polynomial, Number, Number);
+    ExtendedNumber();
+    ExtendedNumber(int);
+    ExtendedNumber(Number, Number);
 
     ExtendedNumber operator + (const ExtendedNumber&) const;
     ExtendedNumber operator - (const ExtendedNumber&) const;
     ExtendedNumber operator * (const ExtendedNumber&) const;
     ExtendedNumber operator * (const Number) const;
+    ExtendedNumber operator * (const int) const;
     ExtendedNumber operator / (const ExtendedNumber&) const;
     ExtendedNumber inv() const;
 
@@ -33,10 +32,10 @@ public:
     static ExtendedNumber ONE();
     static ExtendedNumber MINUS_ONE();
 
-    bool isZero();
+    bool isZero() const;
 };
 
 inline std::ostream& operator << (std::ostream& os, const ExtendedNumber& n){
-    os << n.g;
+    os << n.re << " + i" << n.im;
     return os;
 }

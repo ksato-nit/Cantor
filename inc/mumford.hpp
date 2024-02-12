@@ -1,45 +1,45 @@
 #pragma once
 #include "number.hpp"
+#include "extended_number.hpp"
 #include "polynomial.hpp"
 #include "divisor.hpp"
 
+template <class T>
 class Mumford {
     static const int GENUS = 2;
 public:
-    Number u2, u1, u0;
-    Number v1, v0;
-    //Polynomial u;
-    //Polynomial v;
+    T u2, u1, u0;
+    T v1, v0;
 
-    Polynomial f;
-    Polynomial h;
+    Polynomial<T> f;
+    Polynomial<T> h;
 
     Mumford();
-    Mumford(Polynomial f, Polynomial h);
-    Mumford(Polynomial f, Polynomial h, Number u1, Number u0, Number v1, Number v0);
-    Mumford(Polynomial f, Polynomial h, Divisor d);
+    Mumford(Polynomial<T> f, Polynomial<T> h);
+    Mumford(Polynomial<T> f, Polynomial<T> h, T u1, T u0, T v1, T v0);
+    Mumford(Polynomial<T> f, Polynomial<T> h, Divisor d);
 
-    Mumford operator + (const Mumford& q) const;
+    Mumford<T> operator + (const Mumford<T>& q) const;
 
-    Mumford operator * (const mpz_class& k) const;
+    Mumford<T> operator * (const mpz_class& k) const;
 
-    Mumford CostelloScalarMultiple(const mpz_class& k) const;
+    Mumford<T> CostelloScalarMultiple(const mpz_class& k) const;
 
-    Mumford CantorAdd(const Mumford& q) const;
+    Mumford<T> CantorAdd(const Mumford<T>& q) const;
     
-    Mumford CostelloAdd(const Mumford& q) const;
-    Mumford LangeAdd(const Mumford& q) const;
+    Mumford<T> CostelloAdd(const Mumford<T>& q) const;
+    Mumford<T> LangeAdd(const Mumford<T>& q) const;
 
     // 5 次・モニックにのみ対応
-    Mumford HarleyAdd(const Mumford& q) const;
-    Mumford HarleyAddDegenerated(const Mumford& q) const;
+    Mumford<T> HarleyAdd(const Mumford<T>& q) const;
+    Mumford<T> HarleyAddDegenerated(const Mumford<T>& q) const;
     
-    Mumford CostelloDoubling() const;
-    Mumford LangeDoubling() const;
+    Mumford<T> CostelloDoubling() const;
+    Mumford<T> LangeDoubling() const;
 
-    Mumford inv();
-    Mumford zero() const; // todo: static で書き直したい
-    static Mumford zero(const Polynomial& f, const Polynomial& h);
+    Mumford<T> inv();
+    Mumford<T> zero() const; // todo: static で書き直したい
+    static Mumford<T> zero(const Polynomial<T>& f, const Polynomial<T>& h);
     void print() const;
     bool isZero() const;
 };
