@@ -15,8 +15,8 @@ int main(){
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
 
-    Polynomial f(6, fc);
-    Polynomial h(0, hc);
+    Polynomial<Number> f(6, fc);
+    Polynomial<Number> h(0, hc);
 
     mpz_set_str(f.coeff[6].value, "2073000536114376942953123179116934719680183993989471825876059560213989900704", 10);
     mpz_set_str(f.coeff[5].value, "3530944568397616245686198570421241279588573964842549582651697371642689175556", 10);
@@ -33,8 +33,8 @@ int main(){
     mpz_set_str(v1.value, "-16356435725421449606272205061240827370228669314115845329141561788096218629065", 10);
     mpz_set_str(v0.value, "-14070429986860860266841156334061046472731180035955518717936741632036392261964", 10);
 
-    Mumford D1(f, h, u1, u0, v1, v0);
-    ProjectiveMumford D1P(f, h, u1, u0, v1, v0);
+    Mumford<Number> D1(f, h, u1, u0, v1, v0);
+    ProjectiveMumford<Number> D1P(f, h, u1, u0, v1, v0);
 
     Number num;
     mpz_set_str(num.value, "7713960161207197506610974848157905611744466278275346794947826509160636299563", 10);
@@ -76,7 +76,7 @@ int main(){
     std::cout << "射影 Lange" << std::endl;
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 100; ++i){
-        ProjectiveMumford Dk = D1P * k;
+        ProjectiveMumford<Number> Dk = D1P * k;
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
@@ -84,7 +84,7 @@ int main(){
     std::cout << "アフィン Lange" << std::endl;
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 100; ++i){
-        Mumford Dk = D1 * k;
+        Mumford<Number> Dk = D1 * k;
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;
@@ -92,7 +92,7 @@ int main(){
     std::cout << "アフィン Costello" << std::endl;
     start = std::chrono::system_clock::now();
     for(int i = 0; i < 100; ++i){
-        Mumford Dk = D1.CostelloScalarMultiple(k);
+        Mumford<Number> Dk = D1.CostelloScalarMultiple(k);
     }
     end = std::chrono::system_clock::now();
     std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << std::endl;

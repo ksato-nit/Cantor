@@ -16,29 +16,29 @@ TEST(WeightedProjectiveMumfordTest, SumEquals) {
     int u12c[3] = {-14, 7, 1};
     int v12c[2] = {17, 21};
 
-    Polynomial f(6, fc);
-    Polynomial h(0, hc);
-    Polynomial u1(2, u1c);
-    Polynomial v1(1, v1c);
-    Polynomial u2(2, u2c);
-    Polynomial v2(1, v2c);
-    Polynomial u12(2, u12c);
-    Polynomial v12(1, v12c);
+    Polynomial<Number> f(6, fc);
+    Polynomial<Number> h(0, hc);
+    Polynomial<Number> u1(2, u1c);
+    Polynomial<Number> v1(1, v1c);
+    Polynomial<Number> u2(2, u2c);
+    Polynomial<Number> v2(1, v2c);
+    Polynomial<Number> u12(2, u12c);
+    Polynomial<Number> v12(1, v12c);
 
     Number Z11 = Number(2);
     Number Z12 = Number(3);
     Number Z21 = Number(3);
     Number Z22 = Number(5);
-    Polynomial u1_half = u1 * Z11 * Z11;
-    Polynomial v1_half = v1 * Z11 * Z11 * Z11 * Z12;
-    Polynomial u2_half = u2 * Z21 * Z21;
-    Polynomial v2_half = v2 * Z21 * Z21 * Z21 * Z22;
+    Polynomial<Number> u1_half = u1 * Z11 * Z11;
+    Polynomial<Number> v1_half = v1 * Z11 * Z11 * Z11 * Z12;
+    Polynomial<Number> u2_half = u2 * Z21 * Z21;
+    Polynomial<Number> v2_half = v2 * Z21 * Z21 * Z21 * Z22;
 
-    WeightedProjectiveMumford D1WP(f, h, u1_half.coeff[1], u1_half.coeff[0], v1_half.coeff[1], v1_half.coeff[0], Z11, Z12);
-    WeightedProjectiveMumford D2WP(f, h, u2_half.coeff[1], u2_half.coeff[0], v2_half.coeff[1], v2_half.coeff[0], Z21, Z22);
-    WeightedProjectiveMumford Sum = D1WP + D2WP;
+    WeightedProjectiveMumford<Number> D1WP(f, h, u1_half.coeff[1], u1_half.coeff[0], v1_half.coeff[1], v1_half.coeff[0], Z11, Z12);
+    WeightedProjectiveMumford<Number> D2WP(f, h, u2_half.coeff[1], u2_half.coeff[0], v2_half.coeff[1], v2_half.coeff[0], Z21, Z22);
+    WeightedProjectiveMumford<Number> Sum = D1WP + D2WP;
 
-    WeightedProjectiveMumford D12(f, h, u12.coeff[1], u12.coeff[0], v12.coeff[1], v12.coeff[0]);
+    WeightedProjectiveMumford<Number> D12(f, h, u12.coeff[1], u12.coeff[0], v12.coeff[1], v12.coeff[0]);
 
     EXPECT_EQ(D12.U1, Sum.U1 / (Sum.Z1 * Sum.Z1));
     EXPECT_EQ(D12.U0, Sum.U0 / (Sum.Z1 * Sum.Z1));

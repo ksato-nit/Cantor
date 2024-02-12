@@ -3,35 +3,36 @@
 #include "polynomial.hpp"
 #include "divisor.hpp"
 
+template <class T>
 class ProjectiveMumford {
     static const int GENUS = 2;
 public:
-    Number U1;
-    Number U0;
-    Number V1;
-    Number V0;
-    Number Z;
-    Number W1;
-    Number W0;
+    T U1;
+    T U0;
+    T V1;
+    T V0;
+    T Z;
+    T W1;
+    T W0;
 
-    Polynomial f;
-    Polynomial h;
+    Polynomial<T> f;
+    Polynomial<T> h;
 
-    ProjectiveMumford();
-    ProjectiveMumford(Polynomial f, Polynomial h);
-    ProjectiveMumford(Polynomial f, Polynomial h, Number, Number, Number, Number, Number, Number, Number);
-    ProjectiveMumford(Polynomial f, Polynomial h, Number, Number, Number, Number, Number);
-    ProjectiveMumford(Polynomial f, Polynomial h, Number, Number, Number, Number);
+    ProjectiveMumford<T>();
+    ProjectiveMumford<T>(Polynomial<T> f, Polynomial<T> h);
+    ProjectiveMumford<T>(Polynomial<T> f, Polynomial<T> h, T, T, T, T, T, T, T);
+    ProjectiveMumford<T>(Polynomial<T> f, Polynomial<T> h, T, T, T, T, T);
+    ProjectiveMumford<T>(Polynomial<T> f, Polynomial<T> h, T, T, T, T);
 
-    ProjectiveMumford operator + (const ProjectiveMumford& q) const;
-    ProjectiveMumford operator * (const mpz_class& k) const;
+    ProjectiveMumford<T> operator + (const ProjectiveMumford<T>& q) const;
+    ProjectiveMumford<T> operator * (const mpz_class& k) const;
 
-    ProjectiveMumford CostelloAdd(const ProjectiveMumford& q) const;
-    ProjectiveMumford LangeAdd(const ProjectiveMumford& q) const;
-    ProjectiveMumford LangeDoubling() const;
-    ProjectiveMumford inv();
-    ProjectiveMumford zero() const;
-    static ProjectiveMumford zero(const Polynomial& f, const Polynomial& h);
+    ProjectiveMumford<T> CostelloAdd(const ProjectiveMumford<T>& q) const;
+    ProjectiveMumford<T> LangeAdd(const ProjectiveMumford<T>& q) const;
+    ProjectiveMumford<T> LangeDoubling() const;
+    ProjectiveMumford<T> inv();
+    ProjectiveMumford<T> zero() const;
+    static ProjectiveMumford<T> zero(const Polynomial<T>& f, const Polynomial<T>& h);
     void print() const;
     bool isZero() const;
 };
