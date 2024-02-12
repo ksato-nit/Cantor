@@ -3,10 +3,15 @@
 #include "polynomial.hpp"
 #include "mumford_projective.hpp"
 
-TEST(ProjectiveMumfordTest, LangeSumEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
+class ProjectiveMumfordTest : public ::testing::Test {
+    protected:
+    virtual void SetUp() {
+        mpz_init_set_si(Number::CHARA, 31);
+        mpz_init_set_si(Number::MCHARA, -31);
+    }
+};
 
+TEST_F(ProjectiveMumfordTest, LangeSumEquals) {
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
     int u1c[3] = {5, 25, 1};
@@ -42,10 +47,7 @@ TEST(ProjectiveMumfordTest, LangeSumEquals) {
     EXPECT_EQ(D12.V0, Sum.V0 / Sum.Z);    
 }
 
-TEST(ProjectiveMumfordTest, CostelloSumEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
-
+TEST_F(ProjectiveMumfordTest, CostelloSumEquals) {
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
     int u1c[3] = {5, 25, 1};
@@ -81,10 +83,7 @@ TEST(ProjectiveMumfordTest, CostelloSumEquals) {
     EXPECT_EQ(D12.V0, Sum.V0 / Sum.Z);    
 }
 
-TEST(ProjectiveMumfordTest, DoublingEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
-    
+TEST_F(ProjectiveMumfordTest, DoublingEquals) {
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
     int uc[3] = {6, 24, 1};

@@ -5,10 +5,15 @@
 
 // fixme: Mumford の設計変更に伴い，回りくどくなっている．
 
-TEST(MumfordTest, SumOfDeg5MonicEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
-    
+class MumfordTest : public ::testing::Test {
+    protected:
+    virtual void SetUp() {
+        mpz_init_set_si(Number::CHARA, 31);
+        mpz_init_set_si(Number::MCHARA, -31);
+    }
+};
+
+TEST_F(MumfordTest, SumOfDeg5MonicEquals) {
     int fc[6] = {-1, 3, 6, -2, -3, 1};
     int hc[3] = {0, 1, 1};
     int u1c[3] = {5, 25, 1};
@@ -39,10 +44,7 @@ TEST(MumfordTest, SumOfDeg5MonicEquals) {
     EXPECT_EQ(D12.v0, Sum.v0);
 }
 
-TEST(MumfordTest, SumOfDeg5MonicDegeneratedEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
-
+TEST_F(MumfordTest, SumOfDeg5MonicDegeneratedEquals) {
     int fc[6] = {-1, 3, 6, -2, -3, 1};
     int hc[3] = {0, 1, 1};
     int u1c[3] = {5, 25, 1};
@@ -73,10 +75,7 @@ TEST(MumfordTest, SumOfDeg5MonicDegeneratedEquals) {
     EXPECT_EQ(D12.v0, Sum.v0);
 }
 
-TEST(MumfordTest, CantorSumOfDeg6NonMonicEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
-
+TEST_F(MumfordTest, CantorSumOfDeg6NonMonicEquals) {
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
     int u1c[3] = {5, 25, 1};
@@ -108,10 +107,7 @@ TEST(MumfordTest, CantorSumOfDeg6NonMonicEquals) {
     EXPECT_EQ(D12.v0, Sum.v0);
 }
 
-TEST(MumfordTest, LangeSumOfDeg6NonMonicEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
-
+TEST_F(MumfordTest, LangeSumOfDeg6NonMonicEquals) {
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
     int u1c[3] = {5, 25, 1};
@@ -143,10 +139,7 @@ TEST(MumfordTest, LangeSumOfDeg6NonMonicEquals) {
     EXPECT_EQ(D12.v0, Sum.v0);
 }
 
-TEST(MumfordTest, CostelloSumOfDeg6NonMonicEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
-
+TEST_F(MumfordTest, CostelloSumOfDeg6NonMonicEquals) {
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
     int u1c[3] = {5, 25, 1};
@@ -178,10 +171,7 @@ TEST(MumfordTest, CostelloSumOfDeg6NonMonicEquals) {
     EXPECT_EQ(D12.v0, Sum.v0);
 }
 
-TEST(MumfordTest, DoublingDeg6NonMonicEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
-
+TEST_F(MumfordTest, DoublingDeg6NonMonicEquals) {
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
     int uc[3] = {6, 24, 1};
@@ -208,10 +198,7 @@ TEST(MumfordTest, DoublingDeg6NonMonicEquals) {
     EXPECT_EQ(D12.v0, Sum.v0);
 }
 
-TEST(MumfordTest, ScalarMultiplicationEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
-
+TEST_F(MumfordTest, ScalarMultiplicationEquals) {
     int fc[7] = {-1, 3, 6, -2, -3, 1, 1};
     int hc[1] = {0};
 

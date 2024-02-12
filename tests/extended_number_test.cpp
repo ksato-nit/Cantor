@@ -3,6 +3,14 @@
 #include "extended_number.hpp"
 #include <gmpxx.h>
 
+class ExtendedNumberTest : public ::testing::Test {
+    protected:
+    virtual void SetUp() {
+        mpz_init_set_si(Number::CHARA, 31);
+        mpz_init_set_si(Number::MCHARA, -31);
+    }
+};
+
 TEST(ExtendedNumberTest, SumEquals) {
     mpz_init_set_si(Number::CHARA, 31);
     mpz_init_set_si(Number::MCHARA, -31);

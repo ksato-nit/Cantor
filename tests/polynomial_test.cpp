@@ -2,9 +2,15 @@
 #include "number.hpp"
 #include "polynomial.hpp"
 
-TEST(PolynomialTest, InitDegreeEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
+class PolynomialTest : public ::testing::Test {
+    protected:
+    virtual void SetUp() {
+        mpz_init_set_si(Number::CHARA, 31);
+        mpz_init_set_si(Number::MCHARA, -31);
+    }
+};
+
+TEST_F(PolynomialTest, InitDegreeEquals) {
     
     Number f0(3);
     Number f1(1);
@@ -13,9 +19,8 @@ TEST(PolynomialTest, InitDegreeEquals) {
     EXPECT_EQ(d, f.deg);
 }
 
-TEST(PolynomialTest, SumEquals) {
+TEST_F(PolynomialTest, SumEquals) {
     mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
 
     // (4x^2 + x + 3) + (x + 2) = 4x^2 + 2x + 5.
     Number f0(3);
@@ -40,10 +45,7 @@ TEST(PolynomialTest, SumEquals) {
     EXPECT_EQ(h, f + g);
 }
 
-TEST(PolynomialTest, DifferenceEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
-
+TEST_F(PolynomialTest, DifferenceEquals) {
     // (4x^2 + x + 3) - (x + 2) = 4x^2 + 1.
     Number f0(3);
     Number f1(1);
@@ -67,10 +69,7 @@ TEST(PolynomialTest, DifferenceEquals) {
     EXPECT_EQ(h, f - g);
 }
 
-TEST(PolynomialTest, ProductEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
-
+TEST_F(PolynomialTest, ProductEquals) {
     // (4x^2 + x + 3) * (x + 2) = 4x^3 + 9x^2 + 5x + 6.
     Number f0(3);
     Number f1(1);
@@ -95,10 +94,7 @@ TEST(PolynomialTest, ProductEquals) {
     EXPECT_EQ(h, f * g);
 }
 
-TEST(PolynomialTest, QuotientEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
-
+TEST_F(PolynomialTest, QuotientEquals) {
     // 4x^2 + x + 3 = (x + 2) * (4x - 7) + 17.
     Number f0(3);
     Number f1(1);
@@ -121,10 +117,7 @@ TEST(PolynomialTest, QuotientEquals) {
     EXPECT_EQ(q, f / g);
 }
 
-TEST(PolynomialTest, RemainderEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
-
+TEST_F(PolynomialTest, RemainderEquals) {
     // 4x^2 + x + 3 = (x + 2) * (4x - 7) + 17.
     Number f0(3);
     Number f1(1);
@@ -146,10 +139,7 @@ TEST(PolynomialTest, RemainderEquals) {
     EXPECT_EQ(r, f % g);
 }
 
-TEST(PolynomialTest, DerivativeEquals) {
-    mpz_init_set_si(Number::CHARA, 31);
-    mpz_init_set_si(Number::MCHARA, -31);
-
+TEST_F(PolynomialTest, DerivativeEquals) {
     // (4x^2 + x + 3)' = 8x + 1.
     Number f0(3);
     Number f1(1);
